@@ -179,6 +179,7 @@
                             <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
                             <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualOnceOneCycle.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
                             <CheckBox IsChecked="{Binding EquipmentInstance.RearModule.UseIMark}" Width="54"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.RearModule.IMarkCheckSensor.IsOn}" ToolTip="X1135 I-Mark 입력" Style="{StaticResource OnOffSensorLabel2}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Margin="1"/>
                             <Label IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.BypassCoveyorExistCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Margin="1"/>
                             <DockPanel.LayoutTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" />
@@ -247,6 +248,7 @@
                             <TextBlock Text="포장 1사이클"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
                             <TextBox Text="{Binding EquipmentInstance.RearModule.ManualCuttingCount}"  FontSize="30" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="124" Height="88" />
                             <CheckBox IsChecked="{Binding EquipmentInstance.RearModule.UseIMark}" Width="54"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.RearModule.IMarkCheckSensor.IsOn}" ToolTip="X1135 I-Mark 입력" Style="{StaticResource OnOffSensorLabel2}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Margin="1"/>
                             <TextBlock Text="{Binding EquipmentInstance.RearModule.WorkRearPullManual.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
                             <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
                             <TextBlock Text="{Binding EquipmentInstance.RearModule.WorkRearPullManual.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
@@ -268,7 +270,8 @@
                 <UniformGrid Grid.Column="0" Grid.Row="11" Background="White" Margin="5">
                     <Border Margin="1">
                         <DockPanel>
-                            <TextBlock Text="아이마크찾기"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="I-Mark X1135"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
+                            <Label IsEnabled="{Binding EquipmentInstance.RearModule.IMarkCheckSensor.IsOn}" ToolTip="X1135 I-Mark 입력" Style="{StaticResource OnOffSensorLabel2}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Margin="1"/>
                             <TextBlock Text="{Binding EquipmentInstance.RearModule.SearchingImark.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
                             <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
                             <TextBlock Text="{Binding EquipmentInstance.RearModule.SearchingImark.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>

@@ -81,10 +81,50 @@
                 </Binding.Converter>
             </Binding>
         </Grid.IsEnabled>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <CheckBox Content="Use Virtual Keyboard" IsChecked="{Binding Path=UseVirtualKeyboard, Source={x:Static equipment:MainEquipment.Instance}}" />
+            <GroupBox Header="LOG 파일 자동삭제 기간 설정" Margin="0,5,0,5" Padding="5">
+                <DockPanel LastChildFill="True">
+                    <Button DockPanel.Dock="Bottom" Content="LOG 기간 저장" Click="SaveLogRetentionButton_Click" Margin="0,5,0,0" Height="35" />
+                    <Grid DockPanel.Dock="Top" Margin="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="대상 로그/파일" FontWeight="Bold" />
+                        <TextBlock Grid.Column="1" Text="보관일" FontWeight="Bold" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="적용 경로" FontWeight="Bold" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding Path=LogRetentionItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="170" />
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Path=DisplayName}" VerticalAlignment="Center" />
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding Path=Days, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Center"
+                                             VerticalContentAlignment="Center"
+                                             MinWidth="60"
+                                             Tag="{Binding}"
+                                             Style="{StaticResource baseTextBoxStyle}"
+                                             GotFocus="TextBox_GotFocus" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Path=TargetPath}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </GroupBox>
             <TreeView Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="treeView1" VerticalAlignment="Stretch" Width="Auto" ItemsSource="{Binding Path=ExtractedConfig}" />
             <ContentControl Content="{Binding Path=AdditionalControl}" />
         </StackPanel>
+        </ScrollViewer>
     </Grid>    
 </UserControl>

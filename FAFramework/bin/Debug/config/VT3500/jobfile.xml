@@ -821,7 +821,7 @@
         <UseTopPeeling>true</UseTopPeeling>
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
-        <UseIMark>false</UseIMark>
+        <UseIMark>true</UseIMark>
         <TapeLoadingPos>137.5</TapeLoadingPos>
         <TapeLoadingSlowPos>137.5</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>

@@ -89,6 +89,7 @@ namespace FAFramework.Manager
             get { return _currentCultureInstance; }
             set
             {
+                if (value == null) return;
                 if (_currentCultureInstance == value) return;
                 _currentCultureInstance = value;
                 NotifyPropertyChanged("CurrentCultureInstance");
@@ -248,7 +249,10 @@ namespace FAFramework.Manager
 
                 XElement xml = XElement.Load(path);
 
-                string currentCulture = xml.Element("CurrentCulture").Value;
+                var currentCultureElement = xml.Element("CurrentCulture");
+                if (currentCultureElement == null) return;
+
+                string currentCulture = currentCultureElement.Value;
                 CurrentCultureInstance = GetCulture(currentCulture);
             }
             catch (Exception e)
@@ -267,7 +271,16 @@ namespace FAFramework.Manager
 
                 XElement xml = XElement.Load(path);
 
-                xml.Element("CurrentCulture").Value = CurrentCultureInstance.Name;
+                if (CurrentCultureInstance == null) return;
+
+                var currentCultureElement = xml.Element("CurrentCulture");
+                if (currentCultureElement == null)
+                {
+                    currentCultureElement = new XElement("CurrentCulture");
+                    xml.Add(currentCultureElement);
+                }
+
+                currentCultureElement.Value = CurrentCultureInstance.Name;
 
                 xml.Save(path);
             }

@@ -20,11 +20,10 @@ namespace FAFramework.Manager
 
         public bool Run { get; set; }
 
-        private readonly TimeSpan DEFAULT_AUTO_CLEAR_DATE = new TimeSpan(60, 0, 0, 0);
-
         public PackingLogManager()
         {
             Run = true;
+            LogRetentionSetting.EnsureSettingFile();
 
             DateTime lastTime = DateTime.Now.AddMinutes(-1);
 
@@ -49,14 +48,11 @@ namespace FAFramework.Manager
 
                             if (now.Day != lastTime.Day)
                             {
+                                var retention = LogRetentionSetting.GetRetentionPeriod(LogRetentionSetting.KEY_PACKING_LOG);
                                 DeleteAllFile(LOG_PATH,
                                     delegate (string filename)
                                     {
-                                        var creationTime = File.GetCreationTime(filename);
-                                        if (now - creationTime > DEFAULT_AUTO_CLEAR_DATE)
-                                            return true;
-                                        else
-                                            return false;
+                                        return LogRetentionSetting.IsExpired(filename, now, retention);
                                     }, true);
                             }
 

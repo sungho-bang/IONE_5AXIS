@@ -98,10 +98,9 @@ namespace FAFramework.Manager
 
     public class LogManager
     {
-        private readonly TimeSpan DEFAULT_AUTO_CLEAR_DATE = new TimeSpan(60, 0, 0, 0);
-
         public static readonly string LOG_ROOT_PATH = Path.Combine(FAFramework.ConfigClasses.GlobalConst.ROOT_PATH, "Log");
         public static readonly string SYSTEM_LOG_PATH = AppDomain.CurrentDomain.BaseDirectory + @"Log\SystemLog\";
+        public static readonly string IMARKLOG_PATH = @"IMarkLog\";
         public static readonly string TRACELOG_PATH = @"TraceLog\";
         public static readonly string ALARMLOG_PATH = @"AlarmLog\";
         public static readonly string ECLOG_PATH = @"ECLog\";
@@ -119,6 +118,8 @@ namespace FAFramework.Manager
         private Queue<Action> _logQueue = new Queue<Action>();
 
         private Thread _thread;
+        private DateTime _lastAutoClearTime = DateTime.MinValue;
+        private readonly TimeSpan AUTO_CLEAR_INTERVAL = TimeSpan.FromMinutes(10);
 
         public event EventHandler<LogEventArgs> OnWriteSystemLog = null;
         public event EventHandler<LogEventArgs> OnWriteTraceLog = null;
@@ -138,6 +139,7 @@ namespace FAFramework.Manager
             Run = true;
 
             IsEnabledTraceLog = true;
+            LogRetentionSetting.EnsureSettingFile();
 
             _thread = new Thread(
                     delegate ()
@@ -228,6 +230,26 @@ namespace FAFramework.Manager
                     e.Log = log;
                     OnWriteTraceLog(this, e);
                 }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(DateTime.Now + "," + e.ToString());
+            }
+        }
+
+        public void WriteIMarkLog(Equipment.EquipmentBase equipment, string log)
+        {
+            WriteIMarkLog(equipment, new TraceLogInfo(log));
+        }
+
+        public void WriteIMarkLog(Equipment.EquipmentBase equipment, object log)
+        {
+            try
+            {
+                if (equipment == null) return;
+
+                string path = Path.Combine(LOG_ROOT_PATH, equipment.Name, IMARKLOG_PATH);
+                WriteCSVLog(path, string.Empty, log, "\t");
             }
             catch (Exception e)
             {
@@ -422,6 +444,8 @@ namespace FAFramework.Manager
                 _logQueue.Enqueue(
                     delegate ()
                     {
+                        AutoClearLogFilesIfNeeded();
+
                         if (Directory.Exists(path) == false)
                             Directory.CreateDirectory(path);
 
@@ -476,6 +500,8 @@ namespace FAFramework.Manager
                 _logQueue.Enqueue(
                     delegate ()
                     {
+                        AutoClearLogFilesIfNeeded();
+
                         if (Directory.Exists(path) == false)
                             Directory.CreateDirectory(path);
 
@@ -522,16 +548,7 @@ namespace FAFramework.Manager
                 _logQueue.Enqueue(
                     delegate ()
                     {
-                        var now = DateTime.Now;
-                        Utility.FileUtility.DeleteAllFile(FAFramework.ConfigClasses.GlobalConst.CONFIG_BACKUP_PATH,
-                                    delegate (string deleteFileName)
-                                    {
-                                        var creationTime = File.GetCreationTime(deleteFileName);
-                                        if (now - creationTime > DEFAULT_AUTO_CLEAR_DATE)
-                                            return true;
-                                        else
-                                            return false;
-                                    }, true);
+                        AutoClearLogFilesIfNeeded();
 
                         if (Directory.Exists(path) == false)
                             Directory.CreateDirectory(path);
@@ -571,6 +588,45 @@ namespace FAFramework.Manager
             }
 
             return date;
+        }
+
+        private void AutoClearLogFilesIfNeeded()
+        {
+            DateTime now = DateTime.Now;
+            if (now - _lastAutoClearTime < AUTO_CLEAR_INTERVAL) return;
+
+            _lastAutoClearTime = now;
+            LogRetentionSetting.DeleteExpiredFiles(SYSTEM_LOG_PATH, LogRetentionSetting.KEY_SYSTEM_LOG, true);
+
+            if (Directory.Exists(LOG_ROOT_PATH) == false) return;
+
+            foreach (var equipmentLogPath in Directory.GetDirectories(LOG_ROOT_PATH))
+            {
+                string directoryName = Path.GetFileName(equipmentLogPath);
+                if (string.Equals(directoryName, "SystemLog", StringComparison.OrdinalIgnoreCase)) continue;
+                if (string.Equals(directoryName, "TPLog", StringComparison.OrdinalIgnoreCase)) continue;
+
+                DeleteEquipmentLogFiles(equipmentLogPath);
+            }
+        }
+
+        private void DeleteEquipmentLogFiles(string equipmentLogPath)
+        {
+            DeleteLogDirectory(equipmentLogPath, IMARKLOG_PATH, LogRetentionSetting.KEY_IMARK_LOG);
+            DeleteLogDirectory(equipmentLogPath, TRACELOG_PATH, LogRetentionSetting.KEY_TRACE_LOG);
+            DeleteLogDirectory(equipmentLogPath, ALARMLOG_PATH, LogRetentionSetting.KEY_ALARM_LOG);
+            DeleteLogDirectory(equipmentLogPath, STATE_LOG_PATH, LogRetentionSetting.KEY_STATE_LOG);
+            DeleteLogDirectory(equipmentLogPath, DEBUG_LOG_PATH, LogRetentionSetting.KEY_DEBUG_LOG);
+            DeleteLogDirectory(equipmentLogPath, ECLOG_PATH, LogRetentionSetting.KEY_EC_LOG);
+            DeleteLogDirectory(equipmentLogPath, PRODUCT_PATH, LogRetentionSetting.KEY_PRODUCT_LOG);
+            DeleteLogDirectory(equipmentLogPath, "ProductOutput", LogRetentionSetting.KEY_PRODUCT_LOG);
+            DeleteLogDirectory(equipmentLogPath, MTBILOG_PATH, LogRetentionSetting.KEY_MTBI);
+        }
+
+        private void DeleteLogDirectory(string rootPath, string logDirectory, string retentionKey)
+        {
+            string path = Path.Combine(rootPath, logDirectory);
+            LogRetentionSetting.DeleteExpiredFiles(path, retentionKey, true);
         }
     }
 }

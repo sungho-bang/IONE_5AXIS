@@ -24,12 +24,10 @@ namespace FAFramework.Manager
 
         public bool Run { get; set; }
 
-        private readonly int DEFAULT_AUTO_CLEAR_DATE = 30;
-        private int _autoClearDate;
-
         private TPLogManager()
         {
             Run = true;
+            LogRetentionSetting.EnsureSettingFile();
 
             DateTime lastTime = DateTime.Now.AddMinutes(-1);
 
@@ -155,53 +153,11 @@ namespace FAFramework.Manager
 
         private void AutoClearLogFiles(string path)
         {
-            if (Directory.Exists(path) == false) return;
+            string retentionKey = string.Equals(path, FTP_LOG_PATH, StringComparison.OrdinalIgnoreCase)
+                ? LogRetentionSetting.KEY_TP_LOG_FTP
+                : LogRetentionSetting.KEY_TP_LOG;
 
-            TimeSpan autoClearDate = new TimeSpan((int)GetAutoClearDate(), 0, 0, 0);
-            DateTime now = DateTime.Now;
-
-            foreach (var file in Directory.GetFiles(path))
-            {
-                if (File.Exists(file) == false) continue;
-
-                var fileInfo = new FileInfo(file);
-                if (now - fileInfo.CreationTime > autoClearDate)
-                {
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-        }
-
-        private int GetAutoClearDate()
-        {
-            string path = Path.Combine(FAFramework.ConfigClasses.GlobalConst.CONFIG_PATH, "log_setting.cfg");
-            if (File.Exists(path))
-            {
-                try
-                {
-                    string text = File.ReadAllText(path);
-
-                    if (int.TryParse(text, out _autoClearDate) == false)
-                        _autoClearDate = DEFAULT_AUTO_CLEAR_DATE;
-
-                }
-                catch
-                {
-                    _autoClearDate = DEFAULT_AUTO_CLEAR_DATE;
-                }
-            }
-            else
-            {
-                _autoClearDate = DEFAULT_AUTO_CLEAR_DATE;
-            }
-
-            return _autoClearDate;
+            LogRetentionSetting.DeleteExpiredFiles(path, retentionKey, false);
         }
     }
 }

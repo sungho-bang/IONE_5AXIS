@@ -109,6 +109,68 @@
     </Parameters>
   </Part>
   <Part>
+    <Name>IMarkCheckSensor</Name>
+    <Description>I-Mark Input Sensor X1135</Description>
+    <DeviceName>DeviceNet</DeviceName>
+    <Parameters>
+      <InputIOList>
+        <IOIndex>X1135</IOIndex>
+      </InputIOList>
+      <Property>
+        <Item>
+          <Name>InputInverse</Name>
+          <Value>false</Value>
+        </Item>
+        <Item>
+          <Name>OutputInverse</Name>
+          <Value>false</Value>
+        </Item>
+        <Item>
+          <Name>IsORSensor</Name>
+          <Value>false</Value>
+        </Item>
+        <Item>
+          <Name>IsAndSensor</Name>
+          <Value>false</Value>
+        </Item>
+        <Item>
+          <Name>IgnoreInterlock</Name>
+          <Value>false</Value>
+        </Item>
+        <Item>
+          <Name>Name</Name>
+          <Value>IMarkCheckSensor</Value>
+        </Item>
+        <Item>
+          <Name>Description</Name>
+          <Value>I-Mark Input Sensor X1135</Value>
+        </Item>
+        <Item>
+          <Name>MachineID</Name>
+          <Value>179</Value>
+        </Item>
+        <Item>
+          <Name>RangeList</Name>
+          <Value>
+            <SerializableDictionaryOfStringFARange>
+              <item>
+                <key>
+                  <string>MachineID</string>
+                </key>
+                <value>
+                  <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                    <Min>-2147483648</Min>
+                    <Max>2147483647</Max>
+                  </FARange>
+                </value>
+              </item>
+            </SerializableDictionaryOfStringFARange>
+          </Value>
+        </Item>
+      </Property>
+    </Parameters>
+  </Part>
+  <Part>
     <Name>SealingTapeTensionUpSensor</Name>
     <Description>SealingTapeTensionUpSensor</Description>
     <DeviceName>DeviceNet</DeviceName>

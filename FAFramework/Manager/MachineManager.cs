@@ -220,11 +220,12 @@ namespace FAFramework.Manager
                             {
                                 DefaultAlarmInfo alarmInfo = (DefaultAlarmInfo)Attribute.GetCustomAttribute(propInfo, typeof(DefaultAlarmInfo), false);
                                 var culture = StringResourceManager.Instance.CurrentCultureInstance;
+                                var cultureName = culture == null ? string.Empty : culture.Name;
                                 AlarmDescription alarmDescription = null;
                                 foreach (var item in Attribute.GetCustomAttributes(propInfo, typeof(AlarmDescription), false))
                                 {
                                     var tempAlarmDescription = item as AlarmDescription;
-                                    if (string.Equals(tempAlarmDescription.Culture, culture.Name, StringComparison.CurrentCultureIgnoreCase))
+                                    if (string.Equals(tempAlarmDescription.Culture, cultureName, StringComparison.CurrentCultureIgnoreCase))
                                     {
                                         alarmDescription = tempAlarmDescription;
                                         break;

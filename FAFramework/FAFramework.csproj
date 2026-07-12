@@ -377,6 +377,7 @@
     <Compile Include="Manager\AlarmResourceManager.cs" />
     <Compile Include="Manager\ConditionalSequenceManager.cs" />
     <Compile Include="Manager\JSONSerializeManager.cs" />
+    <Compile Include="Manager\LogRetentionSetting.cs" />
     <Compile Include="Manager\LogManager.cs" />
     <Compile Include="Manager\LotManager.cs" />
     <Compile Include="Manager\MachineManager.cs" />

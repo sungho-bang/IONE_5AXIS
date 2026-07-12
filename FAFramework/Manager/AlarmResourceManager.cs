@@ -16,23 +16,14 @@ namespace FAFramework.Manager
 
         public void Load()
         {
-            string culture = "";
-
-            try
-            {
-                culture = Manager.StringResourceManager.Instance.CurrentCultureInstance.Name;
-            }
-            catch
-            {
-                culture = DEFAULT_CULTURE;
-            }
+            string culture = GetCurrentCultureName();
 
             string filename = string.Format("{0}_{1}.xml", ALARM_LIST_FILENAME_PREFIX, culture);
             string filepath = System.IO.Path.Combine(ALARM_LIST_FOLDER_PATH, filename);
 
             if (System.IO.File.Exists(filepath) == false)
             {
-                string logMsg = string.Format("Can't read a alarmlist file. Not exists ", filepath);
+                string logMsg = string.Format("Can't read a alarmlist file. Not exists {0}", filepath);
                 Manager.LogManager.Instance.WriteSystemLog(logMsg);
 
                 filename = string.Format("{0}_{1}.xml", ALARM_LIST_FILENAME_PREFIX, DEFAULT_CULTURE);
@@ -40,7 +31,7 @@ namespace FAFramework.Manager
 
                 if (System.IO.File.Exists(filepath) == false)
                 {
-                    logMsg = string.Format("Can't read a alarmlist file. Not exists ", filepath);
+                    logMsg = string.Format("Can't read a alarmlist file. Not exists {0}", filepath);
                     Manager.LogManager.Instance.WriteSystemLog(logMsg);
                     return;
                 }
@@ -51,6 +42,7 @@ namespace FAFramework.Manager
             foreach (var item in xml.Elements())
             {
                 var alarm = ParsingAlarmFromXml(item);
+                if (alarm == null) continue;
 
                 if (alarmList.ContainsKey(alarm.AlarmNo) == true)
                 {
@@ -68,16 +60,7 @@ namespace FAFramework.Manager
 
         public void Save()
         {
-            string culture = "";
-
-            try
-            {
-                culture = Manager.StringResourceManager.Instance.CurrentCultureInstance.Name;
-            }
-            catch
-            {
-                culture = DEFAULT_CULTURE;
-            }
+            string culture = GetCurrentCultureName();
 
             string filename = string.Format("{0}_{1}.xml", ALARM_LIST_FILENAME_PREFIX, culture);
             string filepath = System.IO.Path.Combine(ALARM_LIST_FOLDER_PATH, filename);
@@ -135,6 +118,15 @@ namespace FAFramework.Manager
             {
                 return null;
             }
+        }
+
+        private string GetCurrentCultureName()
+        {
+            var culture = Manager.StringResourceManager.Instance.CurrentCultureInstance;
+            if (culture == null || string.IsNullOrWhiteSpace(culture.Name))
+                return DEFAULT_CULTURE;
+
+            return culture.Name;
         }
     }
 }

@@ -12,7 +12,11 @@ namespace FAFramework.Utility.Converter
             try
             {
                 var obj = value;
-                var paramArr = (parameter as string).Split('/');
+                var parameterText = parameter as string;
+                if (obj == null || string.IsNullOrWhiteSpace(parameterText))
+                    return false;
+
+                var paramArr = parameterText.Split('/');
                 var typeName = paramArr[0];
                 var assembly = Assembly.GetExecutingAssembly();
                 if (typeName.Split(':').Length > 1)
@@ -23,7 +27,11 @@ namespace FAFramework.Utility.Converter
                 }
 
                 var type = assembly.GetType(typeName as string);
-                var result = type.IsAssignableFrom(obj.GetType());
+                if (type == null)
+                    return false;
+
+                var objType = obj.GetType();
+                var result = type.IsAssignableFrom(objType);
 
                 if (paramArr.Length > 1)
                 {
@@ -31,15 +39,14 @@ namespace FAFramework.Utility.Converter
                     if (propertyInfo.Length == 2)
                     {
                         var propertyName = propertyInfo[0];
-                        var property = obj.GetType().GetProperty(propertyName);
+                        var property = objType.GetProperty(propertyName);
+                        if (property == null)
+                            return false;
+
                         var propertyValue = System.Convert.ChangeType(propertyInfo[1], property.PropertyType);
-                        if (property != null)
+                        if (!object.Equals(propertyValue, property.GetValue(obj)))
                         {
-                            if (!ValueType.Equals(propertyValue,
-                                property.GetValue(obj)))
-                            {
-                                result = false;
-                            }
+                            result = false;
                         }
                     }
                 }
@@ -48,7 +55,7 @@ namespace FAFramework.Utility.Converter
             }
             catch
             {
-                return null;
+                return false;
             }
         }
 

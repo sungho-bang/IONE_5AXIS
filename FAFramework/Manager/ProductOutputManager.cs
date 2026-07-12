@@ -1176,6 +1176,7 @@ namespace FAFramework.Manager
                 _logQueue.Enqueue(
                     delegate
                     {
+                        LogRetentionSetting.DeleteExpiredFiles(ROOT_PATH, LogRetentionSetting.KEY_PRODUCT_LOG, true);
                         SaveLotProductOutput(date);
                         SaveUnitPerHour(date);
                         SaveDayOutput(date);

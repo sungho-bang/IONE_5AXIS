@@ -78,9 +78,21 @@ namespace FAFramework.GUI.Standard
             }
         }
 
+        private ObservableCollection<Manager.LogRetentionSettingItem> _logRetentionItems;
+        public ObservableCollection<Manager.LogRetentionSettingItem> LogRetentionItems
+        {
+            get { return _logRetentionItems; }
+            set
+            {
+                _logRetentionItems = value;
+                NotifyPropertyChanged("LogRetentionItems");
+            }
+        }
+
         public SystemSettingControl()
         {
             InitializeComponent();
+            LoadLogRetentionItems();
         }
 
         public void ExtractConfig(object config)
@@ -104,6 +116,26 @@ namespace FAFramework.GUI.Standard
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             //Utility.UtilityClass.TextBox_GotFocus(sender, e);
+        }
+
+        private void LoadLogRetentionItems()
+        {
+            LogRetentionItems = new ObservableCollection<Manager.LogRetentionSettingItem>(
+                Manager.LogRetentionSetting.LoadItems());
+        }
+
+        private void SaveLogRetentionButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Manager.LogRetentionSetting.SaveItems(LogRetentionItems);
+                LoadLogRetentionItems();
+                MessageBox.Show("LOG 파일 자동삭제 기간을 저장했습니다.", "LOG 설정", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("LOG 파일 자동삭제 기간 저장 실패\r\n" + ex.Message, "LOG 설정", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         public static void ConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

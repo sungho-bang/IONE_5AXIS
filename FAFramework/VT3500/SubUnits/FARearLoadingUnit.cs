@@ -21,6 +21,8 @@ namespace FAFramework.VT3500.SubUnits
 
         [FAAttribute("")]
         public FAPartOnOffSensor BlackMarkCheckSensor { get; set; } // 바닥용지 감지 센서
+        [FAAttribute("")]
+        public FAPartOnOffSensor IMarkCheckSensor { get; set; } // I-Mark 입력 센서(X1135)
 
         [FAAttribute("")]
         public FAPartUpDown SealingTopRoller { get; set; } // 롤러 동작 실린더

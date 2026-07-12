@@ -18,7 +18,6 @@ namespace FAFramework.Equipment
     public class MainEquipment : INotifyPropertyChanged
     {
         static object _saveLock = new object();
-        private readonly TimeSpan DEFAULT_AUTO_CLEAR_DATE = new TimeSpan(60, 0, 0, 0);
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
@@ -129,6 +128,8 @@ namespace FAFramework.Equipment
 
         private MainEquipment()
         {
+            Manager.LogRetentionSetting.EnsureSettingFile();
+
             DeviceManager = new Manager.DeviceManager();
             EquipmentManagerInstance = new EquipmentManager();
 
@@ -201,16 +202,10 @@ namespace FAFramework.Equipment
         {
             lock (_saveLock)
             {
-                var now = DateTime.Now;
-                Utility.FileUtility.DeleteAllFile(FAFramework.ConfigClasses.GlobalConst.CONFIG_BACKUP_PATH,
-                            delegate(string filename)
-                            {
-                                var creationTime = File.GetCreationTime(filename);
-                                if (now - creationTime > DEFAULT_AUTO_CLEAR_DATE)
-                                    return true;
-                                else
-                                    return false;
-                            }, true);
+                Manager.LogRetentionSetting.DeleteExpiredFiles(
+                    FAFramework.ConfigClasses.GlobalConst.CONFIG_BACKUP_PATH,
+                    Manager.LogRetentionSetting.KEY_CONFIG_BACKUP,
+                    true);
                 var backupPath = Path.Combine(FAFramework.ConfigClasses.GlobalConst.CONFIG_BACKUP_PATH, DateTime.Now.ToString("yyyy-MM-dd_HHmmss"));
                 CopyAllData(backupPath);
                 EquipmentManagerInstance.Save();

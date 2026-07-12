@@ -364,7 +364,7 @@
                                         </ToggleButton>
                                     </StackPanel>
                                     <StackPanel  Margin="-10,30,0,0">
-                                        <TextBlock Text=" I-Mark" FontSize="12" />
+                                        <TextBlock Text=" I-Mark X1135" FontSize="12" />
                                         <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseIMark}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
                                             <ToggleButton.LayoutTransform>
                                                 <ScaleTransform ScaleX="2" ScaleY="2" />

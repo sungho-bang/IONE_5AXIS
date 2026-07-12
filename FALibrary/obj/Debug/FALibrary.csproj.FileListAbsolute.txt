@@ -347,3 +347,14 @@ D:\Works_Updates\대주이엔지\Pgms_20251129\5_mode_250826\FALibrary\obj\Debug
 D:\Works_Updates\대주이엔지\Pgms_20251129\5_mode_250826\FALibrary\obj\Debug\FALibrary.csproj.CopyComplete
 D:\Works_Updates\대주이엔지\Pgms_20251129\5_mode_250826\FALibrary\obj\Debug\FALibrary.dll
 D:\Works_Updates\대주이엔지\Pgms_20251129\5_mode_250826\FALibrary\obj\Debug\FALibrary.pdb
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\FALibrary.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\Cognex.Cnx.Common.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\Cognex.DataMan.Discovery.PC.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\Cognex.DataMan.SDK.PC.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\Cognex.DataMan.Utils.PC.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\obj\Debug\FALibrary.csproj.AssemblyReference.cache
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\obj\Debug\FALibrary.csproj.CoreCompileInputs.cache
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\obj\Debug\FALibrary.csproj.Up2Date
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\obj\Debug\FALibrary.dll
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\obj\Debug\FALibrary.pdb
+D:\Works_Updates\대주이엔지\Git_IONE_5AXIS\FALibrary\bin\Debug\FALibrary.pdb
