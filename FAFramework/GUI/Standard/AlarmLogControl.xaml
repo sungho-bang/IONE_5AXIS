@@ -1,0 +1,202 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.AlarmLogControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"      
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <UserControl.Resources>
+        <Style x:Name="largeControl" TargetType="CheckBox">
+            <Style.Setters>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+        <converter:BoolInverseConverter x:Key="boolInverseConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="250" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" >
+                <CheckBox Name="checkBoxOneDay" Content="One Day" FontWeight="Bold" Margin="5" IsChecked="True" />
+                <GroupBox Header="{DynamicResource ResourceKey=BeginDate}" HorizontalAlignment="Stretch" Margin="2" Name="groupBox1" VerticalAlignment="Stretch" Grid.Column="1">
+                    <Label Name="beginDate" Style="{StaticResource DateTimeInputTemplate}">
+                        <utility:LogSearchingDateTime Date="{x:Static system:DateTime.Now}" Hour="22" Minute="00" />
+                    </Label> 
+                </GroupBox>
+            </StackPanel>
+            <GroupBox Header="{DynamicResource ResourceKey=EndDate}" HorizontalAlignment="Stretch" Margin="2" Name="groupBox2" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding ElementName=checkBoxOneDay, Converter={StaticResource boolInverseConverter}, Path=IsChecked}">
+                <Label Name="endDate" Style="{StaticResource DateTimeInputTemplate}">
+                    <utility:LogSearchingDateTime Date="{x:Static system:DateTime.Now}" Hour="22" Minute="00" />
+                </Label>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Grid.Row="2" Header="{DynamicResource ResourceKey=Count}" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="groupBox3" VerticalAlignment="Stretch" Width="Auto">
+                <Label Background="Black" Foreground="Lime">
+                    <Label.Content>
+                        <Binding Path="LogSearcherObject.Result.AlarmCount"/>
+                    </Label.Content>
+                </Label>
+            </GroupBox>
+            <Button Command="{Binding Path=LogSearcherObject.Search}" Content="{DynamicResource ResourceKey=Search}" Grid.Column="1" Grid.Row="5" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="buttonSearch" VerticalAlignment="Stretch" Width="Auto">
+                <Button.CommandParameter>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <converter:MultiValueConverter/>
+                        </MultiBinding.Converter>
+                        <Binding ElementName="beginDate" Path="Content"/>
+                        <Binding ElementName="endDate" Path="Content"/>
+                        <Binding ElementName="checkBoxErrorData" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxWarningData" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxRankingData" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxAutoRunning" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxMachine" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxMaterial" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxHuman" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxMethod" Path="IsChecked"/>
+                        <Binding ElementName="textBoxFilter" Path="Text"/>
+                        <Binding ElementName="checkBoxOneDay" Path="IsChecked"/>
+                        <Binding ElementName="checkBoxAllDaysRankingData" Path="IsChecked"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+            <Button Command="{Binding Path=LogSearcherObject.SaveToCSV}" Content="{DynamicResource ResourceKey=SaveToCSV}"
+                    CommandParameter="{Binding Path=LogSearcherObject.Result.LogList}"
+                    Grid.Column="1" Grid.Row="6" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="buttonSaveToCSV" VerticalAlignment="Stretch" Width="Auto">
+            </Button>
+            <GroupBox Grid.Row="3" Header="Filter">
+                <TextBox Name="textBoxFilter" />
+            </GroupBox>
+            <WrapPanel Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="wrapPanel1" VerticalAlignment="Stretch" Width="Auto" Orientation="Vertical">                
+                <Grid Height="Auto" Name="grid4" Width="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Content="{DynamicResource ResourceKey=WarningData}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0" Name="labelWarningData" VerticalAlignment="Stretch" />
+                    <Label Content="{DynamicResource ResourceKey=ErrorData}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0" Name="labelErrorData" VerticalAlignment="Stretch" />
+                    <CheckBox Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxErrorData" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="1" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBox2" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="2" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxWarningData" VerticalAlignment="Center" IsChecked="True" />
+                </Grid>
+                <Grid Height="Auto" Name="grid3" Width="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <CheckBox Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxRankingData" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="1" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxAllDaysRankingData" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="2" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxAutoRunning" VerticalAlignment="Center" IsChecked="True" />
+                    <Label Content="{DynamicResource ResourceKey=RankingData}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" Name="labelRankingData" VerticalAlignment="Stretch" />
+                    <Label Content="{DynamicResource ResourceKey=AllDaysRankingData}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" />
+                    <Label Content="{DynamicResource ResourceKey=AutoRunning}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0" Name="labelAutoRunning" VerticalAlignment="Stretch" />
+                </Grid>
+                <Grid Height="Auto" Name="grid2" Width="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <CheckBox Grid.Row="1" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxMaterial" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="2" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxHuman" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Grid.Row="3" Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxMethod" VerticalAlignment="Center" IsChecked="True" />
+                    <CheckBox Height="Auto" HorizontalAlignment="Center" Margin="5" Name="checkBoxMachine" VerticalAlignment="Center" IsChecked="True" />
+                    <Label Content="{DynamicResource ResourceKey=Machine}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="labelMachine" VerticalAlignment="Stretch" Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=Material}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="labelMaterial" VerticalAlignment="Stretch" Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=Human}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="labelHuman" VerticalAlignment="Stretch" Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=Method}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" Grid.Column="1" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="labelMethod" VerticalAlignment="Stretch" Width="Auto" />
+                </Grid>
+            </WrapPanel>
+        </Grid>
+        <ListView HorizontalAlignment="Stretch" ItemsSource="{Binding Path=LogSearcherObject.Result.LogList}" Margin="0" Name="listView1" VerticalAlignment="Stretch">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=Date}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Date, StringFormat='yyyy-MM-dd HH:mm:ss.fff'}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=Count}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Count}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=AlarmNo}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=AlarmNo}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=AlarmName}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=AlarmName}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=AlarmStatus}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Status}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{DynamicResource ResourceKey=AlarmType}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Type}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,211 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.IntializeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:local="clr-namespace:FAFramework.VT3500.GUI"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             mc:Ignorable="d" 
+             Name="initializeControl"
+             d:DesignHeight="600" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             Width="800" Height="500" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converter:UIntIsOverToBoolConverter x:Key="uIntIsOverToBoolConverter" />
+            <DataTemplate x:Key="initializeStatusTemplate">
+                <Border BorderBrush="White" BorderThickness="0.5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="300" Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <ResourceDictionary>
+                                    <Style TargetType="Expander">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsExpanded" Value="True">
+                                                <Setter Property="Panel.ZIndex" Value="1" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ResourceDictionary>
+                            </Grid.Resources>
+                            <TextBlock Grid.Column="0" Text ="{Binding [0].Name}" FontFamily="Century Gothic" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontWeight="Normal" />
+                            <TextBlock Grid.Column="1" x:Name="State" Text ="{Binding Path=[0].Initialize.State}" FontFamily="Century Gothic" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style x:Name="State" TargetType="TextBlock" BasedOn="{StaticResource baseTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=[0].Initialize.State}" Value="Running">
+                                                <Setter Property="Foreground" Value="Yellow" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=[0].Initialize.State}" Value="Terminated">
+                                                <Setter Property="Foreground" Value="Lime" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=[0].Initialize.State}" Value="Available">
+                                                <Setter Property="Foreground" Value="White" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <Expander Grid.Column="2" Header="Info" Foreground="White" FontFamily="Century Gothic">
+                                <Canvas>
+                                    <Grid Background="DarkGray">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <Expander Grid.Column="0" Header="Initialize Status" Foreground="White">
+                                                <ListView ItemsSource="{Binding [0].Initialize.Steps}" Name="listView" Tag="{Binding [0]}">
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridView.Columns>
+                                                                <GridViewColumn Header="Step Name" DisplayMemberBinding="{Binding Key}" />
+                                                                <GridViewColumn Header="Status">
+                                                                    <GridViewColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <CheckBox>
+                                                                                <CheckBox.IsChecked>
+                                                                                    <MultiBinding Converter="{StaticResource uIntIsOverToBoolConverter}">
+                                                                                        <Binding Path="Value.StepIndex" />
+                                                                                        <Binding Path="Tag.Initialize.CurrentIndex" ElementName="listView" Mode="OneWay"/>
+                                                                                    </MultiBinding>
+                                                                                </CheckBox.IsChecked>
+                                                                            </CheckBox>
+                                                                        </DataTemplate>
+                                                                    </GridViewColumn.CellTemplate>
+                                                                </GridViewColumn>
+                                                            </GridView.Columns>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                            </Expander>
+                                            <Expander Grid.Column="1" Header="Part Status" Foreground="White">
+                                                <ListView ItemsSource="{Binding [1].PartList}">
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Path=Part.Name}" Header="PartName" />
+                                                            <GridViewColumn DisplayMemberBinding="{Binding Path=Part.Status}" Header="PartStatus" />
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                            </Expander>
+                                        </StackPanel>
+                                    </Grid>
+                                </Canvas>
+                            </Expander>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel Height="260" HorizontalAlignment="Center" Name="vestek" VerticalAlignment="Top">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Name="textBorder"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="{StaticResource WireDrawingBrushKey}">
+                    <TextBlock Name="textBlock"
+                                            Margin="30"
+                                            FontSize="48pt"
+                                            Foreground="Black">
+                                            INITIALIZING
+                        <TextBlock.TextEffects>
+                            <TextEffect x:Name="textEffect" PositionCount="1">
+                                <TextEffect.Transform>
+                                    <TranslateTransform x:Name="translateTransform"/>
+                                </TextEffect.Transform>
+                            </TextEffect>
+                        </TextBlock.TextEffects>
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                                Storyboard.TargetName="translateTransform"
+                                                Storyboard.TargetProperty="Y"
+                                                RepeatBehavior="Forever"
+                                                AutoReverse="True"
+                                                Duration="00:00:0.25"
+                                                From="0"
+                                                To="20" />
+                                        <Int32AnimationUsingKeyFrames
+                                                Storyboard.TargetName="textEffect"
+                                                Storyboard.TargetProperty="PositionStart"
+                                                RepeatBehavior="Forever"
+                                                AutoReverse="True"
+                                                Duration="0:0:6.5">
+                                            <Int32AnimationUsingKeyFrames.KeyFrames>
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:0"   Value="0"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:0.5" Value="1"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:1"   Value="2"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:1.5" Value="3"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:2"   Value="4"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:2.5" Value="5"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:3"   Value="6"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:3.5" Value="7"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:4"   Value="8"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:4.5" Value="9"  />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:5"   Value="10" />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:5.5" Value="11" />
+                                                <DiscreteInt32KeyFrame KeyTime="0:0:6"   Value="12" />
+                                            </Int32AnimationUsingKeyFrames.KeyFrames>
+                                        </Int32AnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+                </Border>
+            </Grid>
+        </DockPanel>
+        <WrapPanel Margin="0,260,0,0" Background="Black" >
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Height="238" Width="800">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <ContentControl ContentTemplate="{StaticResource initializeStatusTemplate}">
+                        <ContentControl.Content>
+                            <MultiBinding>
+                                <MultiBinding.Converter>
+                                    <converter:MultiValueConverter />
+                                </MultiBinding.Converter>
+                                <Binding Path="EquipmentInstance.FrontModule" />
+                                <Binding Path="EquipmentInstance.FrontLoadingUnit" />
+                            </MultiBinding>
+                        </ContentControl.Content>
+                    </ContentControl>
+                    <ContentControl ContentTemplate="{StaticResource initializeStatusTemplate}">
+                        <ContentControl.Content>
+                            <MultiBinding>
+                                <MultiBinding.Converter>
+                                    <converter:MultiValueConverter />
+                                </MultiBinding.Converter>
+                                <Binding Path="EquipmentInstance.RearModule" />
+                                <Binding Path="EquipmentInstance.RearLoadingUnit" />
+                            </MultiBinding>
+                        </ContentControl.Content>
+                    </ContentControl>
+                </StackPanel>
+            </Grid>
+        </WrapPanel>
+    </Grid>
+</UserControl>

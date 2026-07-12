@@ -1,0 +1,24 @@
+﻿2021.10.14 (5Press_NEW)
+-AlarmAchieveTheGoal -> Message후 Machine Stop 으로 변경
+-Alarm '0' Config 수정
+
+2021.09.24 (5Press_NEW)
+-Inverter 속도 수정
+-I-Mark 사용안할때에도 동일하게, 센서만 확인안함
+-Use I-Mark시 Initial 때에 I-Mark 찾는거 삭제
+
+2021.09.10 (5Press_NEW)
+-OptionServo, TapeCoverServo ServoOn Button으로 제어
+
+2021.09.06 (5Press_NEW)
+-원단 지정후, 목표달성시 Message 및 OncycleStop
+
+2021.08.26 (5Press)
+-아이원 
+
+2021.08.23 (5Press)
+-아이원 
+- Servo Off 제거
+
+2021.08.12 (5Press)
+-아이원

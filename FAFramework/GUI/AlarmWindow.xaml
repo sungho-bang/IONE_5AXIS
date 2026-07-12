@@ -1,0 +1,102 @@
+﻿<Window x:Class="FAFramework.GUI.AlarmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+        Title="AlarmWindow" Height="573" Width="842" Background="OrangeRed">
+    <Window.Resources>
+        <converter:AlarmStatusConverter x:Key="alarmStatusConverter" />
+        <converter:AlarmTypeConverter x:Key="alarmTypeConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="{DynamicResource ResourceKey=AlarmWindow.RaisedAlarmList}">
+            <ListView ItemsSource="{Binding Path=AlarmRaisingStatusManager.RaisingAlarmList}" SelectedItem="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Date}" DisplayMemberBinding="{Binding Path=RaisedTime, StringFormat='yyyy-MM-dd HH:mm:ss.fff'}" />
+                            <GridViewColumn Header="{DynamicResource ResourceKey=AlarmNo}" DisplayMemberBinding="{Binding Path=AlarmEventArgs.Alarm.AlarmNo}" />
+                            <GridViewColumn Header="{DynamicResource ResourceKey=AlarmName}" DisplayMemberBinding="{Binding Path=AlarmEventArgs.Alarm.AlarmName}" />
+                            <GridViewColumn Header="{DynamicResource ResourceKey=AlarmWindow.ClearAlarm}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{DynamicResource ResourceKey=AlarmWindow.ClearAlarm}" Command="{Binding Path=ClearAlarm}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+        <GridSplitter Grid.Row="1" Height="5"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Background="LightGray" 
+                      ShowsPreview="true" />
+        <GroupBox Grid.Row="2" Header="{DynamicResource ResourceKey=AlarmWindow.SelectedAlarm}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition MaxHeight="60"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Column="0" Header="{DynamicResource ResourceKey=AlarmNo}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.AlarmNo}" Background="White" MinHeight="30" Padding="2" VerticalAlignment="Center" />
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="{DynamicResource ResourceKey=AlarmName}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.AlarmName}" Background="White" MinHeight="30" Padding="2" VerticalAlignment="Center" />
+                            </GroupBox>
+                        </Grid>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Column="0" Header="{DynamicResource ResourceKey=AlarmStatus}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.Status, Converter={StaticResource ResourceKey=alarmStatusConverter}}" Background="White" MinHeight="30" Padding="2" VerticalAlignment="Center" />
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="{DynamicResource ResourceKey=AlarmType}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.Type, Converter={StaticResource ResourceKey=alarmTypeConverter}}" Background="White" MinHeight="30" Padding="2" VerticalAlignment="Center" />
+                            </GroupBox>
+                        </Grid>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Column="0" Header="{DynamicResource ResourceKey=AlarmSolution}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.Solution}" Background="White" MinHeight="30" />
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="{DynamicResource ResourceKey=AlarmWindow.MoreInfo}">
+                                <TextBlock Text="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Message}" Background="White" MinHeight="30" />
+                            </GroupBox>
+                        </Grid>
+                        <GroupBox DockPanel.Dock="Top" Header="{DynamicResource ResourceKey=Image}">
+                            <Image Source="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.AlarmEventArgs.Alarm.ImagePath}" />
+                        </GroupBox>                            
+                    </DockPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="{DynamicResource ResourceKey=AlarmWindow.ClearAlarm}" Margin="2" Command="{Binding Path=AlarmRaisingStatusManager.CurrentAlarmInfo.ClearAlarm}" />
+                    <Button Grid.Column="1" Content="{DynamicResource ResourceKey=AlarmWindow.SoundOff}" Margin="2" Command="{Binding Path=AlarmRaisingStatusManager.TurnOffCommand}" />
+                </Grid>                
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

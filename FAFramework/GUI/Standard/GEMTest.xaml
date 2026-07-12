@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.GEMTest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FAFramework.GUI.Standard"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="root">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Event">
+                    <ListView Name="eventList" ItemsSource="{Binding Path=Items}">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding CEID.ID}" />
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CEID.Name}" />
+                                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding CEID.Description}" />
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+                <GroupBox Header="SVID" Grid.Column="2">
+                    <ListView ItemsSource="{Binding Path=SelectedItem.SVIDDefine, ElementName=eventList}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" />
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                                    <GridViewColumn Header="Value">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Value}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+            </Grid>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+            <Grid Grid.Column="2">
+                <GroupBox Header="Log">
+                    <DockPanel>
+                        <CheckBox Content="Auto Update" IsChecked="{Binding AutoLogUpdate, ElementName=root}" DockPanel.Dock="Top" />
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <TextBlock Text="Update Interval : " />
+                            <TextBox Text="{Binding ElementName=root, Path=UpdateInterval, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+                            <TextBlock Text=" sec" />
+                        </StackPanel>
+                        <TextBox Text="{Binding Log, ElementName=root, Mode=OneWay}"
+                                 Style="{x:Null}"
+                             AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto"
+                             IsReadOnly="True"
+                             TextChanged="TextBox_TextChanged"/>
+                    </DockPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
+        <Button Content="Send" Grid.Row="1" Height="30"
+                    Command="{Binding SendEventReportCommand, ElementName=root}"
+                    CommandParameter="{Binding Path=SelectedItem, ElementName=eventList}"/>
+    </Grid>
+</UserControl>

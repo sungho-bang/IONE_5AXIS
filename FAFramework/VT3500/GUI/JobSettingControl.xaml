@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.JobSettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="2000"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:VT3500.GUI="clr-namespace:FAFramework.VT3500.GUI"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converter:IsStringNotEmptyConverter x:Key="isStringNotEmptyConverter" />
+            <converter:NullToBooleanConverter x:Key="nullToBooleanConverter" />
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:IsExistConverter x:Key="isExistConverter" />
+            <converter:PermissionToVisibilityConverter x:Key="permissionToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="0" x:Name="listViewJobList"                       
+                      ItemsSource="{Binding Path=JobManagerInstance.LotJobInstance.LotJobInfoList}" SelectedItem="{Binding Path=SelectedJob}" SelectionChanged="ListViewJobList_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Button" x:Key="modifyButtonStyle" BasedOn="{StaticResource baseStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=listViewJobList, Path=SelectedItem}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=textBoxJobName, Path=Text}" Value="{x:Static system:String.Empty}">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource ResourceKey=isExistConverter}">
+                                            <Binding Path="JobManagerInstance.LotJobInstance.JobNames" />
+                                            <Binding ElementName="textBoxJobName" Path="Text" />
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+                <DockPanel Height="30">
+                    <TextBlock DockPanel.Dock="Left" Text="JOB_NAME" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="textBoxJobName" DockPanel.Dock="Right" Margin="2" />
+                </DockPanel>
+                <Button Content="{DynamicResource ResourceKey=Add}" Command="{Binding Path=AddJobCommand}" CommandParameter="{Binding ElementName=textBoxJobName, Path=Text}" Height="30" Margin="2">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Button" BasedOn="{StaticResource baseStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=textBoxJobName, Path=Text}" Value="{x:Static system:String.Empty}">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger Value="True">
+                                        <DataTrigger.Binding>
+                                            <MultiBinding Converter="{StaticResource ResourceKey=isExistConverter}">
+                                                <Binding Path="JobManagerInstance.LotJobInstance.JobNames" />
+                                                <Binding ElementName="textBoxJobName" Path="Text" />
+                                            </MultiBinding>
+                                        </DataTrigger.Binding>
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                </Button>
+                <Button Content="{DynamicResource ResourceKey=Remove}" Command="{Binding Path=RemoveJobCommand}" CommandParameter="{Binding ElementName=listViewJobList, Path=SelectedItem}" Height="30" Margin="2" IsEnabled="{Binding ElementName=listViewJobList, Path=SelectedItem, Converter={StaticResource ResourceKey=nullToBooleanConverter}}" />
+                <Button Content="{DynamicResource ResourceKey=Rename}" Command="{Binding Path=RenameJobCommand}" Height="30" Margin="2" Style="{StaticResource ResourceKey=modifyButtonStyle}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                            <Binding ElementName="listViewJobList" Path="SelectedItem" />
+                            <Binding ElementName="textBoxJobName" Path="Text" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <Button Content="{DynamicResource ResourceKey=Copy}" Command="{Binding Path=CopyJobCommand}" Height="30" Margin="2" Style="{StaticResource ResourceKey=modifyButtonStyle}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                            <Binding ElementName="listViewJobList" Path="SelectedItem" />
+                            <Binding ElementName="textBoxJobName" Path="Text" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <!--<Button Content="{DynamicResource ApplyImmediately}" Command="{Binding ApplyImmediately}" Height="30" Margin="2" IsEnabled="{Binding ElementName=listViewJobList, Path=SelectedItem, Converter={StaticResource ResourceKey=nullToBooleanConverter}}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                            <Binding ElementName="listViewJobList" Path="SelectedItem" />
+                            <Binding ElementName="textBoxJobName" Path="Text" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>-->
+            </StackPanel>
+        </Grid>
+
+        <GridSplitter Grid.Column="3" Width="5" HorizontalAlignment="Center" />
+        <Grid Grid.Column="4">
+            <TabControl ItemContainerStyle="{StaticResource tabItemStyle}" IsEnabled="{Binding ElementName=listViewJobList, Path=SelectedItem, Converter={StaticResource ResourceKey=nullToBooleanConverter}}">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="{DynamicResource ResourceKey=Config.Job}" />
+                    </TabItem.Header>
+                    <VT3500.GUI:PositionControl
+                        EquipmentInstance="{Binding Path=EquipmentInstance}"
+                        JobInstance="{Binding ElementName=listViewJobList, Path=SelectedItem.MoveJobInfo}"
+                         />
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>

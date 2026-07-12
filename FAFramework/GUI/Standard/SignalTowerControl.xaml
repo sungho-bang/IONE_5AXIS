@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.SignalTowerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <x:Array x:Shared="False" Type="{x:Type TextBlock}" x:Key="lampStateList">
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerNone}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerOff}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerOn}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerSwitching}" />
+            </x:Array>
+            <x:Array x:Shared="False" Type="{x:Type TextBlock}" x:Key="buzzerStateList">
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerNone}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerOff}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerOn}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerSwitching}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerMelody1}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerMelody2}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerMelody3}" />
+                <TextBlock Text="{DynamicResource ResourceKey=SignalTowerMelody4}" />
+            </x:Array>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.IsEnabled>
+            <Binding Path="ReadOnly">
+                <Binding.Converter>
+                    <converter:BoolInverseConverter />
+                </Binding.Converter>
+            </Binding>
+        </Grid.IsEnabled>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox1" VerticalAlignment="Stretch" Width="Auto" Content="{DynamicResource ResourceKey=Alarm}" BorderThickness="2" Grid.Row="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox2" Content="{DynamicResource ResourceKey=Initialize}" VerticalAlignment="Stretch" Width="Auto" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox3" Content="{DynamicResource ResourceKey=Stop}" VerticalAlignment="Stretch" Width="Auto" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox4" Content="{DynamicResource ResourceKey=Run}" VerticalAlignment="Stretch" Width="Auto" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox5" Content="{DynamicResource ResourceKey=Rundown}" VerticalAlignment="Stretch" Width="Auto" Grid.Row="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox6" Content="{DynamicResource ResourceKey=Warning}" VerticalAlignment="Stretch" Width="Auto" Grid.Row="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="LightGray" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox7" Content="{DynamicResource ResourceKey=SignalTowerGreen}" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" Background="Green" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox8" Content="{DynamicResource ResourceKey=SignalTowerYellow}" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Yellow" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox9" Content="{DynamicResource ResourceKey=SignalTowerRed}" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Red" BorderBrush="Black" />
+        <Label BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="textBox10" Content="{DynamicResource ResourceKey=SignalTowerBuzzer}" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="Black" Background="LightGray" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.InitializeStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="comboBox1" VerticalAlignment="Stretch" Width="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoStopStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox2" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoRunStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox3" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.RunDownStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox4" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" Grid.Row="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.ErrorStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox5" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" Grid.Row="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.WarningStateConfig.SignalTower.GreenLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox6" VerticalAlignment="Stretch" Width="Auto" Grid.Column="1" Grid.Row="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.SuspendedConfig.SignalTower.GreenLamp, Mode=TwoWay}" Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox25" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="7" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.NotifyMessageConfig.SignalTower.GreenLamp, Mode=TwoWay}" Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox29" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="8" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.InitializeStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="comboBox7" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoStopStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox8" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoRunStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox9" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.RunDownStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox10" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.ErrorStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Row="5" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox11" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.WarningStateConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Row="6" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox12" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.SuspendedConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Column="2" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox26" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="7" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.NotifyMessageConfig.SignalTower.YellowLamp, Mode=TwoWay}" Grid.Column="2" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox30" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="8" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.InitializeStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox13" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoStopStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox14" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoRunStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox15" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.RunDownStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox16" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.ErrorStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Row="5" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox17" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.WarningStateConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Row="6" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox18" VerticalAlignment="Stretch" Width="Auto" Grid.Column="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.SuspendedConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Column="3" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox27" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="7" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.NotifyMessageConfig.SignalTower.RedLamp, Mode=TwoWay}" Grid.Column="3" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource lampStateList}" Margin="2" Name="comboBox31" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="8" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.InitializeStateConfig.SignalTower.Buzzer, Mode=TwoWay}" ItemsSource="{StaticResource buzzerStateList}" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="comboBox19" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoStopStateConfig.SignalTower.Buzzer, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox20" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.AutoRunStateConfig.SignalTower.Buzzer, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox21" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.RunDownStateConfig.SignalTower.Buzzer, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox22" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.ErrorStateConfig.SignalTower.Buzzer, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox23" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.WarningStateConfig.SignalTower.Buzzer, Mode=TwoWay}" Height="Auto" HorizontalAlignment="Stretch" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox24" VerticalAlignment="Stretch" Width="Auto" Grid.Column="4" Grid.Row="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.SuspendedConfig.SignalTower.Buzzer, Mode=TwoWay}" Grid.Column="4" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox28" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="7" />
+        <ComboBox SelectedIndex="{Binding Path=StateConfig.NotifyMessageConfig.SignalTower.Buzzer, Mode=TwoWay}" Grid.Column="4" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ItemsSource="{StaticResource buzzerStateList}" Margin="2" Name="comboBox32" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="8" />
+        <Label Background="LightGray" BorderBrush="Black" BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="2" Name="textBox11" Content="{DynamicResource ResourceKey=Suspend}" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="7" />
+        <Label Background="LightGray" BorderBrush="Black" BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="2" Name="textBox12" Content="{DynamicResource ResourceKey=NotifyMessageConfig}" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.Row="8" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,65 @@
+﻿<Window x:Class="FAFramework.GUI.MessageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:utility="clr-namespace:FAFramework.Utility"
+        xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+        Title="MessageWindow" MinHeight="480" MinWidth="640" MaxWidth="1280" MaxHeight="768" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <converter:StringToGridLengthConverter x:Key="stringToGridLengthConverter"/>
+            <converter:ImageToGridLengthConverter x:Key="imageToGridLengthConverter"/>
+            <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border BorderThickness="4" Margin="0" Padding="2" CornerRadius="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />            
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA0BBE7" Offset="0" />
+                        <GradientStop Color="#FF255CEF" Offset="1" />
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <TextBlock Text="{Binding Path=RaisedTime}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock Width ="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Path=Caption}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Path=ImageSource, Mode=OneWay, Converter={StaticResource ResourceKey=imageToGridLengthConverter}, ConverterParameter=3;star}" />
+                    <ColumnDefinition Width="{Binding Path=Message, Mode=OneWay, Converter={StaticResource ResourceKey=stringToGridLengthConverter}, ConverterParameter=7;star}" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Margin="5" Source="{Binding Path=ImageSource}" HorizontalAlignment="Stretch">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <Trigger Property="Source" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <ScrollViewer Grid.Column="1" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">                    
+                    <TextBlock x:Name="textBlockMessage" Text="{Binding Path=Message}" TextWrapping="Wrap" TextAlignment="Left" Margin="0" VerticalAlignment="Center" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" />
+                </ScrollViewer>
+            </Grid>
+            <Button Grid.Row="2" Content="{DynamicResource ResourceKey=Ok}" Command="{Binding Path=CloseCommand}" HorizontalAlignment="Stretch" Margin="0,2" Name="buttonOK" VerticalAlignment="Stretch" FontFamily="Tahoma" FontWeight="Bold" FontSize="18" Height="90" />
+            <Button Grid.Row="3" Content="{DynamicResource ResourceKey=ClearSound}" Command="{Binding Path=ClearSoundCommand}" Visibility="{Binding Path=UseSound, Converter={StaticResource ResourceKey=boolToVisibilityConverter}}" FontFamily="Tahoma" FontSize="18" FontWeight="Bold" HorizontalAlignment="Stretch" Margin="0,2,0,0" VerticalAlignment="Stretch" Height="90" />
+        </Grid>
+        <Border.BorderBrush>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="SlateBlue" Offset="0" />
+                <GradientStop Color="CornflowerBlue" Offset="1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+    </Border>
+</Window>

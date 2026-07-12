@@ -1,0 +1,302 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.OneCycleManualControl"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="768" d:DesignWidth="1024"
+             Width="1024" Height="768"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid >
+        <ScrollViewer>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="600" />
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                <UniformGrid Grid.Column="0" Grid.Row="0"  Background="Gold" Margin="10,5,-212,5" Grid.ColumnSpan="2">
+                    <Border Margin="1">
+                        <TextBlock Text="프레스 1사이클 운전"  FontSize="45" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="643" Margin="349,18,10,17" />
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="1" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="성형프레스 1사이클 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.FirstPressModule.WorkPress2.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.FirstPressModule.WorkPress2.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="1" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10,10,10,9.667" Click="FirstPress"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="2" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="피넛클프레스 1사이클 운전"  FontSize="36" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="452" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.SecondPressModule.WorkPress2.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.SecondPressModule.WorkPress2.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="2" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10" Click="SecondPress"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="4" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="톰슨프레스 1사이클 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.ThirdPressModule.WorkPress2.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.ThirdPressModule.WorkPress2.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>   
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="4" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10"  Click="ThirdPress"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="5" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="실링프레스 1사이클 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="451" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.FourthPressModule.WorkPress2.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.FourthPressModule.WorkPress2.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="5" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10" Click="FourthPress"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="0" Grid.Row="3" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="옵션프레스 1사이클 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="451" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.OptionPressModule.WorkPress2.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.OptionPressModule.WorkPress2.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="3" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10" Click="OptionPress"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="7" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="전체 1사이클"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualOnceOneCycle.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualOnceOneCycle.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding EquipmentInstance.RearModule.UseIMark}" Width="54"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.BypassCoveyorExistCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Margin="1"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="7" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10,10,10,9.667" Click="OnceOneCycle"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="6"  Background="Gold" Margin="10,5,-212,5" Grid.ColumnSpan="2">
+                    <Border Margin="1">
+                        <TextBlock Text="1사이클 운전"  FontSize="45" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="643" Margin="349,18,10,17" />
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="8" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="원단 1피치 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="449" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualLoading.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualLoading.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="8" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10" Click="OnePitchMove"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="9" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="이재기 1사이클 운전"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualMoving.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualMoving.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="9" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10" Click="BandPitchChange"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="10" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="포장 1사이클"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
+                            <TextBox Text="{Binding EquipmentInstance.RearModule.ManualCuttingCount}"  FontSize="30" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="124" Height="88" />
+                            <CheckBox IsChecked="{Binding EquipmentInstance.RearModule.UseIMark}" Width="54"/>
+                            <TextBlock Text="{Binding EquipmentInstance.RearModule.WorkRearPullManual.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.RearModule.WorkRearPullManual.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="10" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10,10,10,9.667" Click="PackingOneCycle"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                
+                <UniformGrid Grid.Column="0" Grid.Row="11" Background="White" Margin="5">
+                    <Border Margin="1">
+                        <DockPanel>
+                            <TextBlock Text="아이마크찾기"  FontSize="40" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="271" Margin="10,18,10.333,17.333" />
+                            <TextBlock Text="{Binding EquipmentInstance.RearModule.SearchingImark.CurrentIndex}" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                            <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Text="{Binding EquipmentInstance.RearModule.SearchingImark.Length}" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="11" Background="White" Margin="4.667,4.667,-211.333,4.667">
+                    <Border Margin="1">
+                        <Button Background="LightGray" Foreground="Black" Content="시 작" Height="Auto" Margin="10,10,10,9.667" Click="SearchingImark"/>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2" />
+                        </Border.LayoutTransform>
+                    </Border>
+                </UniformGrid>
+                <!--<UniformGrid Grid.Column="0" Grid.Row="8" Background="White" Margin="412,10,5.333,5" RenderTransformOrigin="0.454,-0.737" Grid.RowSpan="2">
+                    <Border Margin="1">
+                        <DockPanel>
+                            
+                            <DockPanel.LayoutTransform>
+                                <ScaleTransform ScaleX="3" ScaleY="3"/>
+                            </DockPanel.LayoutTransform>
+                        </DockPanel>
+                    </Border>
+                </UniformGrid>-->
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

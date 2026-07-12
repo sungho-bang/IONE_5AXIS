@@ -1,0 +1,164 @@
+﻿<Window x:Class="FAFramework.GUI.KeyboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        xmlns:local="clr-namespace:FAFramework.GUI"
+        xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+        Title="KeyboardWindow" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:KeyboardCommands.LeftShiftCommand}" Executed="ExecuteCapsLockClickCommand" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="CapsLock" Command="{x:Static local:KeyboardCommands.LeftShiftCommand}" />
+    </Window.InputBindings>
+    <Border BorderThickness="4" Margin="0" Padding="2" CornerRadius="0">
+        <Border.BorderBrush>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="SlateBlue" Offset="0" />
+                <GradientStop Color="CornflowerBlue" Offset="1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <StackPanel>
+            <Grid Height="30">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA0BBE7" Offset="0" />
+                        <GradientStop Color="#FF255CEF" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
+            <Grid>
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+                        <Style TargetType="TextBox" x:Key="noneStyleTextBox" />
+                        <Style TargetType="PasswordBox" x:Key="noneStylePasswordBox" />
+                        <Style x:Key="buttonBase" TargetType="Button">
+                            <Style.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Width" Value="50" />
+                                <Setter Property="Height" Value="50" />
+                                <Setter Property="Margin" Value="2" />
+                            </Style.Setters>
+                        </Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ResourceKey=buttonBase}">
+                            <EventSetter Event="Click" Handler="ClickCharacterButton" />
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <MultiBinding>
+                                        <MultiBinding.Converter>
+                                            <local:CharacterKeyShiftConverter />
+                                        </MultiBinding.Converter>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
+                                        <Binding Path="IsShift" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style x:Key="shiftButton" TargetType="Button" BasedOn="{StaticResource ResourceKey=buttonBase}">
+                            <EventSetter Event="Click" Handler="ClickShift" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsShift}" Value="True">
+                                    <Setter Property="Background" Value="LightGreen" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <TextBox Name="textBoxInput" Text="{Binding Path=InputString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource ResourceKey=noneStyleTextBox}" MaxHeight="150" VerticalScrollBarVisibility="Auto" AcceptsTab="True" AcceptsReturn="True"
+                         Visibility="{Binding Path=PasswordMode, Converter={StaticResource ResourceKey=boolToVisibilityConverter}, ConverterParameter=Inverse}" />
+                        <PasswordBox Name="passwordBox" Style="{StaticResource ResourceKey=noneStylePasswordBox}" MaxHeight="150"
+                             Visibility="{Binding Path=PasswordMode, Converter={StaticResource ResourceKey=boolToVisibilityConverter}}" />
+                    </Grid>
+                    <Button Grid.Column="1" Content="Clear" Width="100" Height="Auto" Style="{StaticResource buttonBase}" Click="ClickClearButton" />
+                </Grid>
+                <DockPanel Grid.Row="1">
+                    <Button Tag="'" DockPanel.Dock="Left" />
+                    <Button Tag="1" DockPanel.Dock="Left" />
+                    <Button Tag="2" DockPanel.Dock="Left" />
+                    <Button Tag="3" DockPanel.Dock="Left" />
+                    <Button Tag="4" DockPanel.Dock="Left" />
+                    <Button Tag="5" DockPanel.Dock="Left" />
+                    <Button Tag="6" DockPanel.Dock="Left" />
+                    <Button Tag="7" DockPanel.Dock="Left" />
+                    <Button Tag="8" DockPanel.Dock="Left" />
+                    <Button Tag="9" DockPanel.Dock="Left" />
+                    <Button Tag="0" DockPanel.Dock="Left" />
+                    <Button Tag="-" DockPanel.Dock="Left" />
+                    <Button Tag="=" DockPanel.Dock="Left" />
+                    <Button Content="Backspace" DockPanel.Dock="Left" Width="Auto" Style="{StaticResource buttonBase}" Click="ClickBackspace" />
+                </DockPanel>
+                <DockPanel Grid.Row="2">
+                    <Button Content="Tab" DockPanel.Dock="Left" Width="80" Click="ClickTabButton" />
+                    <Button Tag="Q" DockPanel.Dock="Left" />
+                    <Button Tag="W" DockPanel.Dock="Left" />
+                    <Button Tag="E" DockPanel.Dock="Left" />
+                    <Button Tag="R" DockPanel.Dock="Left" />
+                    <Button Tag="T" DockPanel.Dock="Left" />
+                    <Button Tag="Y" DockPanel.Dock="Left" />
+                    <Button Tag="U" DockPanel.Dock="Left" />
+                    <Button Tag="I" DockPanel.Dock="Left" />
+                    <Button Tag="O" DockPanel.Dock="Left" />
+                    <Button Tag="P" DockPanel.Dock="Left" />
+                    <Button Tag="[" DockPanel.Dock="Left" />
+                    <Button Tag="]" DockPanel.Dock="Left" />
+                    <Button Tag="\" DockPanel.Dock="Left" />
+                </DockPanel>
+                <DockPanel Grid.Row="3">
+                    <Grid DockPanel.Dock="Left" Width="110" />
+                    <Button Tag="A" DockPanel.Dock="Left" />
+                    <Button Tag="S" DockPanel.Dock="Left" />
+                    <Button Tag="D" DockPanel.Dock="Left" />
+                    <Button Tag="F" DockPanel.Dock="Left" />
+                    <Button Tag="G" DockPanel.Dock="Left" />
+                    <Button Tag="H" DockPanel.Dock="Left" />
+                    <Button Tag="J" DockPanel.Dock="Left" />
+                    <Button Tag="K" DockPanel.Dock="Left" />
+                    <Button Tag="L" DockPanel.Dock="Left" />
+                    <Button Tag=";" DockPanel.Dock="Left" />
+                    <Button Tag="'" DockPanel.Dock="Left" />
+                    <Button Content="Enter" DockPanel.Dock="Left" Width="Auto" Style="{StaticResource buttonBase}" Click="ClickEnterButton" />
+                </DockPanel>
+                <DockPanel Grid.Row="4">
+                    <Button Content="Shift" DockPanel.Dock="Left" Width="140" Style="{StaticResource ResourceKey=shiftButton}" />
+                    <Button Tag="Z" DockPanel.Dock="Left" />
+                    <Button Tag="X" DockPanel.Dock="Left" />
+                    <Button Tag="C" DockPanel.Dock="Left" />
+                    <Button Tag="V" DockPanel.Dock="Left" />
+                    <Button Tag="B" DockPanel.Dock="Left" />
+                    <Button Tag="N" DockPanel.Dock="Left" />
+                    <Button Tag="M" DockPanel.Dock="Left" />
+                    <Button Tag="," DockPanel.Dock="Left" />
+                    <Button Tag="." DockPanel.Dock="Left" />
+                    <Button Tag="/" DockPanel.Dock="Left" />
+                    <Button Content="Shift" DockPanel.Dock="Left" Width="Auto" Style="{StaticResource ResourceKey=shiftButton}">
+                    </Button>
+                </DockPanel>
+                <DockPanel Grid.Row="5" FlowDirection="RightToLeft">
+                    <Button Content="Cancel" DockPanel.Dock="Left" Width="100" IsCancel="True" Name="buttonCancel" Click="buttonCancel_Click" Style="{StaticResource buttonBase}" />
+                    <Button Content="OK" DockPanel.Dock="Left" Width="100" Name="buttonOK" Click="buttonOK_Click" Style="{StaticResource buttonBase}" />
+                    <Button Content="Space" DockPanel.Dock="Left" Width="Auto" Style="{StaticResource buttonBase}" Click="ClickSpaceButton" />
+                </DockPanel>
+            </Grid>
+        </StackPanel>        
+    </Border>    
+</Window>

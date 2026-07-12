@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.ManualControl.InverterMotorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl"
+             mc:Ignorable="d" 
+             Height="768" Width="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="20" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="Press" TargetType="Border" BasedOn="{StaticResource ResourceKey=borderBaseStyle}">
+                <Setter Property="Background" Value="Yellow" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="true">
+                        <Setter Property="Background" Value="Red" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock Text="{Binding Subject}" FontSize="36" DockPanel.Dock="Top"/>
+        <Grid>
+            <Image Source="/FAFramework;component/Images/First.png" Margin="147,0,-147,0" />
+            <Canvas Name="buttonsCanvas" Style="{StaticResource actuatorSelectButtonCanvas}">
+
+            </Canvas>
+            <Canvas>
+                <GroupBox Header="인버터 모니터" Canvas.Top="129" >
+                    <Grid ShowGridLines="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="135" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="135" />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="BIT 0: Run"        Grid.Row="0" Grid.Column="0"    VerticalAlignment="Center"  Margin="2,3,67.667,3" />
+                        <CheckBox                           Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit00_Run}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="BIT 1: ForwardRun" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center"  Margin="2" />
+                        <CheckBox                           Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit02_ReverseRun}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="BIT 2: ReverseRun" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center"  Margin="2" />
+                        <CheckBox                           Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit01_ForwardRun}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="BIT 3: SU(주파수도달)"  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center"  Margin="2" />
+                        <CheckBox                                Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit03_SU}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="BIT 4: OL(과부하)" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center"  Margin="2" />
+                        <CheckBox                           Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit04_OL}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="BIT15: 이상발생"    Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center"  Margin="2" />
+                        <CheckBox                       Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"  Margin="2" Width="22" Height="22" IsEnabled="False"
+                                                IsChecked="{Binding SubUnit.InverterMotor.Read_Bit15_ERR}" Style="{StaticResource LEDCheckBoxStyle}"/>
+
+                        <TextBlock Text="출력 주파수/속도(Hz)"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left"    VerticalAlignment="Center" />
+                        <TextBox   IsReadOnly="True"            Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,2,0"
+                                                   Text="{Binding SubUnit.InverterMotor.Read_GetSpeed}" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="인버터 운전" Canvas.Top="284" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <Button Content="정회전 운전"       Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="2,2,2,0"
+                                            Name ="Inverter_Run" Click="Inverter_Run_Click"  Style="{StaticResource LEDButton}" Height="41"/>
+                        <Button Content="역회전 운전"       Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2"
+                                            Name ="Inverter_ReverseRun" Click="Inverter_ReverseRun_Click" Style="{StaticResource LEDButton}"/>
+                        <Button Content="정  지"            Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2"
+                                            Name ="Inverter_Stop" Click="Inverter_Stop_Click" Style="{StaticResource LEDButton}"/>
+
+                        <TextBlock Text="속   도 (~60Hz)"   Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center" Margin="2,8,0,7" />
+                        <TextBox   IsReadOnly="True"        Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,6,2,5" FontSize="14"
+                                               Text="{Binding SubUnit.InverterMotor.Read_SetSpeed}" />
+                        <TextBox Background="LightYellow"   Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2,6,2,5" FontSize="14"
+                                               Text="{Binding SubUnit.InverterMotor.Write_SetSpeed}" />
+
+                        <Button Content="Write"             Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2"
+                                            Name ="Inverter_Param_Write" Click="Inverter_Param_Write_Click" />
+                    </Grid>
+                </GroupBox>
+            </Canvas>
+            <Canvas Style="{StaticResource sensorsCanvas}">
+                <StackPanel>
+                    <ContentPresenter Content="{Binding SubUnit.ShapeTapeTensionUpSensor}" />
+                    <ContentPresenter Content="{Binding SubUnit.ShapeTapeTensionSlowSensor}" />
+                    <ContentPresenter Content="{Binding SubUnit.ShapeTapeTensionDownSensor}" />
+                </StackPanel>
+            </Canvas>
+            <Grid HorizontalAlignment="Right" Margin="0,100,-120,0">
+                <ContentControl Content="{Binding Path=Children, ElementName=buttonsCanvas}"
+                                ContentTemplate="{StaticResource actuatorOperateButtons}"
+                                Tag="{Binding ElementName=buttonsCanvas, Path=Tag}" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

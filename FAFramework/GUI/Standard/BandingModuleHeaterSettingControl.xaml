@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.BandingModuleHeaterSettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             mc:Ignorable="d"              
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.IsEnabled>
+            <Binding Path="ReadOnly">
+                <Binding.Converter>
+                    <converter:BoolInverseConverter />
+                </Binding.Converter>
+            </Binding>
+        </Grid.IsEnabled>
+        <WrapPanel>
+            <GroupBox Header="Banding Machine Heater Setting">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Set Temperature" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BandingModule.HeaterSetTemperature}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Temperature Lower Tolerance" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BandingModule.TemperatureLowerTolerance}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Temperature Upper Tolerance" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BandingModule.TemperatureUpperTolerance}" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Over Heating Detection" />
+                    <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding BandingModule.UseOverHeatingDetection}" />
+                </Grid>
+            </GroupBox>
+        </WrapPanel>        
+    </Grid>
+</UserControl>

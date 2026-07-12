@@ -1,0 +1,1362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DeviceList>
+	<Device>
+		<Name>DeviceNet</Name>
+		<DeviceType>MemoryBaseDevice.FAAjinIODevice</DeviceType>
+		<Description />
+		<Parameters>
+			<NodeInfoList>
+				<NodeInfo>
+					<ModuleID>1</ModuleID>
+					<InputSize>4</InputSize>
+					<OutputSize>0</OutputSize>
+				</NodeInfo>
+				<NodeInfo>
+					<ModuleID>2</ModuleID>
+					<InputSize>4</InputSize>
+					<OutputSize>0</OutputSize>
+				</NodeInfo>
+				<NodeInfo>
+					<ModuleID>3</ModuleID>
+					<InputSize>0</InputSize>
+					<OutputSize>4</OutputSize>
+				</NodeInfo>
+				<NodeInfo>
+					<ModuleID>4</ModuleID>
+					<InputSize>4</InputSize>
+					<OutputSize>0</OutputSize>
+				</NodeInfo>
+				<NodeInfo>
+					<ModuleID>5</ModuleID>
+					<InputSize>4</InputSize>
+					<OutputSize>0</OutputSize>
+				</NodeInfo>
+				<NodeInfo>
+					<ModuleID>6</ModuleID>
+					<InputSize>4</InputSize>
+					<OutputSize>0</OutputSize>
+				</NodeInfo>
+					<NodeInfo>
+					<ModuleID>7</ModuleID>
+					<InputSize>0</InputSize>
+					<OutputSize>4</OutputSize>
+				</NodeInfo>
+					<NodeInfo>
+					<ModuleID>8</ModuleID>
+					<InputSize>0</InputSize>
+					<OutputSize>4</OutputSize>
+				</NodeInfo>
+			</NodeInfoList>
+			<InputIOList>				
+				<IO>
+					<Name>X0110</Name>
+					<Index>10000</Index>
+					<Description>SYSTEM) EMERGENCY STATE-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0111</Name>
+					<Index>10001</Index>
+					<Description>SHAPE MOLDING ASS'Y) FRONT EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0112</Name>
+					<Index>10002</Index>
+					<Description>SHAPE MOLDING ASS'Y) REAR EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0113</Name>
+					<Index>10003</Index>
+					<Description>SHAPE MOLDING ASS'Y) DOOR STATE-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0114</Name>
+					<Index>10004</Index>
+					<Description>SHAPE MOLDING ASS'Y) FRONT/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0115</Name>
+					<Index>10005</Index>
+					<Description>SHAPE MOLDING ASS'Y) FRONT/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0116</Name>
+					<Index>10006</Index>
+					<Description>SHAPE MOLDING ASS'Y) REAR/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0117</Name>
+					<Index>10007</Index>
+					<Description>SHAPE MOLDING ASS'Y) REAR/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0120</Name>
+					<Index>10010</Index>
+					<Description>SHAPE MOLDING ASS'Y) FRONT AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0121</Name>
+					<Index>10011</Index>
+					<Description>SHAPE MOLDING ASS'Y) REAR AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0122</Name>
+					<Index>10012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0123</Name>
+					<Index>10013</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE)TOP_SSR80HEATALARMCHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0124</Name>
+					<Index>10014</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE)TOP_SSR60HEATALARMCHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0125</Name>
+					<Index>10015</Index>
+					<Description>HYDROCOLLOID FILM-UNWINDER UNIT) TENSION ROLLER-UP LIMIT CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0126</Name>
+					<Index>10016</Index>
+					<Description>HYDROCOLLOID FILM-UNWINDER UNIT) TENSION ROLLER-DOWN LIMIT CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0127</Name>
+					<Index>10017</Index>
+					<Description>HYDROCOLLOID FILM-UNWINDER UNIT) TENSION ROLLER DETECTED RUN AREA CHECK</Description>
+				</IO>	
+				<IO>
+					<Name>X0130</Name>
+					<Index>10020</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) HYDRAULIC MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0131</Name>
+					<Index>10021</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) RAM SHAFT-OPEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0132</Name>
+					<Index>10022</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) RAM SHAFT-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0133</Name>
+					<Index>10023</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) RAM SHAFT-PRESS CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0134</Name>
+					<Index>10024</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) TOP PLATE HEATER POWER-ON CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0135</Name>
+					<Index>10025</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) TOP PLATE HEATER OVERHEATING CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0136</Name>
+					<Index>10026</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) BOTTOM PLATE HEATER POWER-ON CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0137</Name>
+					<Index>10027</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) BOTTOM PLATE HEATER OVERHEATING CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0140</Name>
+					<Index>10030</Index>
+					<Description>HALF CUTTING PRESS MACHINE) HYDRAULIC MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0141</Name>
+					<Index>10031</Index>
+					<Description>HALF CUTTING PRESS MACHINE) RAM SHAFT-OPEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0142</Name>
+					<Index>10032</Index>
+					<Description>HALF CUTTING PRESS MACHINE) RAM SHAFT-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0143</Name>
+					<Index>10033</Index>
+					<Description>HALF CUTTING PRESS MACHINE) RAM SHAFT-PRESS CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0144</Name>
+					<Index>10034</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE)PressOilTempCheck</Description>
+				</IO>
+				<IO>
+					<Name>X0145</Name>
+					<Index>10035</Index>
+					<Description>HALF CUTTING PRESS MACHINE)PressOilTempCheck</Description>
+				</IO>
+				<IO>
+					<Name>X0146</Name>
+					<Index>10036</Index>
+					<Description>START SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0147</Name>
+					<Index>10037</Index>
+					<Description>STOP SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0210</Name>
+					<Index>20000</Index>
+					<Description>STEP FEEDING ASS'Y) FRONT EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0211</Name>
+					<Index>20001</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0212</Name>
+					<Index>20002</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0213</Name>
+					<Index>20003</Index>
+					<Description>STEP FEEDING ASS'Y) DOOR STATE-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0214</Name>
+					<Index>20004</Index>
+					<Description>STEP FEEDING ASS'Y) FRONT/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0215</Name>
+					<Index>20005</Index>
+					<Description>STEP FEEDING ASS'Y) FRONT/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0216</Name>
+					<Index>20006</Index>
+					<Description>STEP FEEDING ASS'Y) REAR/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0217</Name>
+					<Index>20007</Index>
+					<Description>STEP FEEDING ASS'Y) REAR/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>							
+				<IO>
+					<Name>X0220</Name>
+					<Index>20010</Index>
+					<Description>STEP FEEDING UNIT) TAPE COVER SERVO OFF SIGNAL</Description>
+				</IO>
+				<IO>
+					<Name>X0221</Name>
+					<Index>20011</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0222</Name>
+					<Index>20012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0223</Name>
+					<Index>20013</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) Top_SSR80HeatAlarmCheck</Description>
+				</IO>
+				<IO>
+					<Name>X0224</Name>
+					<Index>20014</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) Top_SSR60HeatAlertCheck</Description>
+				</IO>
+				<IO>
+					<Name>X0225</Name>
+					<Index>20015</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0226</Name>
+					<Index>20016</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0227</Name>
+					<Index>20017</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0230</Name>
+					<Index>20020</Index>
+					<Description>STEP FEEDING UNIT) FILM FIX CYLINDER-CLAMP CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0231</Name>
+					<Index>20021</Index>
+					<Description>STEP FEEDING UNIT) FILM FIX CYLINDER-RELEASE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0232</Name>
+					<Index>20022</Index>
+					<Description>STEP FEEDING UNIT) FEEDING CLAMP CYLINDER-CLAMP CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0233</Name>
+					<Index>20023</Index>
+					<Description>STEP FEEDING UNIT) FEEDING CLAMP CYLINDER-RELEASE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0234</Name>
+					<Index>20024</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0235</Name>
+					<Index>20025</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0236</Name>
+					<Index>20026</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0237</Name>
+					<Index>20027</Index>
+					<Description></Description>
+				</IO>				
+				<IO>
+					<Name>X0240</Name>
+					<Index>20030</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0241</Name>
+					<Index>20031</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0242</Name>
+					<Index>20032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0243</Name>
+					<Index>20033</Index>
+					<Description>START SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0244</Name>
+					<Index>20034</Index>
+					<Description>STOP SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0245</Name>
+					<Index>20035</Index>
+					<Description>JAM CLEAR SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0246</Name>
+					<Index>20036</Index>
+					<Description>SOUND CLEAR SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0247</Name>
+					<Index>20037</Index>
+					<Description>INITIAL SWITCH-SIGNAL CHECK</Description>
+				</IO>						
+				<IO>
+					<Name>X0410</Name>
+					<Index>40000</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0411</Name>
+					<Index>40001</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0412</Name>
+					<Index>40002</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0413</Name>
+					<Index>40003</Index>
+					<Description>TOP FILM ASSY) DOOR STATE-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0414</Name>
+					<Index>40004</Index>
+					<Description>TOP FILM ASSY) FRONT LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0415</Name>
+					<Index>40005</Index>
+					<Description>TOP FILM ASSY) FRONT RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0416</Name>
+					<Index>40006</Index>
+					<Description>TOP FILM ASSY) REAR LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0417</Name>
+					<Index>40007</Index>
+					<Description>TOP FILM ASSY) REAR RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>							
+				<IO>
+					<Name>X0420</Name>
+					<Index>40010</Index>
+					<Description>TOP FILM ASSY) FRONT AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0421</Name>
+					<Index>40011</Index>
+					<Description>TOP FILM ASSY) REAR AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0422</Name>
+					<Index>40012</Index>
+					<Description>OPTION PRESS MACHINE)PressOilTempCheck</Description>
+				</IO>
+				<IO>
+					<Name>X0423</Name>
+					<Index>40013</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0424</Name>
+					<Index>40014</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0425</Name>
+					<Index>40015</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0426</Name>
+					<Index>40016</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0427</Name>
+					<Index>40017</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0430</Name>
+					<Index>40020</Index>
+					<Description>TOP FILM PRESS MACHINE) MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0431</Name>
+					<Index>40021</Index>
+					<Description>TOP FILM PRESS MACHINE) RAM SHATF-OPEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0432</Name>
+					<Index>40022</Index>
+					<Description>TOP FULM PRESS MACHINE) RAM SHAFT-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0433</Name>
+					<Index>40023</Index>
+					<Description>TOP FILM PRESS MACHINE) RAM SHATF-PRESS CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0434</Name>
+					<Index>40024</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0435</Name>
+					<Index>40025</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0436</Name>
+					<Index>40026</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0437</Name>
+					<Index>40027</Index>
+					<Description></Description>
+				</IO>				
+				<IO>
+					<Name>X0440</Name>
+					<Index>40030</Index>
+					<Description>PACKING ASSY) REEL POWER BRAKE ON CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0441</Name>
+					<Index>40031</Index>
+					<Description>PACKING ASSY) REEL POWER SERVO ON CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X0442</Name>
+					<Index>40032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0443</Name>
+					<Index>40033</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0444</Name>
+					<Index>40034</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0445</Name>
+					<Index>40035</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0446</Name>
+					<Index>40036</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X0447</Name>
+					<Index>40037</Index>
+					<Description></Description>
+				</IO>			
+				<IO>
+					<Name>X1110</Name>
+					<Index>50000</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1111</Name>
+					<Index>50001</Index>
+					<Description>PACKING ASS'Y) REAR EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1112</Name>
+					<Index>50002</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1113</Name>
+					<Index>50003</Index>
+					<Description>PACKING ASS'Y) DOOR STATE-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1114</Name>
+					<Index>50004</Index>
+					<Description>PACKING ASS'Y) FRONT/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1115</Name>
+					<Index>50005</Index>
+					<Description>PACKING ASS'Y) FRONT/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1116</Name>
+					<Index>50006</Index>
+					<Description>PACKING ASS'Y) REAR/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1117</Name>
+					<Index>50007</Index>
+					<Description>PACKING ASS'Y) REAR/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1120</Name>
+					<Index>50010</Index>
+					<Description>PACKING ASS'Y) FRONT AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1121</Name>
+					<Index>50011</Index>
+					<Description>PACKING ASS'Y) REAR AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1122</Name>
+					<Index>50012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1123</Name>
+					<Index>50013</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) BOTTOM_SSR80HEATALARMCHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1124</Name>
+					<Index>50014</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) BOTTOM_SSR60HEATALARMCHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1125</Name>
+					<Index>50015</Index>
+					<Description>FILM SCRAP REEL-WINDER UNIT) WINDER MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1126</Name>
+					<Index>50016</Index>
+					<Description>FILM SCRAP REEL-WINDER UNIT) TENSION ROLLER-UP LIMIT CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1127</Name>
+					<Index>50017</Index>
+					<Description>FILM SCRAP REEL-WINDER UNIT) TENSION ROLLER-DOWN LIMIT CHECK</Description>
+				</IO>	
+				<IO>
+					<Name>X1130</Name>
+					<Index>50020</Index>
+					<Description>FULL CUTTING PRESS MACHINE) HYDRAULIC MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1131</Name>
+					<Index>50021</Index>
+					<Description>FULL CUTTING PRESS MACHINE) RAM SHAFT-OPEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1132</Name>
+					<Index>50022</Index>
+					<Description>FULL CUTTING PRESS MACHINE) RAM SHAFT-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1133</Name>
+					<Index>50023</Index>
+					<Description>FULL CUTTING PRESS MACHINE) RAM SHAFT-PRESS CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1134</Name>
+					<Index>50024</Index>
+					<Description>FULL CUTTING PRESS MACHINE)PressOilTempCheck</Description>
+				</IO>
+				<IO>
+					<Name>X1135</Name>
+					<Index>50025</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1136</Name>
+					<Index>50026</Index>
+					<Description>BYBASS MOTOR RUN-CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1137</Name>
+					<Index>50027</Index>
+					<Description>BYPASS CON'V CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1140</Name>
+					<Index>50030</Index>
+					<Description>WRAPPING PAPER UNIT) PAPER CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1141</Name>
+					<Index>50031</Index>
+					<Description>CUTTING FILM PICKER UNIT) PICKER-VACUUM ON CHECK-1</Description>
+				</IO>
+				<IO>
+					<Name>X1142</Name>
+					<Index>50032</Index>
+					<Description>CUTTING FILM PICKER UNIT) PICKER-VACUUM ON CHECK-2</Description>
+				</IO>
+				<IO>
+					<Name>X1143</Name>
+					<Index>50033</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1144</Name>
+					<Index>50034</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1145</Name>
+					<Index>50035</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1146</Name>
+					<Index>50036</Index>
+					<Description>CUTTING FILM PITCH CHANGE UNIT) PITCH CHANGE CYLINDER-WIDEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1147</Name>
+					<Index>50037</Index>
+					<Description>CUTTING FILM PITCH CHANGE UNIT) PITCH CHANGE CYLINDER-ORG CHECK</Description>
+				</IO>			
+				<IO>
+					<Name>X1210</Name>
+					<Index>60000</Index>
+					<Description>SEALING ASS'Y) FRONT EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1211</Name>
+					<Index>60001</Index>
+					<Description>SEALING ASS'Y) REAR EMERGENCY SWITCH-PUSH CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1212</Name>
+					<Index>60002</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1213</Name>
+					<Index>60003</Index>
+					<Description>SEALING ASS'Y) DOOR STATE-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1214</Name>
+					<Index>60004</Index>
+					<Description>SEALING ASS'Y) FRONT/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1215</Name>
+					<Index>60005</Index>
+					<Description>SEALING ASS'Y) FRONT/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1216</Name>
+					<Index>60006</Index>
+					<Description>SEALING ASS'Y) REAR/LEFT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1217</Name>
+					<Index>60007</Index>
+					<Description>SEALING ASS'Y) REAR/RIGHT DOOR-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1220</Name>
+					<Index>60010</Index>
+					<Description>SEALING ASS'Y) FRONT AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1221</Name>
+					<Index>60011</Index>
+					<Description>SEALING ASS'Y) REAR AREA SENSOR-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1222</Name>
+					<Index>60012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1223</Name>
+					<Index>60013</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1224</Name>
+					<Index>60014</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1225</Name>
+					<Index>60015</Index>
+					<Description>WRAP SCRAP REEL-WINDER UNIT) WINDER MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1226</Name>
+					<Index>60016</Index>
+					<Description>WRAP SCRAP REEL-WINDER UNIT) TENSION ROLLER-UP LIMIT CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1227</Name>
+					<Index>60017</Index>
+					<Description>WRAP SCRAP REEL-WINDER UNIT) TENSION ROLLER-DOWN LIMIT CHECK</Description>
+				</IO>	
+				<IO>
+					<Name>X1230</Name>
+					<Index>60020</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) HYDRAULIC MOTOR-RUN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1231</Name>
+					<Index>60021</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) RAM SHAFT-OPEN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1232</Name>
+					<Index>60022</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) RAM SHAFT-CLOSE CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1233</Name>
+					<Index>60023</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) RAM SHAFT-PRESS CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1234</Name>
+					<Index>60024</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) PLATE HEATER POWER-ON CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1235</Name>
+					<Index>60025</Index>
+					<Description>SEALING CUTTING PRESS MACHINE) TOP PLATE HEATER-OVERHEATING CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1236</Name>
+					<Index>60026</Index>
+					<Description>SEALING CUTTING PRESS MACHINE)PressOilTempCheck</Description>
+				</IO>
+				<IO>
+					<Name>X1237</Name>
+					<Index>60027</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1240</Name>
+					<Index>60030</Index>
+					<Description>WRAP FEEDING UNIT) TOP ROLLER UP/DOWN CYLINDER-UP CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1241</Name>
+					<Index>60031</Index>
+					<Description>WRAP FEEDING UNIT) TOP ROLLER UP/DOWN CYLINDER-DOWN CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1242</Name>
+					<Index>60032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1243</Name>
+					<Index>60033</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>X1244</Name>
+					<Index>60034</Index>
+					<Description>START SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1245</Name>
+					<Index>60035</Index>
+					<Description>STOP SWITCH-SIGNAL CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1246</Name>
+					<Index>60036</Index>
+					<Description>CUTTING UNIT) CUTTER UP/DOWN CYLINDER-UP CHECK</Description>
+				</IO>
+				<IO>
+					<Name>X1247</Name>
+					<Index>60037</Index>
+					<Description>CUTTING UNIT) CUTTER UP/DOWN CYLINDER-DOWN CHECK</Description>
+				</IO>
+			</InputIOList>
+			
+			<OutputIOList>
+				<IO>
+					<Name>Y0310</Name>
+					<Index>30000</Index>
+					<Description>SYSTEM) EMERGENCY-RESET</Description>
+				</IO>
+				<IO>
+					<Name>Y0311</Name>
+					<Index>30001</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0312</Name>
+					<Index>30002</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) HYDRAULIC MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y0313</Name>
+					<Index>30003</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) RAM SHAFT-OPENING</Description>
+				</IO>
+				<IO>
+					<Name>Y0314</Name>
+					<Index>30004</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) RAM SHAFT-CLOSING</Description>
+				</IO>
+				<IO>
+					<Name>Y0315</Name>
+					<Index>30005</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0316</Name>
+					<Index>30006</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) TOP PLATE HEATER POWER-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y0317</Name>
+					<Index>30007</Index>
+					<Description>SHAPE MOLDING PRESS MACHINE) BOTTOM PLATE HEATER POWER-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y0320</Name>
+					<Index>30010</Index>
+					<Description>HALF CUTTING PRESS MACHINE) HYDRAULIC MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y0321</Name>
+					<Index>30011</Index>
+					<Description>HALF CUTTING PRESS MACHINE) RAM SHAFT-OPENING</Description>
+				</IO>
+				<IO>
+					<Name>Y0322</Name>
+					<Index>30012</Index>
+					<Description>HALF CUTTING PRESS MACHINE) RAM SHAFT-CLOSING</Description>
+				</IO>
+				<IO>
+					<Name>Y0323</Name>
+					<Index>30013</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0324</Name>
+					<Index>30014</Index>
+					<Description>STEP FEEDING UNIT) FILM FIX CYLINDER-CLAMP</Description>
+				</IO>
+				<IO>
+					<Name>Y0325</Name>
+					<Index>30015</Index>
+					<Description>STEP FEEDING UNIT) FILM FIX CYLINDER-RELEASE</Description>
+				</IO>
+				<IO>
+					<Name>Y0326</Name>
+					<Index>30016</Index>
+					<Description>STEP FEEDING UNIT) FEEDING CLAMP CYLINDER-CLAMP</Description>
+				</IO>
+				<IO>
+					<Name>Y0327</Name>
+					<Index>30017</Index>
+					<Description>STEP FEEDING UNIT) FEEDING CLAMP CYLINDER-RELEASE</Description>
+				</IO>				
+				<IO>
+					<Name>Y0330</Name>
+					<Index>30020</Index>
+					<Description>DETACH FILM-WINDER UNIT) WINDER MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y0331</Name>
+					<Index>30021</Index>
+					<Description>DETACH FILM-WINDER UNIT) WINDER MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y0332</Name>
+					<Index>30022</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0333</Name>
+					<Index>30023</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0334</Name>
+					<Index>30024</Index>
+					<Description>SYSTEM) SIGNAL LAMP-RED</Description>
+				</IO>
+				<IO>
+					<Name>Y0335</Name>
+					<Index>30025</Index>
+					<Description>SYSTEM) SIGNAL LAMP-YELLOW</Description>
+				</IO>
+				<IO>
+					<Name>Y0336</Name>
+					<Index>30026</Index>
+					<Description>SYSTEM) SIGNAL LAMP-GREEN</Description>
+				</IO>
+				<IO>
+					<Name>Y0337</Name>
+					<Index>30027</Index>
+					<Description>SYSTEM) SIGNAL LAMP-BUZZER</Description>
+				</IO>							
+				<IO>
+					<Name>Y0340</Name>
+					<Index>30030</Index>
+					<Description>START SWITCH-LAMP-ON1</Description>
+				</IO>
+				<IO>
+					<Name>Y0341</Name>
+					<Index>30031</Index>
+					<Description>STOP SWITCH-LAMP-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y0342</Name>
+					<Index>30032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y0343</Name>
+					<Index>30033</Index>
+					<Description>START SWITCH-LAMP-ON2</Description>
+				</IO>
+				<IO>
+					<Name>Y0344</Name>
+					<Index>30034</Index>
+					<Description>STOP SWITCH-LAMP-ON2</Description>
+				</IO>
+				<IO>
+					<Name>Y0345</Name>
+					<Index>30035</Index>
+					<Description>JAM CLEAR SWITCH-LAMP-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y0346</Name>
+					<Index>30036</Index>
+					<Description>SOUND CLEAR SWITCH-LAMP-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y0347</Name>
+					<Index>30037</Index>
+					<Description>INITIAL SWITCH-LAMP-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y1310</Name>
+					<Index>70000</Index>
+					<Description>FILM SCRAP REEL-WINDER UNIT) WINDER MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1311</Name>
+					<Index>70001</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1312</Name>
+					<Index>70002</Index>
+					<Description>FULL CUTTING PRESS MACHINE) HYDRAULIC MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1313</Name>
+					<Index>70003</Index>
+					<Description>FULL CUTTING PRESS MACHINE) RAM SHAFT-OPENING</Description>
+				</IO>
+				<IO>
+					<Name>Y1314</Name>
+					<Index>70004</Index>
+					<Description>FULL CUTTING PRESS MACHINE) RAM SHAFT-CLOSING</Description>
+				</IO>
+				<IO>
+					<Name>Y1315</Name>
+					<Index>70005</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1316</Name>
+					<Index>70006</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1317</Name>
+					<Index>70007</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1320</Name>
+					<Index>70010</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1321</Name>
+					<Index>70011</Index>
+					<Description>CUTTING FILM PICKER UNIT) PICKER-VACUUM ON</Description>
+				</IO>
+				<IO>
+					<Name>Y1322</Name>
+					<Index>70012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1323</Name>
+					<Index>70013</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1324</Name>
+					<Index>70014</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1325</Name>
+					<Index>70015</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1326</Name>
+					<Index>70016</Index>
+					<Description>CUTTING FILM PITCH CHANGE UNIT) PITCH CHANGE CYLINDER-WIDEN</Description>
+				</IO>
+				<IO>
+					<Name>Y1327</Name>
+					<Index>70017</Index>
+					<Description>CUTTING FILM PITCH CHANGE UNIT) PITCH CHANGE CYLINDER-ORG</Description>
+				</IO>				
+				<IO>
+					<Name>Y1330</Name>
+					<Index>70020</Index>
+					<Description>WRAP SCRAP REEL-WINDER UNIT) WINDER MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1331</Name>
+					<Index>70021</Index>
+					<Description>SEALING PRESS MACHINE) HYDRAULIC MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1332</Name>
+					<Index>70022</Index>
+					<Description>SEALING PRESS MACHINE) RAM SHAFT-OPENING</Description>
+				</IO>
+				<IO>
+					<Name>Y1333</Name>
+					<Index>70023</Index>
+					<Description>SEALING PRESS MACHINE) RAM SHAFT-CLOSING</Description>
+				</IO>
+				<IO>
+					<Name>Y1334</Name>
+					<Index>70024</Index>
+					<Description>SEALING PRESS MACHINE) RAM SHAFT-CLOSING ACCELERATE</Description>
+				</IO>
+				<IO>
+					<Name>Y1335</Name>
+					<Index>70025</Index>
+					<Description>SEALING PRESS MACHINE) PLATE HEATER POWER-ON</Description>
+				</IO>
+				<IO>
+					<Name>Y1336</Name>
+					<Index>70026</Index>
+					<Description>BYPASS MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1337</Name>
+					<Index>70027</Index>
+					<Description></Description>
+				</IO>							
+				<IO>
+					<Name>Y1340</Name>
+					<Index>70030</Index>
+					<Description>START SWITCH-LAMP ON</Description>
+				</IO>
+				<IO>
+					<Name>Y1341</Name>
+					<Index>70031</Index>
+					<Description>STOP SWICH-LAMP ON</Description>
+				</IO>
+				<IO>
+					<Name>Y1342</Name>
+					<Index>70032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1343</Name>
+					<Index>70033</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1344</Name>
+					<Index>70034</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1345</Name>
+					<Index>70035</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1346</Name>
+					<Index>70036</Index>
+					<Description>CUTTING UNIT) CUTTER UP/DOWN CYLINDER-UP</Description>
+				</IO>
+				<IO>
+					<Name>Y1347</Name>
+					<Index>70037</Index>
+					<Description>CUTTING UNIT) CUTTER UP/DOWN CYLINDER-DOWN</Description>
+				</IO>
+				<IO>
+					<Name>Y1410</Name>
+					<Index>80000</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1411</Name>
+					<Index>80001</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1412</Name>
+					<Index>80002</Index>
+					<Description>TOP FILM PRESS MACHINE) HYDRAULIC MOTOR-RUN</Description>
+				</IO>
+				<IO>
+					<Name>Y1413</Name>
+					<Index>80003</Index>
+					<Description>TOP FILM PRESS MACHINE) RAM SHAFT-OPENING</Description>
+				</IO>
+				<IO>
+					<Name>Y1414</Name>
+					<Index>80004</Index>
+					<Description>TOP FILM PRESS MACHINE) RAM SHAFT-CLOSING</Description>
+				</IO>
+				<IO>
+					<Name>Y1415</Name>
+					<Index>80005</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1416</Name>
+					<Index>80006</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1417</Name>
+					<Index>80007</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1420</Name>
+					<Index>80010</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1421</Name>
+					<Index>80011</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1422</Name>
+					<Index>80012</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1423</Name>
+					<Index>80013</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1424</Name>
+					<Index>80014</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1425</Name>
+					<Index>80015</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1426</Name>
+					<Index>80016</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1427</Name>
+					<Index>80017</Index>
+					<Description></Description>
+				</IO>				
+				<IO>
+					<Name>Y1430</Name>
+					<Index>80020</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1431</Name>
+					<Index>80021</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1432</Name>
+					<Index>80022</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1433</Name>
+					<Index>80023</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1434</Name>
+					<Index>80024</Index>
+					<Description></Description>
+			    </IO>
+				<IO>
+					<Name>Y1435</Name>
+					<Index>80025</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1436</Name>
+					<Index>80026</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1437</Name>
+					<Index>80027</Index>
+					<Description></Description>
+				</IO>							
+				<IO>
+					<Name>Y1440</Name>
+					<Index>80030</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1441</Name>
+					<Index>80031</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1442</Name>
+					<Index>80032</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1443</Name>
+					<Index>80033</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1444</Name>
+					<Index>80034</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1445</Name>
+					<Index>80035</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1446</Name>
+					<Index>80036</Index>
+					<Description></Description>
+				</IO>
+				<IO>
+					<Name>Y1447</Name>
+					<Index>80037</Index>
+					<Description></Description>
+				</IO>
+			</OutputIOList>
+		</Parameters>
+	</Device>
+	<Device>
+		<Name>MMCBoard</Name>
+		<DeviceType>MMCDevice.AjinMMC.FAAjinMMCDevice</DeviceType>
+		<Description>MMC</Description>
+		<Parameters>
+			<Property>
+				<Item>
+					<Name>MotionParamPath</Name>
+					<Value>\config\MotionParam.mot</Value>
+				</Item>
+			</Property>
+		</Parameters>
+	</Device>
+	<Device>
+		<Name>Inverter</Name>
+		<DeviceType>Inverter.FAMitsubishiInverterDevice</DeviceType>		
+		<Description>Inverter</Description>
+		<Parameters>
+			<Address>1</Address>		
+			<PortName>COM3</PortName>
+			<BaudRate>19200</BaudRate>
+			<StopBits>2</StopBits>
+			<Parity>2</Parity>
+		</Parameters>
+	</Device>
+</DeviceList>

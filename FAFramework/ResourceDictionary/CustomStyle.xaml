@@ -1,0 +1,362 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <GridView x:Shared="False" x:Key="aliasServoPositionListSimpleView">
+        <GridView.Columns>
+            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Alias}"/>
+            <GridViewColumn Header="{DynamicResource ResourceKey=Position}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.Position}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.DriveSpeed}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+        </GridView.Columns>
+    </GridView>
+    <GridView x:Shared="False" x:Key="aliasServoPositionListFullView">
+        <GridView.Columns>
+            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Alias}"/>
+            <GridViewColumn Header="{DynamicResource ResourceKey=Position}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.Position}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="{DynamicResource ResourceKey=StartSpeed}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.StartSpeed}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.DriveSpeed}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="{DynamicResource ResourceKey=AccelTime}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.AccelTime}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Header="{DynamicResource ResourceKey=DecelTime}">
+                <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Obj.DecelTime}" />
+                    </DataTemplate>
+                </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+        </GridView.Columns>
+    </GridView>
+    <Style x:Key="fillListViewItemStyle" TargetType="ListViewItem" x:Shared="False">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
+    <Style x:Key="aliasServoPositionTemplate" TargetType="ListView">
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource ResourceKey=fillListViewItemStyle}" />
+        <Setter Property="View" Value="{DynamicResource ResourceKey=aliasServoPositionListFullView}" />
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="{StaticResource ResourceKey=operatorPermission}">
+                <Setter Property="View" Value="{DynamicResource ResourceKey=aliasServoPositionListSimpleView}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{StaticResource ResourceKey=maintenancePermission}">
+                <Setter Property="View" Value="{DynamicResource ResourceKey=aliasServoPositionListSimpleView}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{StaticResource ResourceKey=masterPermission}">
+                <Setter Property="View" Value="{DynamicResource ResourceKey=aliasServoPositionListFullView}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="aliasValueListTemplate" TargetType="ListView" x:Shared="False">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ResourceKey=fillListViewItemStyle}" />
+        <Setter Property="View">
+            <Setter.Value>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Alias}"/>
+                        <GridViewColumn Header="{DynamicResource ResourceKey=Value}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=Obj}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="blinkControl" TargetType="FrameworkElement">
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.4" AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>                            
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="frontLeftDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="frontRightDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="leftLeftDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>True</system:Boolean>
+                </Trigger.Value>                
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="leftRightDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>True</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="rightLeftDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>True</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="rightRightDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>True</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="90" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="rearLeftDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="1" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="rearRightDoor" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="-45" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin">
+                    <Setter.Value>
+                        <Point X="0" Y="1" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="DoorStatus" TargetType="Label" BasedOn="{StaticResource baseStyle}">
+        <Setter Property="Background" Value="Lime" />
+        <Style.Triggers>
+            <Trigger Property="Tag">
+                <Trigger.Value>
+                    <system:Boolean>False</system:Boolean>
+                </Trigger.Value>
+                <Setter Property="Background" Value="Red" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

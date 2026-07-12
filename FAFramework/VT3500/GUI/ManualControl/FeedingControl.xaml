@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.ManualControl.FeedingControl"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             mc:Ignorable="d" 
+             Height="768" Width="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" Height="20" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock Text="{Binding Subject}" FontSize="36" DockPanel.Dock="Top"/>
+        <Grid>
+            <Image Source="/FAFramework;component/Images/FeedingControl.png" />
+            <Canvas Name="buttonsCanvas" Style="{StaticResource actuatorSelectButtonCanvas}">
+                <Button Tag="SubUnit.TapeLoadGrip" Background="DarkBlue" Width="31" Height="131" Canvas.Left="370" Canvas.Top="161" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="0.493" ScaleX="0.633"/>
+                            <SkewTransform AngleY="-55.916" AngleX="56.166"/>
+                            <RotateTransform Angle="56.419"/>
+                            <TranslateTransform X="56.971" Y="-7.082"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button Tag="SubUnit.TapeHoldGrip" Background="DarkBlue" Width="33" Height="129" Canvas.Left="540" Canvas.Top="162" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="0.509" ScaleX="0.672"/>
+                            <SkewTransform AngleY="-53.937" AngleX="54.441"/>
+                            <RotateTransform Angle="54.736"/>
+                            <TranslateTransform X="55.408" Y="-10.56"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button Tag="SubUnit.TapeCoverServo" Background="DarkBlue" Width="113" Height="118" Canvas.Left="465" Canvas.Top="108" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button Tag="SubUnit.TapeLoadingServo" Background="DarkBlue" Width="36" Height="267" Canvas.Left="350" Canvas.Top="181" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="0.85" ScaleX="1.111"/>
+                            <SkewTransform AngleY="-14.231" AngleX="12.628"/>
+                            <RotateTransform Angle="102.278"/>
+                            <TranslateTransform X="104.079" Y="-9.518"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+            </Canvas>
+            <Canvas Style="{StaticResource sensorsCanvas}">
+                <!--<StackPanel>
+                    <ContentPresenter Content="{Binding SubUnit.InSensor}" />
+                    <ContentPresenter Content="{Binding SubUnit.OutSensor}" />
+                </StackPanel>-->
+            </Canvas>
+            <Grid HorizontalAlignment="Right" Margin="0,0,-120,0">
+                <ContentControl Content="{Binding Path=Children, ElementName=buttonsCanvas}"
+                                ContentTemplate="{StaticResource actuatorOperateButtons}"
+                                Tag="{Binding ElementName=buttonsCanvas, Path=Tag}" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

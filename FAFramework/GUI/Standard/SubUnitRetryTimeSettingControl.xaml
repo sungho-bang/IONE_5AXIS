@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.SubUnitRetryTimeSettingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converter:NullToVisibillityConverter x:Key="nullToVisibillityConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style x:Key="retrySettingListViewStyle" TargetType="{x:Type ListView}" x:Shared="False">
+                <Setter Property="View">
+                    <Setter.Value>
+                        <GridView>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Name}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=RetryLimit}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=RetryLimit, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Description}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=Description, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="timeSettingListViewStyle" TargetType="{x:Type ListView}" x:Shared="False">
+                <Setter Property="View">
+                    <Setter.Value>
+                        <GridView>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Name}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Time}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=TypeValue, Mode=TwoWay}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=TimeUnit}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding Source={StaticResource DetailFATimeProvider}}" SelectedItem="{Binding Path=Type, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource ResourceKey=Description}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=Description, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ListView ItemsSource="{Binding Path=SubUnit.PartList}"
+                      Tag="{Binding ReadOnly, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource defaultListViewItemStyle}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShowTimeToScreen}" Value="True">
+                            <Setter Property="ListBoxItem.Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ShowRetryInfoToScreen}" Value="True">
+                            <Setter Property="ListBoxItem.Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="{DynamicResource ResourceKey=Name}" DisplayMemberBinding="{Binding Path=Part.Name}" />
+                        <GridViewColumn Header="{DynamicResource ResourceKey=RetryList}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Visibility="{Binding ShowRetryInfoToScreen, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <ListView ItemsSource="{Binding Path=Part.RetryInfoList.Values}"
+                                              Style="{StaticResource ResourceKey=retrySettingListViewStyle}"
+                                              ItemContainerStyle="{StaticResource defaultListViewItemStyle}"
+                                              Tag="{Binding ReadOnly, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                    </Grid>                                    
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="{DynamicResource ResourceKey=TimeList}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Visibility="{Binding ShowTimeToScreen, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <ListView ItemsSource="{Binding Path=Part.TimeList.Values}"
+                                              Style="{StaticResource ResourceKey=timeSettingListViewStyle}"
+                                              ItemContainerStyle="{StaticResource defaultListViewItemStyle}"
+                                              Tag="{Binding ReadOnly, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                    </Grid>                                    
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

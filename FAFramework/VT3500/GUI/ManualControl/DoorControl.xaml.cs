@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace FAFramework.VT3500.GUI.ManualControl
+{
+    /// <summary>
+    /// DoorControl.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class DoorControl : UserControl //EquipmentInstance
+    {
+        public static readonly DependencyProperty ReadOnlyProperty =
+           DependencyProperty.Register("ReadOnly", typeof(bool), typeof(DoorControl));
+        public static readonly DependencyProperty SubUnitProperty =
+            DependencyProperty.Register("SubUnit", typeof(object), typeof(DoorControl));
+        public static readonly DependencyProperty EquipmentInstanceProperty =
+            DependencyProperty.Register("EquipmentInstance", typeof(Equipment.EquipmentBase), typeof(DoorControl));
+
+        public bool ReadOnly
+        {
+            get { return (bool)GetValue(ReadOnlyProperty); }
+            set
+            {
+                SetValue(ReadOnlyProperty, value);
+            }
+        }
+
+        public object SubUnit
+        {
+            get { return GetValue(SubUnitProperty); }
+            set
+            {
+                SetValue(SubUnitProperty, value);
+            }
+        }
+        public Equipment.EquipmentBase EquipmentInstance
+        {
+            get { return (Equipment.EquipmentBase)GetValue(EquipmentInstanceProperty); }
+            set
+            {
+                SetValue(EquipmentInstanceProperty, value);
+            }
+        }
+
+        public DoorControl()
+        {
+            InitializeComponent();
+        }
+    }
+}

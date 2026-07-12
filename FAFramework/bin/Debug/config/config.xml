@@ -1,0 +1,37 @@
+﻿<EquipmentConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RangeList>
+    <item>
+      <key>
+        <string>JamDelay</string>
+      </key>
+      <value>
+        <FARange>
+          <Min>-2147483648</Min>
+          <Max>2147483647</Max>
+        </FARange>
+      </value>
+    </item>
+  </RangeList>
+  <SystemID>VTCanister</SystemID>
+  <JamDelay>180</JamDelay>
+  <UserList>
+    <UserInfo>
+      <RangeList />
+      <Permission>OPERATOR</Permission>
+      <Name>operator</Name>
+      <Password />
+    </UserInfo>
+    <UserInfo>
+      <RangeList />
+      <Permission>MASTER</Permission>
+      <Name>admin</Name>
+      <Password />
+    </UserInfo>
+    <UserInfo>
+      <RangeList />
+      <Permission>MAINTENANCE</Permission>
+      <Name>maint</Name>
+      <Password />
+    </UserInfo>
+  </UserList>
+</EquipmentConfig>

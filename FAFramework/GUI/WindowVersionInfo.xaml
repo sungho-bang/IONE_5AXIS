@@ -1,0 +1,13 @@
+﻿<Window x:Class="FAFramework.GUI.WindowVersionInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WindowVersionInfo" Height="600" Width="800" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Topmost="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <Button Content="닫기" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0,2,0,0" Name="buttonClose" VerticalAlignment="Stretch" Width="Auto" Click="buttonClose_Click" FontWeight="Bold" FontFamily="Tahoma" FontSize="18" />
+        <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="textBlock1" Text="" VerticalAlignment="Stretch" TextWrapping="Wrap" />
+    </Grid>
+</Window>

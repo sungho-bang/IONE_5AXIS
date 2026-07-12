@@ -1,0 +1,398 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.PositionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="800"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:jobInfo="clr-namespace:FAFramework.VT3500.JobInfo"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Bold"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             Background="{DynamicResource MaterialDesignPaper}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ToggleSwitchStyle"
+           TargetType="{x:Type ToggleButton}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <ControlTemplate.Resources>
+                                <Storyboard x:Key="Timeline1">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                   Storyboard.TargetName="Glow"
+                                   Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000"
+                                                      Value="1" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                                <Storyboard x:Key="Timeline2">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Glow"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000"
+                                        Value="0" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </ControlTemplate.Resources>
+                            <Grid MinWidth="120"
+                          MinHeight="40"
+                          Width="{TemplateBinding Width}"
+                          Height="{TemplateBinding Height}"
+                          Background="Black">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.ColumnSpan="2" BorderBrush="Gray" Background="Transparent" CornerRadius="6" BorderThickness="1"></Border>
+                                <TextBlock x:Name="OffText" Grid.Column="0" HorizontalAlignment="Center" Text="사용안함" FontWeight="Bold" VerticalAlignment="Center" Foreground="Black" FontSize="{TemplateBinding FontSize}"></TextBlock>
+                                <TextBlock x:Name="OnText" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" Text="사용" VerticalAlignment="Center" Foreground="Black" FontSize="{TemplateBinding FontSize}"></TextBlock>
+                                <Border Name="Thumb" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Margin="3" CornerRadius="4" Background="#222222">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.507*" />
+                                            <RowDefinition Height="0.493*" />
+                                        </Grid.RowDefinitions>
+                                        <Border Opacity="0" HorizontalAlignment="Stretch" x:Name="Glow" Width="Auto" Grid.RowSpan="2" CornerRadius="2">
+                                            <Border.Background>
+                                                <RadialGradientBrush>
+                                                    <RadialGradientBrush.RelativeTransform>
+                                                        <TransformGroup>
+                                                            <ScaleTransform ScaleX="1.702"  ScaleY="2.743" />
+                                                            <SkewTransform AngleX="0" AngleY="0" />
+                                                            <RotateTransform Angle="0" />
+                                                            <TranslateTransform X="-0.368" Y="-0.152" />
+                                                        </TransformGroup>
+                                                    </RadialGradientBrush.RelativeTransform>
+                                                    <GradientStop Color="LawnGreen" Offset="0" />
+                                                    <GradientStop Color="#44006400" Offset="0.75" />
+                                                </RadialGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="shine" Width="Auto" CornerRadius="2,2,0,0">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.494,0.889" StartPoint="0.494,0.028">
+                                                    <GradientStop Color="White" Offset="0" />
+                                                    <GradientStop Color="Black" Offset="1" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="true">
+                                    <Setter Property="Grid.Column" TargetName="Thumb" Value="1" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" Value="0.4" />
+                                    <Setter TargetName="OffText" Property="Foreground" Value="Gray"></Setter>
+                                    <Setter TargetName="OnText" Property="Foreground" Value="gray"></Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" TargetName="shine" Value="0.6" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource Timeline1}" />
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard x:Name="Timeline2_BeginStoryboard" Storyboard="{StaticResource Timeline2}" />
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border  BorderThickness="0" CornerRadius="5" Name="border1" Background="LightGray">
+        <Grid Opacity="1" ShowGridLines="False" Margin="1">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid  Grid.Column="0" Grid.Row="0">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                                <!--<materialDesign:PackIcon Kind="Speedometer" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Width="80" Height="80"/>-->
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="원단 피딩 속도" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.FeedingSpeed}" FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="1" Grid.Row="0">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="원단 피치" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.FeedingPitch}" FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="2" Grid.Row="0">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="성형 시간" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <DockPanel  Margin="100,30,0,0">
+                                    <TextBox Text="{Binding JobInstance.MoldingTime.TypeValue}" FontSize="30" Background="White" VerticalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="100" Height="60" TextAlignment="Center" FontWeight="Light" Margin="-100,0,0,0"/>
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource DetailFATimeProvider}}" SelectedItem="{Binding JobInstance.MoldingTime.Type, Mode=TwoWay}"  Background="White" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="130"  Margin="5,22,0,0">
+                                        <ComboBox.LayoutTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1.4" />
+                                        </ComboBox.LayoutTransform>
+                                    </ComboBox>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+
+                    <Grid  Grid.Column="0" Grid.Row="1">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="포장 피딩 속도" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.PackingFeedSpeed}"  FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="1" Grid.Row="1">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="이재기 이동거리" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="28" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.PackingFeedPitch}"  FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="2" Grid.Row="1">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="실링 시간" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <DockPanel  Margin="100,30,0,0">
+                                    <TextBox Text="{Binding JobInstance.SealingTime.TypeValue}" FontSize="30" Background="White" VerticalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="100" Height="60" TextAlignment="Center" FontWeight="Light" Margin="-100,0,0,0"/>
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource DetailFATimeProvider}}" SelectedItem="{Binding JobInstance.SealingTime.Type, Mode=TwoWay}" Background="White" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="130"  Margin="5,22,0,0">
+                                        <ComboBox.LayoutTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1.4" />
+                                        </ComboBox.LayoutTransform>
+                                    </ComboBox>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="포장지 피딩 모터" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <DockPanel>
+                                    <TextBlock Text="롤러 서보 빠른 속도(1/2)" FontSize="20" VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <TextBox Text="{Binding JobInstance.TapeLoadingPos}"  FontSize="20" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="40" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="롤러 서보 느린 속도(2/2)" FontSize="20" VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <TextBox Text="{Binding JobInstance.TapeLoadingSlowPos}"  FontSize="20" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="40" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                                </DockPanel>
+                                <!--<DockPanel>
+                                    <TextBlock Text="아이마크 미사용" FontSize="20" VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <TextBox Text="{Binding JobInstance.TapeUnUseImarkPos}"  FontSize="20" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="40" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                                </DockPanel>-->
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid  Grid.Column="2" Grid.Row="2">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="컷팅 횟수" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.CuttingCount}"  FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <!--<Grid  Grid.Column="1" Grid.Row="2">
+                        <Rectangle Height="Auto" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="445" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                                -->
+                    <!--<materialDesign:PackIcon Kind="Speedometer" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5" Width="80" Height="80"/>-->
+                    <!--
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="제품 수량" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="35" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <TextBox Text="{Binding JobInstance.PackageCount}" FontSize="30" Background="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center" Width="300" Height="60" Margin="5,30" TextAlignment="Center" FontWeight="Light"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>-->
+                    <Grid Grid.Row="3" Grid.ColumnSpan="3">
+                        <Rectangle Height="200" Margin="5" Fill="White" RadiusX="10" RadiusY="10" />
+                        <Grid Margin="40,5">
+                            <Grid Height="60" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Background="#FF001C66" >
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                </Grid.Effect>
+                            </Grid>
+                            <StackPanel>
+                                <TextBlock Text="옵션" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="champane &amp; Limousines" FontSize="30" FontWeight="UltraLight" Margin="10,20" Foreground="White"/>
+                                <DockPanel VerticalAlignment="Bottom" Height="110">
+                                    <StackPanel  Margin="-15,30,0,0">
+                                        <TextBlock Text=" 성형 프레스" FontSize="12"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseFirstPress}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50"  Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-15,30,0,0">
+                                        <TextBlock Text=" 피넛클 프레스" FontSize="12" />
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseSecondPress}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-5,30,0,0">
+                                        <TextBlock Text=" 옵션 프레스" FontSize="12" />
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseOptionPress}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="0,30,0,0">
+                                        <TextBlock Text=" 톰슨 프레스" FontSize="12"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseThirdPress}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-10,30,0,0">
+                                        <TextBlock Text=" 실링 프레스"  FontSize="12"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseFourthPress}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-10,30,0,0">
+                                        <TextBlock Text=" 상부 박리" FontSize="12"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseTopPeeling}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-15,30,0,0">
+                                        <TextBlock Text=" 하부 박리" FontSize="12"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseBottomPeeling}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-15,30,0,0">
+                                        <TextBlock Text=" 포장 스크랩" FontSize="12" />
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UsePackingScrap}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel  Margin="-10,30,0,0">
+                                        <TextBlock Text=" I-Mark" FontSize="12" />
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseIMark}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <!--<StackPanel Margin="20">
+                                        <TextBlock Text="상부 포장지" FontSize="25"/>
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseTopPacking}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2.2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                    <StackPanel Margin="20">
+                                        <TextBlock Text="하부 포장지" FontSize="25" />
+                                        <ToggleButton TextBlock.BaselineOffset="1" TextBlock.LineStackingStrategy="BlockLineHeight" Content="사용" IsChecked="{Binding JobInstance.UseBottomPacking}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="50" Background="DarkBlue" Foreground="White">
+                                            <ToggleButton.LayoutTransform>
+                                                <ScaleTransform ScaleX="2" ScaleY="2.2" />
+                                            </ToggleButton.LayoutTransform>
+                                        </ToggleButton>
+                                    </StackPanel>-->                                    
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

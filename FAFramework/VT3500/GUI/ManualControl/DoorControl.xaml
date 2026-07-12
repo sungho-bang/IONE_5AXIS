@@ -1,0 +1,510 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.ManualControl.DoorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             IsEnabled="True"
+             Style="{StaticResource ResourceKey=manualControl}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converter:PermissionToVisibilityConverter x:Key="PermissionToVisibilityConverter"/>
+            <converter:PermissionToVisibilityConverter x:Key="permissionToVisibilityConverter" />
+            <Style TargetType="DockPanel">
+                <Style.Setters>
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Label" BasedOn="{StaticResource ResourceKey=OnOffSensorLabel3}">
+                <Style.Setters>
+                    <Setter Property="Width" Value="25" />
+                    <Setter Property="Height" Value="25" />
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="4,0,4,0" />
+                </Style.Setters>
+            </Style>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Border" x:Key="doorStatus">
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="BorderThickness" Value="3" />
+                <Setter Property="CornerRadius" Value="3" />
+                <Style.Triggers>
+                    <Trigger Property="Visibility" Value="Visible">
+                        <Setter Property="BorderBrush" Value="Red" />
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.4" AutoReverse="True"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!--<DataTemplate x:Key="ShapeFAreaCheck">
+                <Border Visibility="{Binding Path=TopSensorOfInsideStacker.IsOn, Converter={StaticResource ResourceKey=boolToVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="{DynamicResource ShapeFAreaCheck}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Teal" FontSize="16" />
+                </Border>
+            </DataTemplate>-->
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <Grid>
+            <Image Source="/FAFramework;component/Images/Door_1.png" Margin="63,0,-63.333,0" />
+            <Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.ShapeFLeftDoorCloseCheck.Closed}" Height="49" Width="59" Canvas.Left="157" Canvas.Top="124" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.975" ScaleY="1.113"/>
+                                <SkewTransform AngleX="7.335" AngleY="31.628"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="3.361" Y="19.351"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <Label IsEnabled="{Binding SubUnit.OptionFRightDoorStateCheck.Closed}" Height="49" Width="59" Canvas.Left="289" Canvas.Top="209" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.975" ScaleY="1.113"/>
+                                <SkewTransform AngleX="7.335" AngleY="31.628"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="3.361" Y="19.351"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <Label IsEnabled="{Binding SubUnit.OptionFLeftDoorStateCheck.Closed}" Height="52" Width="59" Canvas.Left="350" Canvas.Top="246" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.975" ScaleY="1.113"/>
+                                <SkewTransform AngleX="7.335" AngleY="31.628"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="3.361" Y="19.351"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <Label IsEnabled="{Binding SubUnit.OptionRLeftDoorStateCheck.Closed}" Height="49" Width="59" Canvas.Left="364" Canvas.Top="147" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.975" ScaleY="1.113"/>
+                                <SkewTransform AngleX="7.335" AngleY="31.628"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="3.361" Y="19.351"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <Label IsEnabled="{Binding SubUnit.OptionRRightDoorStateCheck.Closed}" Height="48" Width="59" Canvas.Left="428" Canvas.Top="186" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.975" ScaleY="1.113"/>
+                                <SkewTransform AngleX="7.335" AngleY="31.628"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="3.361" Y="19.351"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.ShapeFRightDoorCloseCheck.Closed}" Height="52" Width="60" Canvas.Left="220" Canvas.Top="164" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.978" ScaleY="1.109"/>
+                                <SkewTransform AngleX="7.048" AngleY="32.292"/>
+                                <RotateTransform Angle="-0.434"/>
+                                <TranslateTransform X="3.07" Y="18.598"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.ShapeRRightDoorCloseCheck.Closed}" Height="55" Width="55" Canvas.Left="236" Canvas.Top="61" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.987" ScaleY="1.096"/>
+                                <SkewTransform AngleX="6.196" AngleY="35.069"/>
+                                <RotateTransform Angle="-3.001"/>
+                                <TranslateTransform X="2.645" Y="19.978"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.ShapeRLeftDoorCloseCheck.Closed}" Height="55" Width="55" Canvas.Left="298" Canvas.Top="100" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.992" ScaleY="1.073"/>
+                                <SkewTransform AngleX="4.609" AngleY="36.873"/>
+                                <RotateTransform Angle="-3.106"/>
+                                <TranslateTransform X="2.633" Y="18.908"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.FeedingFLeftDoorCloseCheck.Closed}" Height="56" Width="33" Canvas.Left="415" Canvas.Top="276" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.985" ScaleY="1.099"/>
+                                <SkewTransform AngleX="6.097" AngleY="35.58"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="0.428" Y="19.02"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.FeedingFRightDoorCloseCheck.Closed}" Height="59" Width="52" Canvas.Left="451" Canvas.Top="307" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.983" ScaleY="1.075"/>
+                                <SkewTransform AngleX="4.724" AngleY="32.847"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="1.432" Y="17.647"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.FeedingRRightDoorCloseCheck.Closed}" Height="58" Width="34" Canvas.Left="493" Canvas.Top="209" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.977" ScaleY="0.972"/>
+                                <SkewTransform AngleX="-3.431" AngleY="41.607"/>
+                                <RotateTransform Angle="-8.355"/>
+                                <TranslateTransform X="6.997" Y="24.973"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.FeedingRLeftDoorCloseCheck.Closed}" Height="55" Width="33" Canvas.Left="538" Canvas.Top="242" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.988" ScaleY="1.055"/>
+                                <SkewTransform AngleX="3.246" AngleY="35.924"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="0.462" Y="18.075"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.PackingFLeftDoorCloseCheck.Closed}" Height="56" Width="80" Canvas.Left="512" Canvas.Top="356" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.989" ScaleY="1.036"/>
+                                <SkewTransform AngleX="2.088" AngleY="33.392"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="-0.274" Y="15.763"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.PackingFRightDoorCloseCheck.Closed}" Height="61" Width="72" Canvas.Left="599" Canvas.Top="402" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.99" ScaleY="0.957"/>
+                                <SkewTransform AngleX="-3.844" AngleY="39.693"/>
+                                <RotateTransform Angle="-5.961"/>
+                                <TranslateTransform X="1.953" Y="21.961"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.PackingRRightDoorCloseCheck.Closed}" Height="56" Width="92" Canvas.Left="580" Canvas.Top="289" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.985" ScaleY="1.034"/>
+                                <SkewTransform AngleX="1.695" AngleY="32.816"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="-5.083" Y="12.488"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.PackingRLeftDoorCloseCheck.Closed}" Height="56" Width="80" Canvas.Left="676" Canvas.Top="343" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.987" ScaleY="0.982"/>
+                                <SkewTransform AngleX="-2.599" AngleY="35.069"/>
+                                <RotateTransform Angle="-2.598"/>
+                                <TranslateTransform X="-3.276" Y="15.817"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.SealingFLeftDoorCloseCheck.Closed}" Height="56" Width="101" Canvas.Left="687" Canvas.Top="478" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.996" ScaleY="0.999"/>
+                                <SkewTransform AngleX="-0.356" AngleY="32.48"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="-4.754" Y="10.913"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.SealingFRightDoorCloseCheck.Closed}" Height="58" Width="101" Canvas.Left="798" Canvas.Top="571" RenderTransformOrigin="1.662,-0.009" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.988"/>
+                                <SkewTransform AngleX="-0.997" AngleY="33.071"/>
+                                <RotateTransform Angle="0.037"/>
+                                <TranslateTransform X="-10.608" Y="61.512"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.SealingRRightDoorCloseCheck.Closed}" Height="60" Width="95" Canvas.Left="776" Canvas.Top="411" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.985" ScaleY="0.945"/>
+                                <SkewTransform AngleX="-5.816" AngleY="36.039"/>
+                                <RotateTransform Angle="-4.521"/>
+                                <TranslateTransform X="-12.226" Y="7.952"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+                <Canvas>
+                    <Label  DockPanel.Dock="Left" IsEnabled="{Binding Path=SubUnit.SealingRLeftDoorCloseCheck.Closed}" Height="60" Width="93" Canvas.Left="872" Canvas.Top="466" RenderTransformOrigin="0.5,0.5" >
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.984" ScaleY="0.94"/>
+                                <SkewTransform AngleX="-6.298" AngleY="36.374"/>
+                                <RotateTransform Angle="-4.457"/>
+                                <TranslateTransform X="-5.898" Y="15.45"/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                </Canvas>
+
+                <Border Visibility="{Binding SubUnit.ShapeFAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="196" Canvas.Top="221" Width="51" Height="157" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-57.069"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-47,0,-46,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding SubUnit.ShapeRAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="260" Canvas.Top="-23" Width="53" Height="142" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="0.973"/>
+                            <SkewTransform AngleY="-41.348" AngleX="1.832"/>
+                            <RotateTransform Angle="-54.705"/>
+                            <TranslateTransform X="17.822" Y="15.501"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-49,26,-42,28" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.426"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+
+                <Border Visibility="{Binding SubUnit.PackingFAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="558" Canvas.Top="445" Width="55" Height="192" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-56.236"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-53,35,-52,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+
+                <Border Visibility="{Binding SubUnit.PackingRAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="625" Canvas.Top="181" Width="52" Height="188" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-58.309"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-53,35,-52,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding SubUnit.SealingFAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="749" Canvas.Top="554" Width="55" Height="228" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-56.638"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-53,35,-52,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding SubUnit.SealingRAreaCheck.IsOff,  Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="823" Canvas.Top="276" Width="52" Height="245" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-58.131"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-53,35,-52,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding SubUnit.OptionFAreaCheck.IsOff, Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="331" Canvas.Top="311" Width="51" Height="157" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="-41.348"/>
+                            <RotateTransform Angle="-57.069"/>
+                            <TranslateTransform X="17.512" Y="12.576"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-47,0,-46,34" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.728"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding SubUnit.OptionRAreaCheck.IsOff, Converter={StaticResource boolToVisibilityConverter}}" Style="{StaticResource doorStatus}" Canvas.Left="384" Canvas.Top="51" Width="53" Height="156" Background="Red" RenderTransformOrigin="0.5,0.5" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="0.973"/>
+                            <SkewTransform AngleY="-41.348" AngleX="1.832"/>
+                            <RotateTransform Angle="-54.705"/>
+                            <TranslateTransform X="17.822" Y="15.501"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                    <TextBlock Text="감지!" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="Gold" FontSize="50" Margin="-49,26,-42,28" Width="118" RenderTransformOrigin="0.5,0.5" Height="62" >
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.004" ScaleY="0.997"/>
+                                <SkewTransform AngleX="-0.379" AngleY="-1.369"/>
+                                <RotateTransform Angle="91.426"/>
+                                <TranslateTransform X="1.578" Y="2.867"/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Border>
+            </Canvas>
+            <Canvas Visibility="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500.CurrentUser.Permission, Converter={StaticResource permissionToVisibilityConverter}, ConverterParameter='MASTER'}">
+                <StackPanel Canvas.Left="100" Canvas.Top="496">
+                    <CheckBox Content="안전 센서 무시" HorizontalContentAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EquipmentInstance.ModuleOperation.IgnoreAreaSensor}" Width="Auto" Height="17"/>
+                    <CheckBox Content="도어 센서 무시" HorizontalContentAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EquipmentInstance.ModuleOperation.IgnoreDoorStatus}" Width="Auto" Height="Auto"/>
+                    <StackPanel.LayoutTransform>
+                        <ScaleTransform ScaleX="3" ScaleY="3" />
+                    </StackPanel.LayoutTransform>
+                </StackPanel>
+            </Canvas>
+            <Canvas Style="{StaticResource sensorsCanvas}" Margin="784,0,-0.333,563" >
+                <StackPanel>
+                    <ContentPresenter ToolTip="성형부 전체 문 상태" Content="{Binding SubUnit.ShapeDoorStateCloseCheck}" />
+                    <ContentPresenter ToolTip="옵션부 전체 문 상태" Content="{Binding SubUnit.OptionDoorStateCheck}" />
+                    <ContentPresenter ToolTip="피딩부 전체 문 상태" Content="{Binding SubUnit.FeedingDoorStateCloseCheck}" />
+                    <ContentPresenter ToolTip="패킹부 전체 문 상태" Content="{Binding SubUnit.PackingDoorStateCloseCheck}" />
+                    <ContentPresenter ToolTip="실링부 전체 문 상태" Content="{Binding SubUnit.SealingDoorStateCloseCheck}" />
+                </StackPanel>
+            </Canvas>
+        </Grid>
+    </DockPanel>
+</UserControl>

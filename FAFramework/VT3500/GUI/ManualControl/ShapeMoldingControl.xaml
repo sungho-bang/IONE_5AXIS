@@ -1,0 +1,189 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.ManualControl.ShapeMoldingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl"
+             mc:Ignorable="d" 
+             Height="768" Width="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock Text="{Binding Subject}" FontSize="36" DockPanel.Dock="Top"/>
+        <Grid Width="1023">
+            <Grid Grid.Column="0">
+                <ListBox Visibility="Collapsed" >
+                    <control:FirstPressControl
+                        x:Name="FirstPressControl" 
+                        SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"                    
+						FirstUnit="{Binding Path=EquipmentManagerInstance.VT3500.FirstPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        HeaterTopUnit="{Binding Path=EquipmentManagerInstance.VT3500.HeaterFirstTopUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        HeaterBottomUnit="{Binding Path=EquipmentManagerInstance.VT3500.HeaterFirstBottomUnit, Source={x:Static equipment:MainEquipment.Instance}}"   
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        />
+                    <control:SecondPressControl
+                        x:Name="SecondPressControl" 
+						SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"                                               
+                        SecondUnit="{Binding Path=EquipmentManagerInstance.VT3500.SecondPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        />
+                    <control:InverterMotorControl
+                        x:Name="InverterMotorControl" 
+                        SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        />
+                </ListBox>
+                <ContentPresenter Name="contentControlSelectedControl">
+                    <ContentPresenter.ContentTemplate>
+                        <DataTemplate>
+                            <Viewbox>
+                                <ContentControl Content="{Binding}" />
+                            </Viewbox>
+                        </DataTemplate>
+                    </ContentPresenter.ContentTemplate>
+                </ContentPresenter>
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Image Source="/FAFramework;component/Images/ShaftMoldingControl.png" />
+                <Canvas>
+                    <Canvas.Resources>
+                        <Style TargetType="Button" x:Name="ManualButton" BasedOn="{StaticResource baseStyle}" >
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard x:Name="ButtonAction">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:3" AutoReverse="False"  RepeatBehavior="Forever" FillBehavior="HoldEnd" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard >
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.3" Duration="0:0:1" AutoReverse="True" RepeatBehavior="Forever" FillBehavior="HoldEnd">
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Canvas.Resources>
+                    <Canvas Style="{StaticResource sensorsCanvas}">
+                        <StackPanel>
+
+                        </StackPanel>
+                    </Canvas>
+                    <Canvas>
+                        <Button Height="258" Background="DarkBlue" Width="150" Canvas.Left="522" Canvas.Top="119" ToolTip="성형 프레스" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleX="0.823"/>
+                                    <RotateTransform Angle="0.37"/>
+                                    <TranslateTransform X="-76.857" Y="11.277"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Mode="OneWay" ElementName="FirstPressControl" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button Height="260" Background="DarkBlue" Width="150" Canvas.Left="682" Canvas.Top="119" ToolTip="피넛클 프레스" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleX="1.02"/>
+                                    <RotateTransform Angle="0.137"/>
+                                    <TranslateTransform X="-77.295" Y="10.672"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Mode="OneWay" ElementName="SecondPressControl" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button Height="231" Background="DarkBlue" Width="185" Canvas.Left="288" Canvas.Top="244" ToolTip="인버터 모터" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleX="0.664"/>
+                                    <RotateTransform Angle="-0.223"/>
+                                    <TranslateTransform X="-72.981" Y="12.251"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Mode="OneWay" ElementName="InverterMotorControl" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </Canvas>
+                    <Canvas Name="buttonsCanvas" Style="{StaticResource actuatorSelectButtonCanvas}"/>
+                    <Grid HorizontalAlignment="Right" Height="570" Canvas.Left="780" Canvas.Top="130">
+                        <ContentControl Content="{Binding Path=Children, ElementName=buttonsCanvas}"
+                                ContentTemplate="{StaticResource actuatorOperateButtons}"
+                                Tag="{Binding ElementName=buttonsCanvas, Path=Tag}" />
+                    </Grid>
+                </Canvas>
+            </Grid>
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+                <Canvas Margin="0,0,600,0" FlowDirection="LeftToRight">
+                    <Button Name="Closebutton" Content="이 전" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="90" Height="50" ToolTip="Close" Click="Closebutton_Click" Background="DarkBlue" Foreground="White"
+                             Visibility="{Binding GobackButtonHide1, Converter={StaticResource ResourceKey=BoolToVisibilityConverter}}" Canvas.Left="-93" Margin="-10,0,0,0" Canvas.Top="29"/>
+                </Canvas>
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

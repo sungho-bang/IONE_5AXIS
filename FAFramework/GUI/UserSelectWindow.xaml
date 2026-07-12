@@ -1,0 +1,172 @@
+﻿<Window x:Class="FAFramework.GUI.UserSelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:equipment="clr-namespace:FAFramework.Equipment"
+        xmlns:local="clr-namespace:FAFramework.GUI"
+        xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+        Title="UserSelectWindow" MinHeight="480" MinWidth="640" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" Topmost="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <converter:PermissionToVisibilityConverter x:Key="permissionToVisibilityConverter" />
+            <local:UserInfoToArrayConverter x:Key="userInfoToArrayConverter"/>
+            <DataTemplate x:Key="userControlTemplate">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" MinWidth="100" />
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource ResourceKey=UserID}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" MinHeight="30" Name="comboBoxUserList"
+                                      ItemsSource="{Binding Path=UserList}" SelectedIndex="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource ResourceKey=Password}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />
+                            <PasswordBox Grid.Row="1" Grid.Column="1" Name="passwordBoxPassword" MinHeight="30" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />                                
+                        </Grid>
+                        <Button Grid.Column="1" Content="{DynamicResource ResourceKey=Remove}" Command="{Binding WindowInstance.ClickRemoveUserCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=userInfoToArrayConverter}">
+                                    <Binding Mode="OneWay" Path="WindowInstance.EquipmentInstance.CurrentUser"/>
+                                    <Binding Mode="OneWay" ElementName="comboBoxUserList" Path="SelectedItem"/>
+                                    <Binding Mode="OneWay" ElementName="passwordBoxPassword" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </Grid>
+                    <Expander Header="{DynamicResource UserSelectWindow.ChangePassword}" DockPanel.Dock="Top" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />                                    
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource UserSelectWindow.NewPassword}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                <PasswordBox Grid.Row="0" Grid.Column="1" Name="passwordBoxNewPassword" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource UserSelectWindow.ConfirmPassword}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                <PasswordBox Grid.Row="1" Grid.Column="1" Name="passwordBoxConfirmNewPassword" />
+                            </Grid>
+                            <Button Grid.Column="1" Content="{DynamicResource ResourceKey=ChangePassword}" Command="{Binding WindowInstance.ClickChangePasswordCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ResourceKey=userInfoToArrayConverter}">
+                                        <Binding Mode="OneWay" Path="WindowInstance.EquipmentInstance.CurrentUser"/>
+                                        <Binding Mode="OneWay" ElementName="comboBoxUserList" Path="SelectedItem"/>
+                                        <Binding Mode="OneWay" ElementName="passwordBoxPassword" />
+                                        <Binding Mode="OneWay" ElementName="passwordBoxNewPassword" />
+                                        <Binding Mode="OneWay" ElementName="passwordBoxConfirmNewPassword" />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>                        
+                    </Expander>
+                    <Expander Header="{DynamicResource UserSelectWindow.RegisterUser}" DockPanel.Dock="Top">
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />                                    
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource UserSelectWindow.ID}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="0" Grid.Column="1" Name="textBoxRegisterUserID" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource UserSelectWindow.Password}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />
+                                <PasswordBox Grid.Row="1" Grid.Column="1" Name="passwordBoxRegisterUserPassword" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource UserSelectWindow.ConfirmPassword}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />
+                                <PasswordBox Grid.Row="2" Grid.Column="1" Name="passwordBoxRegisterUserConfirmNewPassword" Visibility="{Binding Converter={StaticResource permissionToVisibilityConverter}, Path=PermissionType, ConverterParameter='MAINTENANCE,MASTER'}" />
+                            </Grid>
+                            <Button Grid.Column="1" Content="{DynamicResource ResourceKey=UserSelectWindow.RegisterUser}"
+                                    Command="{Binding WindowInstance.ClickRegisterUserCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ResourceKey=userInfoToArrayConverter}">
+                                        <Binding Mode="OneWay" Path="WindowInstance.EquipmentInstance.CurrentUser" />
+                                        <Binding Mode="OneWay" Path="PermissionType" />
+                                        <Binding Mode="OneWay" ElementName="textBoxRegisterUserID" Path="Text" />
+                                        <Binding Mode="OneWay" ElementName="passwordBoxRegisterUserPassword" />
+                                        <Binding Mode="OneWay" ElementName="passwordBoxRegisterUserConfirmNewPassword" />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                        </Grid>                        
+                    </Expander>
+                    <UniformGrid Rows="2" DockPanel.Dock="Top">
+                        <Button Content="{DynamicResource ResourceKey=Login}" Command="{Binding Path=WindowInstance.ClickLoginCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=userInfoToArrayConverter}">
+                                    <Binding Mode="OneWay" ElementName="comboBoxUserList" Path="SelectedItem"/>
+                                    <Binding Mode="OneWay" ElementName="passwordBoxPassword" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button Content="{DynamicResource ResourceKey=Cancel}" Command="{Binding Path=WindowInstance.ClickCancelCommand}" />
+                    </UniformGrid>
+                </DockPanel>
+            </DataTemplate>            
+            <ObjectDataProvider MethodName="GetValues"
+                        ObjectType="{x:Type system:Enum}"
+                        x:Key="userPermissionTypes">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="equipment:UserPermissionTypes" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/CustomStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA0BBE7" Offset="0" />
+                    <GradientStop Color="#FF255CEF" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+        </Grid>
+        <TabControl Grid.Row="1" Margin="0" Name="tabControlUserSelectTab" ItemContainerStyle="{StaticResource tabItemStyle}">
+            <TabItem Header="{DynamicResource ResourceKey=UserSelectWindow.Operator}">
+                <ContentControl Content="{Binding Path=OperatorInstance}" ContentTemplate="{StaticResource ResourceKey=userControlTemplate}" />
+            </TabItem>
+            <TabItem Header="{DynamicResource ResourceKey=UserSelectWindow.Maintenance}">
+                <ContentControl Content="{Binding Path=MaintenanceInstance}" ContentTemplate="{StaticResource ResourceKey=userControlTemplate}" />
+            </TabItem>
+            <TabItem Header="{DynamicResource ResourceKey=UserSelectWindow.Master}">
+                <ContentControl Content="{Binding Path=MasterInstance}" ContentTemplate="{StaticResource ResourceKey=userControlTemplate}" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

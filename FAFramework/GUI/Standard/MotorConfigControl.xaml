@@ -1,0 +1,973 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.MotorConfigControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+
+    <!-- ===========================
+         공용 리소스: ReadOnly 스타일 + Limit 오류 깜빡임
+         =========================== -->
+    <UserControl.Resources>
+
+        <!-- ReadOnly TextBox 회색 처리 -->
+        <Style x:Key="ReadOnlyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+
+            <Style.Triggers>
+                <!-- IsReadOnly = True 이면 회색 -->
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Background" Value="#FFE6E6E6"/>
+                    <Setter Property="Foreground" Value="#FF6D6D6D"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Limit 오류 시 TextBox 배경을 빨간색으로 2번 깜빡이는 애니메이션 -->
+        <Storyboard x:Key="BlinkRedStoryboard">
+            <ColorAnimation Storyboard.TargetProperty="(TextBox.Background).(SolidColorBrush.Color)"
+                            To="#FFFF0000"
+                            Duration="0:0:0.25"
+                            AutoReverse="True"
+                            RepeatBehavior="2x"/>
+        </Storyboard>
+
+    </UserControl.Resources>
+
+    <Grid Name="gridBase">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!-- ===========================
+             좌측: CARD STATUS + JOG + 위치 이동
+             =========================== -->
+        <Grid Height="Auto"
+              HorizontalAlignment="Stretch"
+              Margin="0"
+              Name="grid1"
+              VerticalAlignment="Stretch"
+              Width="Auto">
+            <Grid.IsEnabled>
+                <Binding Path="ReadOnly">
+                    <Binding.Converter>
+                        <converter:BoolInverseConverter />
+                    </Binding.Converter>
+                </Binding>
+            </Grid.IsEnabled>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+
+            <!-- CARD STATUS -->
+            <GroupBox Header="CARD STATUS"
+                      Height="Auto"
+                      HorizontalAlignment="Stretch"
+                      Margin="0"
+                      Name="groupBox1"
+                      VerticalAlignment="Stretch"
+                      Width="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!-- 상단 Status -->
+                    <Grid Height="Auto"
+                          HorizontalAlignment="Stretch"
+                          Margin="0"
+                          Name="grid2"
+                          VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Label IsEnabled="{Binding Path=Part.Origin}"
+                               Content="ORG"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelORG"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.Origin}"
+                               Content="EZ"
+                               Grid.Column="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelEZ"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.Emergency}"
+                               Content="EMG"
+                               Grid.Column="2"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelEMG"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.InPosition}"
+                               Content="INP"
+                               Grid.Column="3"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelINP"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.ServoAlarm}"
+                               Content="ARM"
+                               Grid.Column="4"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelARM"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.PositiveLimit}"
+                               Content="LMT+"
+                               Grid.Column="5"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelPOSLMT"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.RunFlag}"
+                               Content="RUN"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelRUN"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.ErrorFlag}"
+                               Content="ERR"
+                               Grid.Column="1"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelERR"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.HomeFlag}"
+                               Content="HOME"
+                               Grid.Column="2"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelHOME"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label Content="C.CLR"
+                               Grid.Column="3"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               IsEnabled="False"
+                               Margin="0"
+                               Name="labelCCLR"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.ServoOn}"
+                               Content="S-ON"
+                               Grid.Column="4"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelSON"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label IsEnabled="{Binding Path=Part.NegativeLimit}"
+                               Content="LMT-"
+                               Grid.Column="6"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               Margin="0"
+                               Name="labelNEGLMT"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label Content="N.C"
+                               Grid.Column="6"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               IsEnabled="False"
+                               Margin="0"
+                               Name="labelNC"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                        <Label Content="RST"
+                               Grid.Column="5"
+                               Grid.Row="1"
+                               HorizontalAlignment="Stretch"
+                               HorizontalContentAlignment="Center"
+                               IsEnabled="False"
+                               Margin="0"
+                               Name="labelRST"
+                               Style="{StaticResource OnOffSensorLabel}"
+                               VerticalAlignment="Stretch"
+                               VerticalContentAlignment="Center"
+                               Width="Auto" />
+                    </Grid>
+
+                    <!-- 하단 현재 위치/토크 표시 -->
+                    <Grid Grid.Row="1"
+                          Height="Auto"
+                          HorizontalAlignment="Stretch"
+                          Margin="0"
+                          Name="grid3"
+                          VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*" />
+                            <RowDefinition Height="25*" />
+                            <RowDefinition Height="32*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Content="mm"
+                               Grid.Column="2"
+                               Height="Auto"
+                               Margin="0,-3,0,3"
+                               Name="labelCommandPosUnit"
+                               Width="Auto"
+                               Grid.RowSpan="2" />
+                        <Label Content="mm"
+                               Grid.Column="2"
+                               Height="Auto"
+                               Name="labelActualPosUnit"
+                               Width="Auto"
+                               Grid.RowSpan="2"
+                               Margin="0,15,0,1"
+                               Grid.Row="1" />
+                        <Label Content=" %"
+                               Grid.Column="2"
+                               Grid.Row="2"
+                               Height="Auto"
+                               Name="labelActualToruqUnit"
+                               Width="Auto"
+                               Margin="0,13,0,-13" />
+                        <Label Content="{DynamicResource ResourceKey=CommandPosition}"
+                               Margin="2,-4,2,8"
+                               Name="label1"
+                               VerticalContentAlignment="Center"
+                               Grid.RowSpan="2" />
+                        <Label Content="{DynamicResource ResourceKey=ActualPosition}"
+                               Height="Auto"
+                               Margin="2,6,2,14"
+                               Name="label2"
+                               VerticalContentAlignment="Center"
+                               Grid.RowSpan="2"
+                               Grid.Row="1" />
+                        <Label Content="{DynamicResource ResourceKey=ActualTorque}"
+                               Height="Auto"
+                               Margin="2,8,2,-4"
+                               Name="labeTorque"
+                               VerticalContentAlignment="Center"
+                               Grid.Row="2" />
+                        <Label Content="{Binding Part.CommandPos, Mode=OneWay}"
+                               Grid.Column="1"
+                               Height="Auto"
+                               Margin="2,-1,2,5"
+                               Name="labelCommandPos"
+                               Width="Auto"
+                               Grid.RowSpan="2" />
+                        <Label Content="{Binding Part.ActualPos, Mode=OneWay}"
+                               Grid.Column="1"
+                               Height="Auto"
+                               Margin="2,13,2,7"
+                               Name="labelActualPos"
+                               Width="Auto"
+                               Grid.RowSpan="2"
+                               Grid.Row="1" />
+                        <Label Content="{Binding Part.ReadServoRatio, Mode=OneWay}"
+                               Grid.Column="1"
+                               Height="Auto"
+                               Margin="2,12,2,-8"
+                               Name="labelActualTorque"
+                               Width="Auto"
+                               Grid.Row="2" />
+                    </Grid>
+                </Grid>
+            </GroupBox>
+
+            <!-- JOG MOVE -->
+            <GroupBox Grid.Row="2"
+                      Header="JOG MOVE"
+                      Height="Auto"
+                      HorizontalAlignment="Stretch"
+                      Margin="0"
+                      Name="groupBox2"
+                      VerticalAlignment="Stretch"
+                      Width="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBox Text="{Binding Path=Part.JogMoveSpeed, UpdateSourceTrigger=Explicit}"
+                             BorderThickness="1"
+                             Grid.Column="1"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxJogSpeed"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+                    <Button Content="POSITIVE (+)"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonJogPositive"
+                            PreviewMouseLeftButtonDown="buttonJogPositive_PreviewMouseLeftButtonDown"
+                            PreviewMouseLeftButtonUp="buttonJogPositive_PreviewMouseLeftButtonUp"
+                            VerticalAlignment="Stretch"
+                            Width="Auto" />
+                    <Button Content="NEGATIVE (-)"
+                            Grid.Row="1"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonJogNegative"
+                            PreviewMouseLeftButtonDown="buttonJogNegative_PreviewMouseLeftButtonDown"
+                            PreviewMouseLeftButtonUp="buttonJogNegative_PreviewMouseLeftButtonUp"
+                            VerticalAlignment="Stretch"
+                            Width="Auto" />
+                    <Label Content="JOG SPEED"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label22"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center" />
+                </Grid>
+            </GroupBox>
+
+            <!-- 위치 이동 설정 -->
+            <GroupBox Grid.Row="1"
+                      Header="{DynamicResource ResourceKey=PositionMove}"
+                      Height="Auto"
+                      HorizontalAlignment="Stretch"
+                      Margin="0"
+                      Name="groupBox3"
+                      VerticalAlignment="Stretch"
+                      Width="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Label Content="{DynamicResource ResourceKey=Position}"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label3"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=StartSpeed}"
+                           Grid.Row="1"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label4"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=DriveSpeed}"
+                           Grid.Row="2"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label5"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=AccelTime}"
+                           Grid.Row="3"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label6"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           Width="Auto" />
+                    <Label Content="{DynamicResource ResourceKey=DecelTime}"
+                           Grid.Row="4"
+                           Height="Auto"
+                           HorizontalAlignment="Stretch"
+                           Margin="2"
+                           Name="label7"
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           Width="Auto" />
+
+                    <TextBox Text="{Binding Path=SelectedPosition.Position, UpdateSourceTrigger=Explicit}"
+                             Grid.Column="1"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxPosition"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+                    <TextBox Text="{Binding Path=SelectedPosition.StartSpeed, UpdateSourceTrigger=Explicit}"
+                             Grid.Column="1"
+                             Grid.Row="1"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxStartSpeed"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+                    <TextBox Text="{Binding Path=SelectedPosition.DriveSpeed, UpdateSourceTrigger=Explicit}"
+                             Grid.Column="1"
+                             Grid.Row="2"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxMoveSpeed"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+                    <TextBox Text="{Binding Path=SelectedPosition.AccelTime, UpdateSourceTrigger=Explicit}"
+                             Grid.Column="1"
+                             Grid.Row="3"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxAccTime"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+                    <TextBox Text="{Binding Path=SelectedPosition.DecelTime, UpdateSourceTrigger=Explicit}"
+                             Grid.Column="1"
+                             Grid.Row="4"
+                             Height="Auto"
+                             HorizontalAlignment="Stretch"
+                             HorizontalContentAlignment="Right"
+                             Margin="2"
+                             Name="textBoxDecTime"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Center"
+                             Width="Auto" />
+
+                    <Button Click="buttonHome_Click"
+                            Content="{DynamicResource ResourceKey=ServoHome}"
+                            Grid.Row="5"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonHome"
+                            VerticalAlignment="Stretch"
+                            Width="Auto" />
+                    <Button Click="buttonMove_Click"
+                            Content="{DynamicResource ResourceKey=ServoMove}"
+                            Grid.Column="1"
+                            Grid.Row="5"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonMove"
+                            VerticalAlignment="Stretch"
+                            Width="Auto" />
+                    <Button Click="buttonStop_Click"
+                            Content="{DynamicResource ResourceKey=ServoStop}"
+                            Grid.Column="1"
+                            Grid.Row="6"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonStop"
+                            VerticalAlignment="Stretch"
+                            Width="Auto" />
+                    <Button Click="buttonReset_Click"
+                            Content="{DynamicResource ResourceKey=ServoAlarmReset}"
+                            Grid.Row="7"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Name="buttonReset"
+                            VerticalAlignment="Stretch"
+                            Visibility="Visible"
+                            Width="Auto" />
+                    <Button Click="buttonTorqueMv_Click"
+                            Content="{DynamicResource ResourceKey=TorqueApply}"
+                            Grid.Column="1"
+                            Grid.Row="7"
+                            HorizontalAlignment="Stretch"
+                            Margin="2,1,2,2"
+                            x:Name="buttonReset_Copy"
+                            Visibility="Visible"
+                            Width="Auto"
+                            RenderTransformOrigin="3.58,1.135" />
+                    <Button AllowDrop="{Binding Path=Part.ServoOn}"
+                            Click="buttonOn_Click"
+                            Grid.Row="6"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            IsCancel="False"
+                            Margin="2"
+                            Name="buttonOn"
+                            VerticalAlignment="Stretch"
+                            Width="Auto">
+                        <Button.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <Trigger Property="Button.AllowDrop" Value="True">
+                                        <Setter Property="Button.Content"
+                                                Value="{DynamicResource ResourceKey=ServoOff}" />
+                                    </Trigger>
+                                    <Trigger Property="Button.AllowDrop" Value="False">
+                                        <Setter Property="Button.Content"
+                                                Value="{DynamicResource ResourceKey=ServoOn}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- ===========================
+             우측 상단: Position 리스트
+             =========================== -->
+        <ContentControl Grid.Column="1"
+                        Margin="0,0,0,270"
+                        Tag="{Binding Path=User.Permission}">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <!-- 일반 권한 -->
+                            <DataTemplate>
+                                <ListView ItemsSource="{Binding Path=Positions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                          SelectedItem="{Binding Path=SelectedPosition, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                          ItemContainerStyle="{StaticResource defaultListViewItemStyle}"
+                                          Tag="{Binding ReadOnly, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=Name}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=Explicit}" />
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=Position}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Position, UpdateSourceTrigger=Explicit}"
+                                                                 GotFocus="TextBox_GotFocus"
+                                                                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                                                                 IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding DriveSpeed, UpdateSourceTrigger=Explicit}"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="Lw Limit">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding LwLimit, UpdateSourceTrigger=Explicit}"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 IsReadOnly="True"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="Up Limit">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding UpLimit, UpdateSourceTrigger=Explicit}"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 IsReadOnly="True"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <!-- Master 권한 -->
+                    <Style.Triggers>
+                        <Trigger Property="Tag" Value="{StaticResource ResourceKey=masterPermission}">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <ListView ItemsSource="{Binding Path=Positions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                  SelectedItem="{Binding Path=SelectedPosition, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                                            <ListView.ItemContainerStyle>
+                                                <Style TargetType="ListViewItem">
+                                                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=Name}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=Explicit}" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <!-- Master에서도 Position은 Limit 체크 대상 -->
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=Position}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding Position, UpdateSourceTrigger=Explicit}"                                                                         
+                                                                          IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=StartSpeed}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding StartSpeed, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding DriveSpeed, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=AccelTime}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding AccelTime, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=DecelTime}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding DecelTime, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <!-- Lw / Up Limit -->
+                                                    <GridViewColumn Header="Lw Limit">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding LwLimit, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="True"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="Up Limit">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding UpLimit, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="True"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+
+        <!-- ===========================
+             우측 하단: Torque Limit Params
+             =========================== -->
+        <ContentControl Grid.Column="1"
+                        Margin="0,230,0,0"
+                        Tag="{Binding Path=User.Permission}">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <!-- 일반 권한 -->
+                            <DataTemplate>
+                                <ListView ItemsSource="{Binding Path=Positions2, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                          SelectedItem="{Binding Path=SelectedPosition, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                          ItemContainerStyle="{StaticResource defaultListViewItemStyle}"
+                                          Tag="{Binding ReadOnly, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=Name2}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=Explicit}" />
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=Position2 }">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Position}"
+                                                         TextChanged="TextBox_TextChanged1"
+                                                         GotFocus="TextBox_GotFocus"
+                                                         PreviewKeyDown="TextBox_PreviewKeyDown" />
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed2}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding DriveSpeed}"
+                                                         TextChanged="TextBox_TextChanged2"
+                                                         GotFocus="TextBox_GotFocus"
+                                                         PreviewKeyDown="TextBox_PreviewKeyDown" />
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                            <!-- Lw / Up Limit (표시용) -->
+                                            <GridViewColumn Header="Lw Limit">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding LwLimit, UpdateSourceTrigger=Explicit}"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 IsReadOnly="True"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="Up Limit">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding UpLimit, UpdateSourceTrigger=Explicit}"
+                                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                 IsReadOnly="True"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <!-- Master 권한 -->
+                    <Style.Triggers>
+                        <Trigger Property="Tag" Value="{StaticResource ResourceKey=masterPermission}">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <ListView ItemsSource="{Binding Path=Positions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                  SelectedItem="{Binding Path=SelectedPosition, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                                            <ListView.ItemContainerStyle>
+                                                <Style TargetType="ListViewItem">
+                                                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=Name}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=Explicit}" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=Position}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding Position, UpdateSourceTrigger=Explicit}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=StartSpeed}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding StartSpeed, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=DriveSpeed}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding DriveSpeed, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=AccelTime}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding AccelTime, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="{DynamicResource ResourceKey=DecelTime}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding DecelTime, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+
+                                                    <!-- Lw / Up Limit -->
+                                                    <GridViewColumn Header="Lw Limit">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding LwLimit, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="True"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="Up Limit">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding UpLimit, UpdateSourceTrigger=Explicit}"
+                                                                         Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                                         IsReadOnly="True"/>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+
+    </Grid>
+</UserControl>

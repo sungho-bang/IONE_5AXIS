@@ -1,0 +1,915 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5C73C16-242D-4868-9D19-1E5595602CBC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FAFramework</RootNamespace>
+    <AssemblyName>FAFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.EZGEMLib">
+      <HintPath>DLL\AxInterop.EZGEMLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.EZGEMLib">
+      <HintPath>DLL\Interop.EZGEMLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.6.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.6\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.3.1513, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.3.1.3\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="PropertyChanged, Version=2.1.4.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.1.4\lib\netstandard1.0\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ConfigClasses\ButtonLampConfig.cs" />
+    <Compile Include="ConfigClasses\EquipmentConfig.cs" />
+    <Compile Include="ConfigClasses\EquipmentStateConfig.cs" />
+    <Compile Include="ConfigClasses\EquipmentStateConfigGroup.cs" />
+    <Compile Include="ConfigClasses\SignalTowerConfig.cs" />
+    <Compile Include="EquipmentManager.cs" />
+    <Compile Include="Equipment\INeedEquipmentInstance.cs" />
+    <Compile Include="Equipment\NoAlarmStateEquipment.cs" />
+    <Compile Include="Equipment\StandardEquipment.cs" />
+    <Compile Include="ExtensionUIControls\BlinkImage.cs" />
+    <Compile Include="GEM\ALIDContainer.cs" />
+    <Compile Include="GEM\ALIDDefine.cs" />
+    <Compile Include="GEM\CEIDContainer.cs" />
+    <Compile Include="GEM\CEIDDefine.cs" />
+    <Compile Include="GEM\EventReport.cs" />
+    <Compile Include="GEM\EventReportContainer.cs" />
+    <Compile Include="GEM\GEMManager.cs" />
+    <Compile Include="GEM\GEMMessageItem.cs" />
+    <Compile Include="GEM\MessageArgs.cs" />
+    <Compile Include="GEM\MessageHandler.cs" />
+    <Compile Include="GEM\RemoteCommandArgs.cs" />
+    <Compile Include="GEM\RemoteCommandHandler.cs" />
+    <Compile Include="GEM\SetAttrRequest.cs" />
+    <Compile Include="GEM\SVID.cs" />
+    <Compile Include="GEM\SVIDContainer.cs" />
+    <Compile Include="GEM\SVIDDefine.cs" />
+    <Compile Include="GUI\AlarmControl.xaml.cs">
+      <DependentUpon>AlarmControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\AlarmRegistControl.xaml.cs">
+      <DependentUpon>AlarmRegistControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\AlarmWindow.xaml.cs">
+      <DependentUpon>AlarmWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DebugWindow.xaml.cs">
+      <DependentUpon>DebugWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Device\CAS501AControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CAS501AControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Device\CognexDataMan.xaml.cs">
+      <DependentUpon>CognexDataMan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Device\ZebraPrinterControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ZebraPrinterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\KeyboardWindow.xaml.cs">
+      <DependentUpon>KeyboardWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\LoadingQuestionMessageBoxWindow.xaml.cs">
+      <DependentUpon>LoadingQuestionMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ManualQuestionMessageBoxWindow.xaml.cs">
+      <DependentUpon>ManualQuestionMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\NumericKeyboardWindow.xaml.cs">
+      <DependentUpon>NumericKeyboardWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PartActionWindow.xaml.cs">
+      <DependentUpon>PartActionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PressQuestionMessageBoxWindow.xaml.cs">
+      <DependentUpon>PressQuestionMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PullQuestionMessageBoxWindow.xaml.cs">
+      <DependentUpon>PullQuestionMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\QuestionMessageBoxWindow.xaml.cs">
+      <DependentUpon>QuestionMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\AlarmDefineControl.xaml.cs">
+      <DependentUpon>AlarmDefineControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\AlarmLogControl.xaml.cs">
+      <DependentUpon>AlarmLogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\BandingModuleHeaterSettingControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>BandingModuleHeaterSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\DoorStatusControl.xaml.cs">
+      <DependentUpon>DoorStatusControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\ECCommunicationControl.xaml.cs">
+      <DependentUpon>ECCommunicationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\FanControl.xaml.cs">
+      <DependentUpon>FanControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\GEMTest.xaml.cs">
+      <DependentUpon>GEMTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\IOListControl.xaml.cs">
+      <DependentUpon>IOListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\MainDoorControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MainDoorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\MainOperationControl.xaml.cs">
+      <DependentUpon>MainOperationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\ManualSubUnitDetailOperationControl.xaml.cs">
+      <DependentUpon>ManualSubUnitDetailOperationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\ModuleRetrySettingControl.xaml.cs">
+      <DependentUpon>ModuleRetrySettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\ModuleTimeSettingControl.xaml.cs">
+      <DependentUpon>ModuleTimeSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\MotorConfigControl.xaml.cs">
+      <DependentUpon>MotorConfigControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\MTBILogControl.xaml.cs">
+      <DependentUpon>MTBILogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\RetrySettingControl.xaml.cs">
+      <DependentUpon>RetrySettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\SignalTowerControl.xaml.cs">
+      <DependentUpon>SignalTowerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\StandardMainControl.xaml.cs">
+      <DependentUpon>StandardMainControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\StandardMainFrameControl.xaml.cs">
+      <DependentUpon>StandardMainFrameControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\SubUnitRetrySettingControl.xaml.cs">
+      <DependentUpon>SubUnitRetrySettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\SubUnitRetryTimeSettingControl.xaml.cs">
+      <DependentUpon>SubUnitRetryTimeSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\SubUnitTimeSettingControl.xaml.cs">
+      <DependentUpon>SubUnitTimeSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\SystemSettingControl.xaml.cs">
+      <DependentUpon>SystemSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\TimeSettingControl.xaml.cs">
+      <DependentUpon>TimeSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Standard\TraceLogControl.xaml.cs">
+      <DependentUpon>TraceLogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\UserSelectWindow.xaml.cs">
+      <DependentUpon>UserSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\WarningWindow.xaml.cs">
+      <DependentUpon>WarningWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\WindowVersionInfo.xaml.cs">
+      <DependentUpon>WindowVersionInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LogSearcher\ProductLogSearcher.cs" />
+    <Compile Include="Utility\Alarm\AlarmMoreInfo.cs" />
+    <Compile Include="Utility\Alarm\EAlarmStatus.cs" />
+    <Compile Include="Utility\Alarm\EAlarmType.cs" />
+    <Compile Include="Utility\KnownCulture.cs" />
+    <Compile Include="VT3500\ExtendedParts\FAFirstPressServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FAFourthPressServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FAOptinPressServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FAOptionServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FASecondPressServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FATapeCoverServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FABandPickServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FABandTransferServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FABandRollerServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FATapeLoadingServo.cs" />
+    <Compile Include="VT3500\ExtendedParts\FAThirdPressServo.cs" />
+    <Compile Include="VT3500\GUI\AlarmMainStatusControl.xaml.cs">
+      <DependentUpon>AlarmMainStatusControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ConfigBaseControl.xaml.cs">
+      <DependentUpon>ConfigBaseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\EquipmentWindow.xaml.cs">
+      <DependentUpon>EquipmentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\FrontManualControl.xaml.cs">
+      <DependentUpon>FrontManualControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\IntializeControl.xaml.cs">
+      <DependentUpon>IntializeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\JobSettingControl.xaml.cs">
+      <DependentUpon>JobSettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\MainStatusControl.xaml.cs">
+      <DependentUpon>MainStatusControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\OptionPressControl.xaml.cs">
+      <DependentUpon>OptionPressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\OptionControl.xaml.cs">
+      <DependentUpon>OptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\FourthPressControl.xaml.cs">
+      <DependentUpon>FourthPressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\InverterMotorControl.xaml.cs">
+      <DependentUpon>InverterMotorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\ThirdPressControl.xaml.cs">
+      <DependentUpon>ThirdPressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\SecondPressControl.xaml.cs">
+      <DependentUpon>SecondPressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\FirstPressControl.xaml.cs">
+      <DependentUpon>FirstPressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\DoorControl.xaml.cs">
+      <DependentUpon>DoorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\SealingControl.xaml.cs">
+      <DependentUpon>SealingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\ShapeMoldingControl.xaml.cs">
+      <DependentUpon>ShapeMoldingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\PackingControl.xaml.cs">
+      <DependentUpon>PackingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualControl\FeedingControl.xaml.cs">
+      <DependentUpon>FeedingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\ManualTopViewControl.xaml.cs">
+      <DependentUpon>ManualTopViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\NewManualTopViewControl.xaml.cs">
+      <DependentUpon>NewManualTopViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\PositionControl.xaml.cs">
+      <DependentUpon>PositionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\OneCycleManualControl.xaml.cs">
+      <DependentUpon>OneCycleManualControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\RearManualControl.xaml.cs">
+      <DependentUpon>RearManualControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\GUI\SettingControl.xaml.cs">
+      <DependentUpon>SettingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VT3500\JobInfo\JobManager.cs" />
+    <Compile Include="VT3500\JobInfo\JobStepBase.cs" />
+    <Compile Include="VT3500\JobInfo\LotJobInfo.cs" />
+    <Compile Include="VT3500\JobInfo\MoveJobInfo.cs" />
+    <Compile Include="VT3500\Modules\ExtensionOperationModule.cs" />
+    <Compile Include="VT3500\Modules\ExtensionStateSignalModule.cs" />
+    <Compile Include="VT3500\Modules\FAPressModule.cs" />
+    <Compile Include="VT3500\Modules\FARearLoadingModule.cs" />
+    <Compile Include="VT3500\Modules\FAMainLoopModule.cs" />
+    <Compile Include="VT3500\Modules\FAFrontLoadingModule.cs" />
+    <Compile Include="VT3500\Modules\FASafetyModule.cs" />
+    <Compile Include="VT3500\SubEquipment.cs" />
+    <Compile Include="LogSearcher\AlarmLogSearcher.cs" />
+    <Compile Include="LogSearcher\LogSearcherBase.cs" />
+    <Compile Include="LogSearcher\MTBILogSearcher.cs" />
+    <Compile Include="LogSearcher\TraceLogSearcher.cs" />
+    <Compile Include="Manager\AlarmRaisingStatusManager.cs" />
+    <Compile Include="Manager\AlarmResourceManager.cs" />
+    <Compile Include="Manager\ConditionalSequenceManager.cs" />
+    <Compile Include="Manager\JSONSerializeManager.cs" />
+    <Compile Include="Manager\LogManager.cs" />
+    <Compile Include="Manager\LotManager.cs" />
+    <Compile Include="Manager\MachineManager.cs" />
+    <Compile Include="Manager\MaterialManager.cs" />
+    <Compile Include="Manager\MessageWindowManager.cs" />
+    <Compile Include="Manager\MessageWindowNameManager.cs" />
+    <Compile Include="Manager\MTBISummaryManager.cs" />
+    <Compile Include="Manager\PackingLogManager.cs" />
+    <Compile Include="Manager\ProductOutputManager.cs" />
+    <Compile Include="Manager\QueryMessageBoxManager.cs" />
+    <Compile Include="Manager\StringResourceManager.cs" />
+    <Compile Include="Manager\TPLogManager.cs" />
+    <Compile Include="Module\FABandingModule.cs" />
+    <Compile Include="Module\FADynamicPopingStacker.cs" />
+    <Compile Include="Module\FAInlineModule.cs" />
+    <Compile Include="Module\FAKukaRobotModule.cs" />
+    <Compile Include="Module\FAModule.cs" />
+    <Compile Include="Module\FAPassModule.cs" />
+    <Compile Include="Module\FAStackerModule.cs" />
+    <Compile Include="Module\FAStackersUnionModule.cs" />
+    <Compile Include="Module\FAStackModule.cs" />
+    <Compile Include="Module\FAUnstackModule.cs" />
+    <Compile Include="Module\OperationModule.cs" />
+    <Compile Include="Module\StackerPart.cs" />
+    <Compile Include="Module\StateSignalModule.cs" />
+    <Compile Include="Utility\AlarmUtility.cs" />
+    <Compile Include="Utility\AliasObject.cs" />
+    <Compile Include="Utility\Assign.cs" />
+    <Compile Include="Utility\Attributes.cs" />
+    <Compile Include="Utility\CommandHandler.cs" />
+    <Compile Include="Utility\ConfigCreator.cs" />
+    <Compile Include="Utility\Converter\AlarmModulesConverter.cs" />
+    <Compile Include="Utility\Converter\AlarmStatusConverter.cs" />
+    <Compile Include="Utility\Converter\AlarmTypeConverter.cs" />
+    <Compile Include="Utility\Converter\BoolInverseConverter.cs" />
+    <Compile Include="Utility\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Utility\Converter\CamelCaseConverter.cs" />
+    <Compile Include="Utility\Converter\SequenceStartableToVisibilityConverter.cs" />
+    <Compile Include="Utility\Converter\TagToPartsConverter.cs" />
+    <Compile Include="Utility\Converter\GetPartObjectConverter.cs" />
+    <Compile Include="Utility\Converter\CSVToArrayConverter.cs" />
+    <Compile Include="Utility\Converter\ExtractActionsConverter.cs" />
+    <Compile Include="Utility\Converter\ExtractServoPositionsConverter.cs" />
+    <Compile Include="Utility\Converter\GridViewColumnRemoveConverter.cs" />
+    <Compile Include="Utility\Converter\ImageToGridLengthConverter.cs" />
+    <Compile Include="Utility\Converter\IntCompareToVisibleConverter.cs" />
+    <Compile Include="Utility\Converter\IntIsSameToBoolConverter.cs" />
+    <Compile Include="Utility\Converter\IsAssignableConverter.cs" />
+    <Compile Include="Utility\Converter\IsEqualMultiValueConverter.cs" />
+    <Compile Include="Utility\Converter\IsExistConverter.cs" />
+    <Compile Include="Utility\Converter\IsStringNotEmptyConverter.cs" />
+    <Compile Include="Utility\Converter\MultipleConverter.cs" />
+    <Compile Include="Utility\Converter\MultiValueConverter.cs" />
+    <Compile Include="Utility\Converter\NullToBooleanConverter.cs" />
+    <Compile Include="Utility\Converter\NullToVisibillityConverter.cs" />
+    <Compile Include="Utility\Converter\OffsetConverter.cs" />
+    <Compile Include="Utility\Converter\OnOffPartAvailableStatusConverter.cs" />
+    <Compile Include="Utility\Converter\PartSearchConverter.cs" />
+    <Compile Include="Utility\Converter\PermissionToBoolConverter.cs" />
+    <Compile Include="Utility\Converter\PermissionToGridLengthConverter.cs" />
+    <Compile Include="Utility\Converter\PermissionToVisibilityConverter.cs" />
+    <Compile Include="Utility\Converter\StateToBoolConverter.cs" />
+    <Compile Include="Utility\Converter\StateToVisibilityConverter.cs" />
+    <Compile Include="Utility\Converter\StringNotEmptyToVisibilityConverter.cs" />
+    <Compile Include="Utility\Converter\StringToArrayConverter.cs" />
+    <Compile Include="Utility\Converter\StringToGridLengthConverter.cs" />
+    <Compile Include="Utility\Converter\UIntIsOverToBoolConverter.cs" />
+    <Compile Include="Utility\Converter\UIntIsSameOrOverToBoolConverter.cs" />
+    <Compile Include="Utility\Converter\UIntIsSameOrOverToVisibleConverter.cs" />
+    <Compile Include="Utility\Converter\UIntIsUnderToBoolConverter.cs" />
+    <Compile Include="Utility\ExtractionObjectElement.cs" />
+    <Compile Include="Utility\FAJobInfo.cs" />
+    <Compile Include="Utility\FAMMCPositionUtil.cs" />
+    <Compile Include="Utility\FANumberRangeRule.cs" />
+    <Compile Include="Utility\FAProductInfo.cs" />
+    <Compile Include="Utility\FileUtility.cs" />
+    <Compile Include="Utility\GenericDependencyElement.cs" />
+    <Compile Include="Utility\JSONSerializer.cs" />
+    <Compile Include="Utility\LogSearchingDateTime.cs" />
+    <Compile Include="Utility\MatrixSize.cs" />
+    <Compile Include="Utility\NoActionRoutedCommand.cs" />
+    <Compile Include="Utility\ObjectKeyValuePair.cs" />
+    <Compile Include="Utility\ObjectPropertyInfo.cs" />
+    <Compile Include="Utility\PackingLog\AlarmLog.cs" />
+    <Compile Include="Utility\PackingLog\EventLog.cs" />
+    <Compile Include="Utility\PackingLog\LogBase.cs" />
+    <Compile Include="Utility\PackingLog\MaterialLog.cs" />
+    <Compile Include="Utility\PackingLog\ProductLog.cs" />
+    <Compile Include="Utility\PartDefineForManualOperation.cs" />
+    <Compile Include="Utility\PartToPartDefineConvertor.cs" />
+    <Compile Include="Utility\QueryMessageResultState.cs" />
+    <Compile Include="Utility\RangeRule.cs" />
+    <Compile Include="Utility\SamsungTPLog\AlarmLog.cs" />
+    <Compile Include="Utility\SamsungTPLog\ConfigChangeInfo.cs" />
+    <Compile Include="Utility\SamsungTPLog\ConfigurationLog.cs" />
+    <Compile Include="Utility\SamsungTPLog\FunctionLog.cs" />
+    <Compile Include="Utility\SamsungTPLog\LogBase.cs" />
+    <Compile Include="Utility\SamsungTPLog\LogUtility.cs" />
+    <Compile Include="Utility\SamsungTPLog\LotEventLog.cs" />
+    <Compile Include="Utility\SamsungTPLog\ParameterClass\FunctionLogParam.cs" />
+    <Compile Include="Utility\SamsungTPLog\ParameterClass\LogParamData.cs" />
+    <Compile Include="Utility\SamsungTPLog\ProcessLog.cs" />
+    <Compile Include="Utility\SamsungTPLog\TransferLog.cs" />
+    <Compile Include="Utility\StaticCommands.cs" />
+    <Compile Include="Utility\ThreadSafeObservableCollection.cs" />
+    <Compile Include="Utility\UtilityClass.cs" />
+    <Compile Include="Utility\VirtualKeyboardAttached.cs" />
+    <Compile Include="Utility\XElementUtil.cs" />
+    <Compile Include="Utility\XYZPositionGroup.cs" />
+    <Compile Include="GEM\CEID.cs" />
+    <Compile Include="VT3500\SubUnits\FADoorUnit.cs" />
+    <Compile Include="VT3500\SubUnits\FAHeaterUnit.cs" />
+    <Compile Include="VT3500\SubUnits\FAPressUnit.cs" />
+    <Compile Include="VT3500\SubUnits\FARearLoadingUnit.cs" />
+    <Compile Include="VT3500\SubUnits\FAFrontLoadingUnit.cs" />
+    <Compile Include="VT3500\SubUnits\FASystemUnit.cs" />
+    <Page Include="GUI\AlarmControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\AlarmRegistControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\AlarmWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Device\CAS501AControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Device\CognexDataMan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Device\ZebraPrinterControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\KeyboardWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\LoadingQuestionMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ManualQuestionMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\NumericKeyboardWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PressQuestionMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PullQuestionMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\QuestionMessageBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\AlarmDefineControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\AlarmLogControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\BandingModuleHeaterSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\DoorStatusControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\ECCommunicationControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\FanControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\GEMTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\IOListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\MainDoorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\MainOperationControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\ManualSubUnitDetailOperationControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\ModuleRetrySettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\ModuleTimeSettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\MotorConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\MTBILogControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\RetrySettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\SignalTowerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\StandardMainControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\StandardMainFrameControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\SubUnitRetrySettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\SubUnitRetryTimeSettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\SubUnitTimeSettingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Standard\SystemSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\TimeSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Standard\TraceLogControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\UserSelectWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\WarningWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\WindowVersionInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\StringResource_ko-kr.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\AlarmMainStatusControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ConfigBaseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\EquipmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionary\CustomStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\FontStyleResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\DebugWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\PartActionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigClasses\GlobalConst.cs" />
+    <Compile Include="Equipment\EquipmentBase.cs" />
+    <Compile Include="Equipment\EquipmentManager.cs" />
+    <Compile Include="Equipment\MainEquipment.cs" />
+    <Compile Include="Equipment\SubUnitBase.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ResourceDictionary\JobControlResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\ManualControlResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourceDictionary\StringResource_en-us.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VT3500\GUI\FrontManualControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\IntializeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\JobSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\MainStatusControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\OptionPressControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\OptionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\FourthPressControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\InverterMotorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\ThirdPressControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\SecondPressControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\FirstPressControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\DoorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\SealingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\ShapeMoldingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\PackingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualControl\FeedingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\ManualTopViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VT3500\GUI\NewManualTopViewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\PositionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\OneCycleManualControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\RearManualControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VT3500\GUI\SettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Manager\DeviceManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\FALibrary.dll" />
+    <Resource Include="Images\OptionControl.png" />
+    <Resource Include="Images\MainTopView1.png" />
+    <Resource Include="Images\Sequence2.png" />
+    <Resource Include="Images\Sequence3.png" />
+    <Resource Include="Images\VT3500_FRONT.PNG" />
+    <Resource Include="Images\VT3500_REAR.PNG" />
+    <Resource Include="Images\Press.png" />
+    <Resource Include="Images\FeedingControl.png" />
+    <Resource Include="Images\PackingControl.png" />
+    <Resource Include="Images\SealingControl.png" />
+    <Resource Include="Images\ShaftMoldingControl.png" />
+    <Resource Include="Images\Vestek.png" />
+    <Resource Include="Images\Alarm.png" />
+    <Resource Include="Images\Alarm1.png" />
+    <Resource Include="Images\Initial.png" />
+    <Resource Include="Images\Initial1.png" />
+    <Resource Include="Images\Mute.png" />
+    <Resource Include="Images\Mute1.png" />
+    <Resource Include="Images\Start.png" />
+    <Resource Include="Images\Start1.png" />
+    <Resource Include="Images\Stop.png" />
+    <Resource Include="Images\Stop1.png" />
+    <Resource Include="Images\Exit1.png" />
+    <Resource Include="Images\Gear1.png" />
+    <Resource Include="Images\history1.png" />
+    <Resource Include="Images\Manual1.png" />
+    <Resource Include="Images\Home1.png" />
+    <Resource Include="Images\Exit.png" />
+    <Resource Include="Images\Home.png" />
+    <Resource Include="Images\Manual.png" />
+    <Resource Include="Images\history.png" />
+    <Resource Include="Images\Gear.PNG" />
+    <Resource Include="VersionHistory.txt" />
+    <Resource Include="Images\Door_1.png" />
+    <Resource Include="Images\Fifth.png" />
+    <Resource Include="Images\First.png" />
+    <Resource Include="Images\Fourth.png" />
+    <Resource Include="Images\MainTopView.png" />
+    <Resource Include="Images\Second.png" />
+    <Resource Include="Images\Third.png" />
+    <Resource Include="Images\sign_warning.png" />
+    <None Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FALibrary\FALibrary.csproj">
+      <Project>{64cc0a4f-3d94-42ec-94c0-6554170e47a5}</Project>
+      <Name>FALibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.0.0\build\dotnet\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets'))" />
+  </Target>
+  <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

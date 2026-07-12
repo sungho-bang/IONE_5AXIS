@@ -1,0 +1,220 @@
+﻿<UserControl x:Class="FAFramework.GUI.Standard.StandardMainControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             xmlns:manager="clr-namespace:FAFramework.Manager"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:gui="clr-namespace:FAFramework.GUI"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <Style x:Key="RunningStatusLabel" TargetType="{x:Type Label}">
+            <Style.Triggers>
+                <Trigger Property="Tag" Value="PreRunState">
+                    <Setter Property="Content" Value="기동중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="GreenYellow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="RunState">
+                    <Setter Property="Content" Value="기 동"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="GreenYellow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreStopState">
+                    <Setter Property="Content" Value="정지중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="StopState">
+                    <Setter Property="Content" Value="정 지"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreInitializeState">
+                    <Setter Property="Content" Value="초기화"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="GreenYellow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="InitializeState">
+                    <Setter Property="Content" Value="초기화중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="GreenYellow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="RundownState">
+                    <Setter Property="Content" Value="RUNDOWN"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="GreenYellow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreEmergencyState">
+                    <Setter Property="Content" Value="비상중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="EmergencyState">
+                    <Setter Property="Content" Value="비 상"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreAlarmState">
+                    <Setter Property="Content" Value="알람중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0.4" AutoReverse="True"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreWarningState">
+                    <Setter Property="Content" Value="경고중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="WarningState">
+                    <Setter Property="Content" Value="경 고"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="AlarmState">
+                    <Setter Property="Content" Value="알 람"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="PreSuspendState">
+                    <Setter Property="Content" Value="기동정지중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="SuspendState">
+                    <Setter Property="Content" Value="기동정지중"/>
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+        <Grid Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="grid1" VerticalAlignment="Stretch" Width="Auto">
+            <Frame Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="frameLeftSide" VerticalAlignment="Stretch" Width="Auto" Content="{Binding PageLeftSide}" />
+        </Grid>
+        <Grid Grid.Column="1" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="grid2" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0" Name="labelState" Style="{StaticResource RunningStatusLabel}" VerticalAlignment="Stretch" VerticalContentAlignment="Center" PreviewMouseDown="labelState_PreviewMouseDown" PreviewMouseUp="labelState_PreviewMouseUp">
+                <Label.Tag>
+                    <Binding Path="EquipmentInstance.State.Name"/>
+                </Label.Tag>
+                <Label.ContentTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5">
+                            <Viewbox>
+                                <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Viewbox>
+                        </Grid>
+                    </DataTemplate>
+                </Label.ContentTemplate>
+            </Label>
+            <Grid Grid.Row="1">
+                <gui:AlarmControl x:Name="alarmControl" AlarmRaisingStatusManager="{Binding Path=EquipmentInstance.AlarmRaisingStatusManager, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" />
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=alarmControl, Path=Visibility}" Value="Visible">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=alarmControl, Path=Visibility}" Value="Collapsed">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <ContentControl Content="{Binding Path=CenterControl}" />
+                    </Grid>
+                    <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" Margin="0" Height="30" Name="textBoxTraceLog" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Grid.Row="1" Text="{Binding Path=TraceLog}" MouseDoubleClick="TextBoxTraceLog_MouseDoubleClick" >
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="LightYellow" Offset="0"/>
+                                <GradientStop Color="LightSkyBlue" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="grid3" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox HorizontalAlignment="Stretch" Margin="2" Name="groupBoxDateTime" VerticalAlignment="Stretch" Header="{DynamicResource ResourceKey=DateTime}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <Grid Background="Black">
+                    <Viewbox>
+                        <TextBlock Foreground="GreenYellow" HorizontalAlignment="Center" Margin="10" Name="labelDate" VerticalAlignment="Center" Text="{Binding Path=CurrentTime, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                    </Viewbox>
+                </Grid>
+            </GroupBox>
+            <GroupBox HorizontalAlignment="Stretch" Margin="2" Name="groupBoxInformation" VerticalAlignment="Stretch" Grid.Row="1" Header="{DynamicResource ResourceKey=Information}">
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="IsEnabled" Value="False" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=EquipmentInstance.State.Name}" Value="StopState">
+                                    <Setter Property="IsEnabled" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Content="{DynamicResource ResourceKey=Permission}" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="labelLevelCaption" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.ColumnSpan="2" />
+                    <Label Content="{DynamicResource ResourceKey=UserID}" Grid.Row="3" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="labeloperatorIDCaption" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.ColumnSpan="2" />
+                    <Label Content="{DynamicResource ResourceKey=SWInfo}" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="2" Name="labelSWInfoCaption" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Grid.ColumnSpan="2" />
+                    <Label Content="{Binding Path=EquipmentInstance.CurrentUser.Permission}" Background="White" Foreground="Black" Grid.Column="2" Grid.Row="2" Height="Auto" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" />
+                    <Button x:Name="userID" Content="{Binding Path=EquipmentInstance.CurrentUser.Name}" Background="Gold" Command="{Binding Path=UserIDClick}" Focusable="False" BorderThickness="0" Grid.Column="2" Grid.Row="3" Height="Auto" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" Padding="5"/>
+                    <Label Content="{Binding Path=Version, Source={x:Static equipment:MainEquipment.Instance}}" MouseDown="labelSWVersion_MouseDown" Background="White" Foreground="Black" Grid.Column="2" Grid.Row="4" Height="Auto" HorizontalAlignment="Stretch" Margin="2" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Width="Auto" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{DynamicResource ResourceKey=Buttons}" HorizontalAlignment="Stretch" Margin="0" Name="groupBoxButtons" VerticalAlignment="Stretch" Grid.Row="2">
+                <ContentPresenter Content="{Binding Path=ButtonsControl}" />
+            </GroupBox>
+            <Image Height="Auto" HorizontalAlignment="Stretch" Margin="0" Stretch="Fill" VerticalAlignment="Stretch" Width="Auto" Source="{Binding Path=ImageLogo}"  />
+        </Grid>
+    </Grid>
+</UserControl>

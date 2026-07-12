@@ -1,0 +1,371 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.FrontManualControl"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             Height="768" Width="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock Text="{Binding Subject}" FontSize="36" DockPanel.Dock="Top"/>
+        <Grid  Width="1024">
+            <Grid Grid.Column="0">
+                <ListBox Visibility="Collapsed" >
+                    <control:InverterMotorControl
+                        x:Name="InverterMotorControl" 
+                        SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        ReadOnly="{Binding EquipmentManagerInstance.VT3500.CurrentUser.Permission, Source={x:Static equipment:MainEquipment.Instance},Converter={StaticResource permissionToBoolConverter}, ConverterParameter={StaticResource operatorPermitted}}"/>
+                    <control:FirstPressControl
+                        x:Name="FirstPressControl" 
+                        FirstUnit="{Binding Path=EquipmentManagerInstance.VT3500.FirstPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        ReadOnly="{Binding EquipmentManagerInstance.VT3500.CurrentUser.Permission, Source={x:Static equipment:MainEquipment.Instance},Converter={StaticResource permissionToBoolConverter}, ConverterParameter={StaticResource operatorPermitted}}"/>
+                    <control:SecondPressControl
+                        x:Name="SecondPressControl" 
+                        SecondUnit="{Binding Path=EquipmentManagerInstance.VT3500.SecondPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        ReadOnly="{Binding EquipmentManagerInstance.VT3500.CurrentUser.Permission, Source={x:Static equipment:MainEquipment.Instance},Converter={StaticResource permissionToBoolConverter}, ConverterParameter={StaticResource operatorPermitted}}"/>
+                    <control:ThirdPressControl
+                        x:Name="ThirdPressControl" 
+                        ThirdUnit="{Binding Path=EquipmentManagerInstance.VT3500.ThirdPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        ReadOnly="{Binding EquipmentManagerInstance.VT3500.CurrentUser.Permission, Source={x:Static equipment:MainEquipment.Instance},Converter={StaticResource permissionToBoolConverter}, ConverterParameter={StaticResource operatorPermitted}}"/>
+                </ListBox>
+                <ContentPresenter Name="contentControlSelectedControl">
+                    <ContentPresenter.ContentTemplate>
+                        <DataTemplate>
+                            <Viewbox>
+                                <ContentControl Content="{Binding}" />
+                            </Viewbox>
+                        </DataTemplate>
+                    </ContentPresenter.ContentTemplate>
+                </ContentPresenter>
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Image Source="/FAFramework;component/Images/VT3500_FRONT.png" Margin="0,100,0,0" />
+                <Grid Width="1024" Margin="0,0,0,-180">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="500" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid  Grid.Column="0" Grid.Row="0" ShowGridLines="False">
+                        <Canvas Margin="0,0,0,0">
+                            <Canvas.Resources>
+                                <Style TargetType="Button" x:Name="ManualButton" BasedOn="{StaticResource baseStyle}" >
+                                    <Setter Property="Opacity" Value="0.5" />
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard x:Name="ButtonAction">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:3" AutoReverse="False"  RepeatBehavior="Forever" FillBehavior="HoldEnd" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard >
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.3" Duration="0:0:1" AutoReverse="True" RepeatBehavior="Forever" FillBehavior="HoldEnd">
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Canvas.Resources>
+                            <Canvas Name="buttonsCanvas" Style="{StaticResource actuatorSelectButtonCanvas}">
+                                <Button Tag="FrontUnit.TapeCoverServo" Height="75" Background="DarkBlue" Width="72" Canvas.Left="425" Canvas.Top="153" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.TapeLoadGrip" Height="45" Background="DarkBlue" Width="42" Canvas.Left="502" Canvas.Top="202" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.TapeHoldGrip" Height="45" Background="DarkBlue" Width="46" Canvas.Left="594" Canvas.Top="202" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.TapeLoadingServo" Height="21" Background="DarkBlue" Width="181" Canvas.Left="448" Canvas.Top="247" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.PackingTapeLoadingMotor" Height="73" Background="DarkBlue" Width="74" Canvas.Left="666" Canvas.Top="305" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.BandVaccum" Height="30" Background="DarkBlue" Width="52" Canvas.Left="746" Canvas.Top="202" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.BandPickServo" Height="45" Background="DarkBlue" Width="45" Canvas.Left="826" Canvas.Top="202" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.BandPitchChangeCylinder" Height="28" Background="DarkBlue" Width="52" Canvas.Left="746" Canvas.Top="237" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                                <Button Tag="FrontUnit.BandTransferServo" Height="16" Background="DarkBlue" Width="141" Canvas.Left="746" Canvas.Top="180" RenderTransformOrigin="0.5,0.5" Margin="0" />
+                            </Canvas>
+                            <Canvas>
+                                <Button Height="98" Background="DarkBlue" Width="86" Canvas.Left="16" Canvas.Top="257" ToolTip="Inverter Motor Control" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                            <Binding Mode="OneWay" ElementName="InverterMotorControl" />
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button Height="171" Background="DarkBlue" Width="86" Canvas.Left="187" Canvas.Top="114" ToolTip="1st Press Control" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                            <Binding Mode="OneWay" ElementName="FirstPressControl" />
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button Height="171" Background="DarkBlue" Width="86" Canvas.Left="314" Canvas.Top="114" ToolTip="2nd Press Control" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.477,0.556" Margin="0" >
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                            <Binding Mode="OneWay" ElementName="SecondPressControl" />
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button Height="171" Background="DarkBlue" Width="86" Canvas.Left="655" Canvas.Top="114" ToolTip="3rd Press Control" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5" Margin="0" >
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                            <Binding Mode="OneWay" ElementName="ThirdPressControl" />
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                            </Canvas>
+                            <Canvas Style="{StaticResource sensorsCanvas}">
+                                <StackPanel>
+                                    <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionUpSensor}" />
+                                    <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionDownSensor}" />
+                                    <ContentPresenter Content="{Binding FrontUnit.PackingMotorRunCheck}" />
+                                </StackPanel>
+                            </Canvas>
+
+                            <Grid HorizontalAlignment="Right" Height="560" Canvas.Right="170" Canvas.Top="150" Canvas.Left="885">
+                                <ContentControl Content="{Binding Path=Children, ElementName=buttonsCanvas}"
+                                ContentTemplate="{StaticResource actuatorOperateButtons}"
+                                Tag="{Binding ElementName=buttonsCanvas, Path=Tag}" Margin="0" />
+                            </Grid>
+                        </Canvas>
+                    </Grid>
+                    <Grid Grid.Column="0" Grid.Row="1" Height="auto" Margin="0,-95,0,-52" ShowGridLines="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions >
+                            <RowDefinition  Height="*" />
+                            <RowDefinition  Height="50" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualLoading.State}" TextAlignment="Center" Background="Gold" Foreground="Black" Margin="0,-31,0,69" HorizontalAlignment="Center" Width="341" FontSize="25" VerticalAlignment="Center" Grid.Column="0"/>
+                        <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualPress.State}" TextAlignment="Center" Background="Gold" Foreground="Black" Margin="0,-31,0,69" HorizontalAlignment="Center" Width="342" FontSize="25" VerticalAlignment="Center" Grid.Column="1" />
+                        <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkFrontPullManual.State}" TextAlignment="Center" Background="Gold" Foreground="Black" Margin="0,-31,0,69" HorizontalAlignment="Center" Width="342" FontSize="25" VerticalAlignment="Center" Grid.Column="2" />
+                        <UniformGrid Grid.Column="0" Grid.Row="0" Background="White" Margin="5">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="Loading Manual" FontSize="20" Margin="0,0,0,5"/>
+                                <StackPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </StackPanel.LayoutTransform>
+                            </StackPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="0" Grid.Row="1" Background="White" Margin="5">
+                            <DockPanel>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualLoading.CurrentIndex}"  Grid.Column="0" Grid.Row="1" Margin="30,0,0,0" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                                <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualLoading.Length}" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                                <DockPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </DockPanel.LayoutTransform>
+                            </DockPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="0" Grid.Row="2" Background="White">
+                            <Border>
+                                <Button FontSize="30" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Loading_Start_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="시  작" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="0" Grid.Row="3" Background="White">
+                            <Border>
+                                <Button FontSize="27" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Loading_Stop_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="정  지" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="0" Grid.Row="4" Background="White">
+                            <Border>
+                                <Button FontSize="27" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Loading_NextStepMove_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="다  음" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="1" Grid.Row="0" Background="White" Margin="5">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="Press Manual" FontSize="20" />
+                                <StackPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </StackPanel.LayoutTransform>
+                            </StackPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="1" Grid.Row="1" Background="White" Margin="5">
+                            <DockPanel>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualPress.CurrentIndex}"  Grid.Column="0" Grid.Row="1" Margin="30,0,0,0" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                                <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkManualPress.Length}" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                                <DockPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </DockPanel.LayoutTransform>
+                            </DockPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="1" Grid.Row="2" Background="White">
+                            <Border>
+                                <Button FontSize="30" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Press_Start_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="시  작" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="1" Grid.Row="3" Background="White">
+                            <Border>
+                                <Button FontSize="27" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Press_Stop_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="정  지" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="1" Grid.Row="4" Background="White">
+                            <Border>
+                                <Button FontSize="27" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Press_NextStepMove_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="다  음" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="2" Grid.Row="0" Background="White" Margin="5">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="Pull Manual" FontSize="20" />
+                                <StackPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </StackPanel.LayoutTransform>
+                            </StackPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="2" Grid.Row="1" Background="White" Margin="5">
+                            <DockPanel>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkFrontPullManual.CurrentIndex}"  Grid.Column="0" Grid.Row="1" Margin="30,0,0,0" HorizontalAlignment="Left" Width="40" FontSize="25" VerticalAlignment="Center" />
+                                <TextBlock Text="/" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                                <TextBlock Text="{Binding EquipmentInstance.FrontModule.WorkFrontPullManual.Length}" Grid.Column="0" Grid.Row="1" Margin="10,0,0,0" HorizontalAlignment="Right" Width="40" FontSize="25" VerticalAlignment="Center"/>
+                                <DockPanel.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </DockPanel.LayoutTransform>
+                            </DockPanel>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="2" Grid.Row="2" Background="White">
+                            <Border>
+                                <Button FontSize="30" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Pull_Start_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="시  작" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                        <UniformGrid Grid.Column="2" Grid.Row="3" Background="White">
+                            <Border>
+                                <Button FontSize="27" FontWeight="Bold" VerticalContentAlignment="Center" Style="{StaticResource LEDRoundButton9}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Pull_Stop_Button_Click" Width="320" Height="46">
+                                    <Button.LayoutTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                                    </Button.LayoutTransform>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="20" Color="Black" RenderingBias="Quality" ShadowDepth="15"/>
+                                    </Button.Effect>
+                                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Text="정  지" FontSize="34" Margin="0" />
+                                </Button>
+                            </Border>
+                        </UniformGrid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+                <Canvas Margin="0,0,600,0" FlowDirection="LeftToRight">
+                    <Button Name="Closebutton" Content="이 전" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="90" Height="50" ToolTip="Close" Click="Closebutton_Click" Background="DarkBlue" Foreground="White"
+                             Visibility="{Binding GobackButtonHide2, Converter={StaticResource ResourceKey=BoolToVisibilityConverter}}" Canvas.Left="-93" Margin="-10,0,0,0" Canvas.Top="29"/>
+                </Canvas>
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

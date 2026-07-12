@@ -1,0 +1,152 @@
+﻿<Window x:Class="FAFramework.VT3500.GUI.EquipmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Closing="Window_Closing"
+	WindowStartupLocation="CenterScreen"
+        Title="EquipmentWindow" Height="300" Width="300"
+        xmlns:gui.standard="clr-namespace:FAFramework.GUI.Standard"
+        xmlns:gui.device="clr-namespace:FAFramework.GUI.Device"
+        xmlns:equipment="clr-namespace:FAFramework.Equipment"
+        xmlns:localGui="clr-namespace:FAFramework.VT3500.GUI"
+        xmlns:manualControls="clr-namespace:FAFramework.VT3500.GUI.ManualControl"           
+        xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+        xmlns:logSearcher="clr-namespace:FAFramework.LogSearcher"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"        
+        DataContext="{Binding RelativeSource={RelativeSource self}}" Loaded="Window_Loaded" WindowStyle="None" WindowState="Maximized">
+    <Window.Resources>
+        <ResourceDictionary>
+            <!-- ★ 추가 : Frame 에 대한 기본 스타일 (아무 속성도 안줌, 단순 덮어쓰기용) -->
+            <Style TargetType="Frame" />
+            
+            <Style TargetType="Ellipse">
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransformOrigin" Value="0.5 0.5" />
+            </Style>
+            <Storyboard x:Key="EllipseStoryBoardKey">
+                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="8" />
+                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="8" />
+                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Opacity)"                                 To="0" />
+            </Storyboard>
+            <converter:PermissionToVisibilityConverter x:Key="PermissionToVisibilityConverter"/>
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converter:PermissionToVisibilityConverter x:Key="permissionToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <gui.standard:StandardMainFrameControl
+        Visibility="{Binding Path=EquipmentManagerInstance.VT3500.MaintenanceMode, Source={x:Static equipment:MainEquipment.Instance}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='inverse'}"
+        EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"
+        FontSize="{DynamicResource ResourceKey=LargeFontSize}">
+        <gui.standard:StandardMainFrameControl.PageMain>
+            <gui.standard:StandardMainControl EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}">
+                <gui.standard:StandardMainControl.CenterControl>
+                    <Viewbox>
+                        <localGui:MainStatusControl
+                            EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"
+                            JobManagerInstance="{Binding Path=EquipmentManagerInstance.VT3500.JobManagerInstance, Source={x:Static equipment:MainEquipment.Instance}}"
+                            FrontUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"
+                            FirstUnit="{Binding Path=EquipmentManagerInstance.VT3500.FirstPressUnit, Source={x:Static equipment:MainEquipment.Instance}}" />
+                    </Viewbox>
+                </gui.standard:StandardMainControl.CenterControl>
+                <gui.standard:StandardMainControl.ButtonsControl>
+                    <gui.standard:MainOperationControl EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}" />
+                </gui.standard:StandardMainControl.ButtonsControl>
+            </gui.standard:StandardMainControl>
+        </gui.standard:StandardMainFrameControl.PageMain>
+        <gui.standard:StandardMainFrameControl.PageManual>
+                <TabControl>
+                    <TabItem Header="그림">
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Viewbox>
+                                                <localGui:ManualTopViewControl 
+                                                    EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"/>
+                                            </Viewbox>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </TabItem>
+                    <TabItem Header="버튼">
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Viewbox>
+                                                <localGui:NewManualTopViewControl 
+                                                    EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"/>
+                                            </Viewbox>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </TabItem>
+                    <TabItem Header="속도설정">
+                        <localGui:SettingControl  
+                                                 InverterModule="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule, Source={x:Static equipment:MainEquipment.Instance}}"
+                                                 FrontUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"    
+                                                 EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"/>
+                    </TabItem>
+                    <TabItem Header="1사이클_운전">
+                        <localGui:OneCycleManualControl  
+                                                 EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"/>
+                    </TabItem>
+                    
+                    <TabItem Header="문_및_공간센서">
+                        <manualControls:DoorControl 
+                                                EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"
+                                                SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.DoorUnit, Source={x:Static equipment:MainEquipment.Instance}}"
+                                                ReadOnly="{Binding EquipmentManagerInstance.VT3500.CurrentUser.Permission, Source={x:Static equipment:MainEquipment.Instance}, Converter={StaticResource permissionToBoolConverter}, ConverterParameter={StaticResource operatorPermitted}}"/>
+                    </TabItem>
+                    <TabItem Header="신호">
+                        <gui.standard:IOListControl Part="{Binding Path=EquipmentManagerInstance.VT3500.CommonUnit.IOList, Source={x:Static equipment:MainEquipment.Instance}}" />
+                    </TabItem>
+                </TabControl>
+            </gui.standard:StandardMainFrameControl.PageManual>
+            <gui.standard:StandardMainFrameControl.PageConfig>
+                <ContentControl>
+                    <Grid>
+                        <localGui:ConfigBaseControl EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"/>
+                    </Grid>
+                </ContentControl>
+            </gui.standard:StandardMainFrameControl.PageConfig>
+            <gui.standard:StandardMainFrameControl.PageLog>
+                <TabControl>
+                    <TabItem Header="{DynamicResource ResourceKey=Log.AlarmLogHeader}">
+                        <gui.standard:AlarmLogControl>
+                            <gui.standard:AlarmLogControl.LogSearcherObject>
+                                <logSearcher:AlarmLogSearcher EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}" />
+                            </gui.standard:AlarmLogControl.LogSearcherObject>
+                        </gui.standard:AlarmLogControl>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource ResourceKey=Log.TraceLogHeader}">
+                        <gui.standard:TraceLogControl>
+                            <gui.standard:TraceLogControl.LogSearcherObject>
+                                <logSearcher:TraceLogSearcher EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}" />
+                            </gui.standard:TraceLogControl.LogSearcherObject>
+                        </gui.standard:TraceLogControl>
+                    </TabItem>
+                </TabControl>
+            </gui.standard:StandardMainFrameControl.PageLog>
+        </gui.standard:StandardMainFrameControl>
+        <Grid Background="White"
+            Visibility="{Binding Path=EquipmentManagerInstance.VT3500.MainLoopModule.Initializing, Source={x:Static equipment:MainEquipment.Instance}, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Viewbox>
+                    <localGui:IntializeControl EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"/>
+                </Viewbox>
+            </Grid>
+        </Grid>
+        <Canvas x:Name="canvas" />
+    </Grid>
+</Window>

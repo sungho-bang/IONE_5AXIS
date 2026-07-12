@@ -1,0 +1,477 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.NewManualTopViewControl"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1500"
+             Width="1500" Height="900"
+             DataContext="{Binding RelativeSource={RelativeSource self}}"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="19*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.RowSpan="2">
+            <Grid ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <UniformGrid Grid.Column="0" Grid.Row="0"  Background="Gold">
+                    <Border Margin="1" BorderBrush="Black" BorderThickness="5">
+                        <TextBlock Text="성형 모듈"  FontSize="50" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="1">
+                    <GroupBox Header="인버터 운전" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="10" />
+                            </Grid.RowDefinitions>
+                            <Button Click="Inverter_Run_Click" Content="정회전" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Name ="Inverter_Run"  Height="Auto" />
+                            <Button Click="Inverter_ReverseRun_Click" Content="역회전" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Name ="Inverter_ReverseRun" Height="Auto" />
+                            <Button Click="Inverter_Stop_Click" Content="정지" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Name ="Inverter_Stop" Height="Auto"/>
+                            <TextBlock Text="속도(~60Hz)" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"    VerticalAlignment="Center" Margin="2" />
+                            <TextBox IsReadOnly="True" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="14" Text="{Binding EquipmentInstance.FrontLoadingUnit.InverterMotor.Read_SetSpeed}" />
+                            <TextBox Background="LightYellow" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" FontSize="14" Text="{Binding EquipmentInstance.FrontLoadingUnit.InverterMotor.Write_SetSpeed}" Margin="2,3,6,2" />
+                            <!--<Button Content="Write" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,6,1" Name ="Inverter_Param_Write" />-->
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="2">
+                    <GroupBox Header="성형 프레스" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="58"/>
+                                <ColumnDefinition Width="58"/>
+                                <ColumnDefinition Width="58"/>
+                                <ColumnDefinition Width="58"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button PreviewMouseDown="Upbutton_PreviewMouseDown" PreviewMouseUp="Upbutton_PreviewMouseUp" PreviewTouchDown="Upbutton_PreviewTouchDown" PreviewTouchUp="Upbutton_PreviewTouchUp"  Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,2,0,0" Click="Button_Click" />
+                            <Button PreviewTouchDown="Downbutton_PreviewTouchDown" PreviewTouchUp="Downbutton_PreviewTouchUp" PreviewMouseDown="Downbutton_PreviewMouseDown" PreviewMouseUp="Downbutton_PreviewMouseUp" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,2,0,0"/>
+                            <!--<Button Click="Upbutton_Copy_Checked" Content="ON" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,2,0,28"/>-->
+                            <!--<Button Click="Upbutton_Copy_Unchecked" Content="OFF" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,32,1,0"/>-->
+                            <!--<Button Click="Downbutton_Copy_Checked" Content="ON" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,2,0,28"/>-->
+                            <!--<Button Click="Downbutton_Copy_Unchecked" Content="OFF" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="0,32,0,0"/>-->
+                            <Label IsEnabled="{Binding EquipmentInstance.FirstPressModule.OpenCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Width="58" Margin="1"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.FirstPressModule.CloseCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Width="58" Margin="1"/>
+                            <Label Content="상부&#10;히터" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  IsEnabled="{Binding EquipmentInstance.HeaterFirstTopUnit.FirstPressTopHeaterPowerOnCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="88" Width="58" Margin="0.333,2,1,0" Grid.RowSpan="2"/>
+                            <Label Content="하부&#10;히터" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.HeaterFirstBottomUnit.FirstPressBottomHeaterPowerOnCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="88" Width="58" Margin="1,2,0.333,0" Grid.RowSpan="2"/>
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="0" Grid.Row="3">
+                    <GroupBox Header="피넛클 프레스" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button PreviewMouseDown="Upbutton_PreviewMouseDown1" PreviewMouseUp="Upbutton_PreviewMouseUp1" PreviewTouchDown="Upbutton_PreviewTouchDown1" PreviewTouchUp="Upbutton_PreviewTouchUp1" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" Click="Button_Click_1" />
+                            <Button PreviewMouseDown="Downbutton_PreviewMouseDown1" PreviewMouseUp="Downbutton_PreviewMouseUp1" PreviewTouchDown="Downbutton_PreviewTouchDown1" PreviewTouchUp="Downbutton_PreviewTouchUp1" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.SecondPressModule.OpenCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                            <Label IsEnabled="{Binding EquipmentInstance.SecondPressModule.CloseCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="1" Grid.Row="0"  Background="Gold" >
+                    <Border Margin="1"  BorderBrush="Black" BorderThickness="5">
+                        <TextBlock Text="피딩 모듈"  FontSize="50" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="1">
+                    <GroupBox Header="이동 실린더" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="MoveCylinderUp" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="MoveCylinderDown" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.TapeLoadGrip.Status.DisplayName}" Value="Release">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.TapeLoadGrip.Status.DisplayName}" Value="Grip">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="1" Grid.Row="2">
+                    <GroupBox Header="고정 실린더" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="HoldCylinderUp" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="HoldCylinderDown" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.TapeHoldGrip.Status.DisplayName}" Value="Release">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.TapeHoldGrip.Status.DisplayName}" Value="Grip">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="1" Grid.Row="3">
+                    <GroupBox Header="옵션 프레스" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button PreviewMouseDown="Upbutton_PreviewMouseDown5" PreviewMouseUp="Upbutton_PreviewMouseUp5" PreviewTouchDown="Upbutton_PreviewTouchDown5" PreviewTouchUp="Upbutton_PreviewTouchUp5" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button PreviewTouchDown="Downbutton_PreviewTouchDown5" PreviewTouchUp="Downbutton_PreviewTouchUp5" PreviewMouseDown="Downbutton_PreviewMouseDown5" PreviewMouseUp="Downbutton_PreviewMouseUp5" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.OptionPressModule.OpenCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                            <Label IsEnabled="{Binding EquipmentInstance.OptionPressModule.CloseCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="2" Grid.Row="0"  Background="Gold" >
+                    <Border Margin="1" BorderBrush="Black" BorderThickness="5">
+                        <TextBlock Text="실링 모듈"  FontSize="50" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="2" Grid.Row="1">
+                    <GroupBox Header="톰슨 프레스" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button PreviewMouseDown="Upbutton_PreviewMouseDown2" PreviewMouseUp="Upbutton_PreviewMouseUp2" PreviewTouchDown="Upbutton_PreviewTouchDown2" PreviewTouchUp="Upbutton_PreviewTouchUp2" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button PreviewTouchDown="Downbutton_PreviewTouchDown2" PreviewTouchUp="Downbutton_PreviewTouchUp2" PreviewMouseDown="Downbutton_PreviewMouseDown2" PreviewMouseUp="Downbutton_PreviewMouseUp2" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label IsEnabled="{Binding EquipmentInstance.ThirdPressModule.OpenCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                            <Label IsEnabled="{Binding EquipmentInstance.ThirdPressModule.CloseCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="2" Grid.Row="2">
+                    <GroupBox Header="이재기 실린더" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="BandPitchChangeCylinderUp" Content="축소" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="BandPitchChangeCylinderDown" Content="확장" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.BandPitchChangeCylinder.Status.DisplayName}" Value="Home">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.FrontLoadingUnit.BandPitchChangeCylinder.Status.DisplayName}" Value="Push">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="2" Grid.Row="3">
+                    <GroupBox Header="베큠/ 이젝트" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="58"/>
+                                <ColumnDefinition Width="58" />
+                                <ColumnDefinition Width="58" />
+                                <ColumnDefinition Width="58" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="VacuumOn" Content="켜기" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Bottom" Height="56" />
+                            <Button Click="VacuumOff" Content="끄기" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Bottom" Height="56"/>
+                            <Button Click="VacuumEjectOn" Content="켜기" Grid.Row="1" Grid.Column="2"  VerticalAlignment="Bottom" Height="56" />
+                            <Button Click="VacuumEjectOff" Content="끄기" Grid.Row="1" Grid.Column="3"  VerticalAlignment="Bottom" Height="56"/>
+                            <Label Content="앞 베큠" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.VacuumCheck_Front.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="0,2" Width="118" />
+                            <Label Content="뒷 베큠" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.VacuumCheck_Rear.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="0,2" Width="118" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="2" Grid.Row="4">
+                    <GroupBox Header="하부 모터" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="0" />
+                            </Grid.RowDefinitions>
+                            <!--<Button Click="BottomMotorOn" Content="기동" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="BottomMotorOff"  Content="정지" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>-->
+                            <Label HorizontalContentAlignment="Center" Content="모터 정지 센서" IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.PackingTapeTensionUpSensor.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                            <Label HorizontalContentAlignment="Center" Content="모터 기동 센서" IsEnabled="{Binding EquipmentInstance.FrontLoadingUnit.PackingTapeTensionDownSensor.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+
+                <UniformGrid Grid.Column="3" Grid.Row="0"  Background="Gold" >
+                    <Border Margin="1" BorderBrush="Black" BorderThickness="5">
+                        <TextBlock Text="패킹 모듈"  FontSize="50" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </UniformGrid>
+                <UniformGrid Grid.Column="3" Grid.Row="1">
+                    <GroupBox Header="실링 프레스" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="77"/>
+                                <ColumnDefinition Width="77" />
+                                <ColumnDefinition Width="77" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button PreviewMouseDown="Upbutton_PreviewMouseDown3" PreviewMouseUp="Upbutton_PreviewMouseUp3" PreviewTouchDown="Upbutton_PreviewTouchDown3" PreviewTouchUp="Upbutton_PreviewTouchUp3" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button PreviewTouchDown="Downbutton_PreviewTouchDown3" PreviewTouchUp="Downbutton_PreviewTouchUp3" PreviewMouseDown="Downbutton_PreviewMouseDown3" PreviewMouseUp="Downbutton_PreviewMouseUp3" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <!--<Button Click="Upbutton_Copy1_Click_1" Content="ON" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,2,0,28" Height="29"/>-->
+                            <!--<Button Click="Upbutton_Copy2_Click" Content="OFF" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Margin="0,32,0,0" Height="29"/>-->
+                            <Label IsEnabled="{Binding EquipmentInstance.FourthPressModule.OpenCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="77" />
+                            <Label IsEnabled="{Binding EquipmentInstance.FourthPressModule.CloseCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="77" />
+                            <Label Content="상부&#10;히터" VerticalContentAlignment="Center" FontSize="20" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.HeaterFourthBottomUnit.FirstPressTopHeaterPowerOnCheck.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="86" Width="77" Margin="0.667,2,1,2" Grid.RowSpan="2" />
+
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="3" Grid.Row="2">
+                    <GroupBox Header="커팅기" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="CuttingUp" Content="상승" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="CuttingDown" Content="하강" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.RearLoadingUnit.SealingBandCutting.Status.DisplayName}" Value="Up">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Background" Value="Gray" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=EquipmentInstance.RearLoadingUnit.SealingBandCutting.Status.DisplayName}" Value="Down">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Setter Property="Background" Value="Gold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+                <UniformGrid Grid.Column="3" Grid.Row="3">
+                    <GroupBox Header="포장지 제거 모터" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="116"/>
+                                <ColumnDefinition Width="116" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Button Click="SealingTapeLoadingMotorRun" Content="기동" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56" />
+                            <Button Click="SealingTapeLoadingMotorStop" Content="정지" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" Height="56"/>
+                            <Label  Content="모터 정지 센서" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.RearLoadingUnit.SealingTapeTensionDownSensor.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                            <Label Content="모터 기동 센서" HorizontalContentAlignment="Center" IsEnabled="{Binding EquipmentInstance.RearLoadingUnit.SealingTapeTensionUpSensor.IsOn}" Style="{StaticResource OnOffSensorLabel2}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"    VerticalAlignment="Center" Height="26" Margin="2" Width="116" />
+                        </Grid>
+                        <GroupBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1.45" ScaleY="1.5" />
+                        </GroupBox.LayoutTransform>
+                    </GroupBox>
+                </UniformGrid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

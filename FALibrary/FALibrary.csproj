@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{64CC0A4F-3D94-42EC-94C0-6554170E47A5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FALibrary</RootNamespace>
+    <AssemblyName>FALibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cognex.Cnx.Common">
+      <HintPath>DLL\Cognex.Cnx.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.Discovery.PC">
+      <HintPath>DLL\Cognex.DataMan.Discovery.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.SDK.PC">
+      <HintPath>DLL\Cognex.DataMan.SDK.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.Utils.PC">
+      <HintPath>DLL\Cognex.DataMan.Utils.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alarm\FAAlarm.cs" />
+    <Compile Include="Alarm\FAAlarmEventArgs.cs" />
+    <Compile Include="Device\AbstractDevice\FADeviceDisplayUnit.cs" />
+    <Compile Include="Device\AbstractDevice\FADeviceIndicator.cs" />
+    <Compile Include="Device\Autonics\FADeviceDA16Segment.cs" />
+    <Compile Include="Device\Autonics\FADeviceMT4N.cs" />
+    <Compile Include="Device\CAS\EStableStatus.cs" />
+    <Compile Include="Device\CAS\FACI1500.cs" />
+    <Compile Include="Device\CAS\FACI1500Device.cs" />
+    <Compile Include="Device\CAS\FACI1580Device.cs" />
+    <Compile Include="Device\CAS\FADeviceCI501A.cs" />
+    <Compile Include="Device\Cognex\FADataManDevice.cs" />
+    <Compile Include="Device\Cognex\FADeviceCognexInsightController.cs" />
+    <Compile Include="Device\FADevice.cs" />
+    <Compile Include="Device\Hilscher\FACIF50DNM.cs" />
+    <Compile Include="Device\Honeywell\FAHoneywellScannerDevice.cs" />
+    <Compile Include="Device\Honeywell\FAXenon1900Device.cs" />
+    <Compile Include="Device\Kuka\FADeviceOmniMoveExternalControl.cs" />
+    <Compile Include="Device\LanDevice\CommunicationDevice\EC\FAECCommunicationDevice.cs" />
+    <Compile Include="Device\LanDevice\CommunicationDevice\EC\FAECServerDevice.cs" />
+    <Compile Include="Device\LanDevice\FAAsyncServerSocketDevice.cs" />
+    <Compile Include="Device\LanDevice\FAAsyncSocketDevice.cs" />
+    <Compile Include="Device\LanDevice\FASocketDevice.cs" />
+    <Compile Include="Device\LanDevice\FASyncSocketDevice.cs" />
+    <Compile Include="Device\LanDevice\FAPrintronix5000TRDevice.cs" />
+    <Compile Include="Device\LanDevice\FATelnetClientDevice.cs" />
+    <Compile Include="Device\LanDevice\FAUDPServerDevice.cs" />
+    <Compile Include="Device\LanDevice\ScannerDevice\Pamtek\FAPamtekBarcodeScannerUDPDevice.cs" />
+    <Compile Include="Device\LanDevice\FAUDPDevice.cs" />
+    <Compile Include="Device\LanDevice\CommunicationDevice\Simax\FASimaxDevice.cs" />
+    <Compile Include="Device\Inverter\FAMitsubishiInverterDevice.cs" />
+    <Compile Include="Device\Inverter\modbus.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAAjinAIODevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAAjinIODevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAAjinMotionIODevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FACombinedMemoryDevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAModbusTcpIODevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FARemoteIOServer.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAVirtualMemoryDevice.cs" />
+    <Compile Include="Device\MMCDevice\AjinMMC\FAAjinMMCDevice.cs" />
+    <Compile Include="Device\MMCDevice\APlusMMC\FAAPlusMMCDevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAMemoryBaseDevice.cs" />
+    <Compile Include="Device\MemoryBaseDevice\FAOmronDeviceNet.cs" />
+    <Compile Include="Alarm\FAAlarmManager.cs" />
+    <Compile Include="Device\MMCDevice\FAMMCDevice.cs" />
+    <Compile Include="Device\Network\FADeviceIPCRemotingClient.cs" />
+    <Compile Include="Device\Network\FADeviceIPCRemotingServer.cs" />
+    <Compile Include="Device\Network\FADeviceTCPRemotingClient.cs" />
+    <Compile Include="Device\Network\FADeviceTCPRemotingServer.cs" />
+    <Compile Include="Device\Network\FADeviceRemoting.cs" />
+    <Compile Include="Device\Network\FARemotingObject.cs" />
+    <Compile Include="Device\Omron\FADeviceFH1050VisionController.cs" />
+    <Compile Include="Device\RFIDReader\FACRE1356Device.cs" />
+    <Compile Include="Device\RS232Device\FACommonSerialPortDevice.cs" />
+    <Compile Include="Device\RS232Device\FADeviceAutonicsTZHeater.cs" />
+    <Compile Include="Device\RS232Device\FADeviceKeyenceContactSensor.cs" />
+    <Compile Include="Device\RS232Device\FADeviceM9Heater.cs" />
+    <Compile Include="Device\RS232Device\FAPamtekBarcodeScannerRS232Device.cs" />
+    <Compile Include="Device\RS232Device\FASerialPortDevice.cs" />
+    <Compile Include="Device\RS232Device\FASickLineBarcodeScanner.cs" />
+    <Compile Include="Device\RSAutomation\FANMCCommon.cs" />
+    <Compile Include="Device\RSAutomation\FANMCIODevice.cs" />
+    <Compile Include="Device\RSAutomation\FANMCMMCDevice.cs" />
+    <Compile Include="Device\RSAutomation\NMCSDK.cs" />
+    <Compile Include="Device\Zebra\FADeviceZebraPrinter.cs" />
+    <Compile Include="Device\Zebra\ZPL.cs" />
+    <Compile Include="FAAttribute.cs" />
+    <Compile Include="FAGenericEventArgs.cs" />
+    <Compile Include="FAMachine.cs" />
+    <Compile Include="FAObject.cs" />
+    <Compile Include="FAPropertyAttribute.cs" />
+    <Compile Include="FARange.cs" />
+    <Compile Include="Part\CommunicationPart\EC\FAECPart.cs" />
+    <Compile Include="Part\CommunicationPart\EC\FAECServerPart.cs" />
+    <Compile Include="Part\CommunicationPart\FACommonAsyncClientPart.cs" />
+    <Compile Include="Part\CommunicationPart\FACommonAsyncServerPart.cs" />
+    <Compile Include="Part\CommunicationPart\FAPartRemoting.cs" />
+    <Compile Include="Part\CommunicationPart\FAUDPPart.cs" />
+    <Compile Include="Part\CommunicationPart\FAUDPServerPart.cs" />
+    <Compile Include="Part\CommunicationPart\Simax\FASimaxPart.cs" />
+    <Compile Include="Part\ContactSensorPart\FAKeyenceContactSensor.cs" />
+    <Compile Include="Part\Daincube\DTP7PD.cs" />
+    <Compile Include="Part\FAPart.cs" />
+    <Compile Include="Part\FAPartManager.cs" />
+    <Compile Include="FAStatus.cs" />
+    <Compile Include="Part\HeaterPart\FAAutonicsTZHeater.cs" />
+    <Compile Include="Part\HeaterPart\FAM9Heater.cs" />
+    <Compile Include="Part\Indicator\FAPartDisplayUnit.cs" />
+    <Compile Include="Part\Indicator\FAPartSingleFloatingIndicator.cs" />
+    <Compile Include="Part\Indicator\IndicatorValue.cs" />
+    <Compile Include="Part\Inverter\FAInverter.cs" />
+    <Compile Include="Part\Kuka\FAPartOmniMoveExternalControl.cs" />
+    <Compile Include="Part\Loadcell\FACI501A.cs" />
+    <Compile Include="Part\Loadcell\FAPartCI1500.cs" />
+    <Compile Include="Part\Loadcell\FAPartCI1580.cs" />
+    <Compile Include="Part\MemoryBasePart\FACommonPart.cs" />
+    <Compile Include="Part\MemoryBasePart\FAMemoryBaseNumericPart.cs" />
+    <Compile Include="Part\MemoryBasePart\FAMemoryBasePart.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartDoor.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartMSBSignInteger.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartDouble.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartByte.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartInt16.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartSByte.cs" />
+    <Compile Include="Part\MemoryBasePart\FAPartUInt16.cs" />
+    <Compile Include="Part\MemoryBasePart\FARealBitsNumber.cs" />
+    <Compile Include="Part\MemoryBasePart\FAUnsignedBitsNumber.cs" />
+    <Compile Include="Part\MMCPart\APlusMMC\FAAPlusMMCPart.cs" />
+    <Compile Include="Part\MMCPart\APlusMMC\FAAPlusMMCPosition.cs" />
+    <Compile Include="Part\MMCPart\FAMMCPart.cs" />
+    <Compile Include="Part\MMCPart\FAMMCPosition.cs" />
+    <Compile Include="Part\PrinterPart\FAPrintronix5000TRPart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Part\ScannerPart\FACognexDataMan.cs" />
+    <Compile Include="Part\ScannerPart\FACognexInsight5000Part.cs" />
+    <Compile Include="Part\ScannerPart\FACognexInsightControlPart.cs" />
+    <Compile Include="Part\ScannerPart\FAHoneywellHandScannerPart.cs" />
+    <Compile Include="Part\ScannerPart\FAKeyenceIV500CA.cs" />
+    <Compile Include="Part\ScannerPart\FAOmronFZVisionController.cs" />
+    <Compile Include="Part\ScannerPart\FARFIDReaderCRE1356.cs" />
+    <Compile Include="Part\SerialPortPart\FACommonSerialPortPart.cs" />
+    <Compile Include="Part\ScannerPart\FAPamtekBarcodeScannerPart.cs" />
+    <Compile Include="Part\StrappingMachine\FAMoscaStrappingMachine.cs" />
+    <Compile Include="Sequence\FARetryInfo.cs" />
+    <Compile Include="Sequence\FASequence.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sequence\FASequenceManager.cs" />
+    <Compile Include="InterlockManager.cs" />
+    <Compile Include="Utility\ActionOfDuringTime.cs" />
+    <Compile Include="Utility\Crc16.cs" />
+    <Compile Include="Utility\CreatePropertyEventArgs.cs" />
+    <Compile Include="Utility\FAReflection.cs" />
+    <Compile Include="Utility\FATime.cs" />
+    <Compile Include="Utility\FAUtility.cs" />
+    <Compile Include="Utility\SerializeDictionary.cs" />
+    <Compile Include="Utility\TimeCriticalWork.cs" />
+    <Compile Include="Utility\Trace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DLL\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

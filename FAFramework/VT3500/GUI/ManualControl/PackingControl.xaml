@@ -1,0 +1,223 @@
+﻿<UserControl x:Class="FAFramework.VT3500.GUI.ManualControl.PackingControl"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:equipment="clr-namespace:FAFramework.Equipment"
+             xmlns:utility="clr-namespace:FAFramework.Utility"
+             xmlns:converter="clr-namespace:FAFramework.Utility.Converter"
+             xmlns:control="clr-namespace:FAFramework.VT3500.GUI.ManualControl"
+             mc:Ignorable="d" 
+             Height="768" Width="1024"
+             DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source= "/FAFramework;component/ResourceDictionary/ManualControlResource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:MultiValueConverter x:Key="multiValueConverter" />
+            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border Style="{StaticResource borderBaseStyle}" Margin="2" HorizontalAlignment="Stretch">
+                                <ContentControl Content="{Binding}" Tag="{Binding Path=Tag, RelativeSource={RelativeSource Mode=TemplatedParent}}" ContentTemplate="{StaticResource rightPositionOnOffSensorTemplate}" />
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock Text="{Binding Subject}" FontSize="36" DockPanel.Dock="Top"/>
+        <Grid Width="1023">
+            <Grid Grid.Column="0">
+                <ListBox Visibility="Collapsed" >
+                    <control:ThirdPressControl
+                        x:Name="ThirdPressControl" 
+						SubUnit="{Binding Path=EquipmentManagerInstance.VT3500.FrontLoadingUnit, Source={x:Static equipment:MainEquipment.Instance}}"                                            
+                        ThirdUnit="{Binding Path=EquipmentManagerInstance.VT3500.ThirdPressUnit, Source={x:Static equipment:MainEquipment.Instance}}"                     
+                        EquipmentInstance="{Binding Source={x:Static equipment:MainEquipment.Instance}, Path=EquipmentManagerInstance.VT3500}"
+                        />
+                </ListBox>
+                <ContentPresenter Name="contentControlSelectedControl">
+                    <ContentPresenter.ContentTemplate>
+                        <DataTemplate>
+                            <Viewbox>
+                                <ContentControl Content="{Binding}" />
+                            </Viewbox>
+                        </DataTemplate>
+                    </ContentPresenter.ContentTemplate>
+                </ContentPresenter>
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MainControlView}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Image Source="/FAFramework;component/Images/PackingControl.png" />
+                <Canvas>
+                    <Canvas.Resources>
+                        <Style TargetType="Button" x:Name="ManualButton" BasedOn="{StaticResource baseStyle}" >
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard x:Name="ButtonAction">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:3" AutoReverse="False"  RepeatBehavior="Forever" FillBehavior="HoldEnd" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard >
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.3" Duration="0:0:1" AutoReverse="True" RepeatBehavior="Forever" FillBehavior="HoldEnd">
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Canvas.Resources>
+                    <Canvas Name="buttonsCanvas" Style="{StaticResource actuatorSelectButtonCanvas}">
+                        <Button Tag="FrontUnit.BandTransferServo" Background="DarkBlue" Width="33" Height="106" Canvas.Left="497" Canvas.Top="205" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.993" ScaleY="1.007"/>
+                                    <SkewTransform AngleX="1.234" AngleY="1.368"/>
+                                    <RotateTransform Angle="-90.298"/>
+                                    <TranslateTransform X="0.464" Y="-5.174"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Tag="FrontUnit.BandVaccum" Background="DarkBlue" Width="55" Height="40" Canvas.Left="612" Canvas.Top="254" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="0.596" ScaleX="0.965"/>
+                                    <SkewTransform AngleY="46.226" AngleX="-35.266"/>
+                                    <RotateTransform Angle="-46.971"/>
+                                    <TranslateTransform X="-22.844" Y="16.308"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Tag="FrontUnit.BandVaccumEject" Background="DarkBlue" Width="57" Height="37" Canvas.Left="619" Canvas.Top="284" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="0.596" ScaleX="0.965"/>
+                                    <SkewTransform AngleY="46.226" AngleX="-35.266"/>
+                                    <RotateTransform Angle="-46.971"/>
+                                    <TranslateTransform X="-22.844" Y="16.308"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Tag="FrontUnit.BandPitchChangeCylinder" Background="DarkBlue" Width="32" Height="42" Canvas.Left="478" Canvas.Top="278" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="0.424"/>
+                                    <SkewTransform AngleY="43.741" AngleX="-54.834"/>
+                                    <RotateTransform Angle="-44.403"/>
+                                    <TranslateTransform X="-1.408" Y="-7.45"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Tag="FrontUnit.BandPickServo" Background="DarkBlue" Width="34" Height="61" Canvas.Left="553" Canvas.Top="335" d:DataContext="True" RenderTransformOrigin="1.033,-1.043" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="0.445" ScaleX="0.874"/>
+                                    <SkewTransform AngleY="52.356" AngleX="-50.36"/>
+                                    <RotateTransform Angle="128.266"/>
+                                    <TranslateTransform X="-16.038" Y="45.514"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Tag="FrontUnit.PackingTapeLoadingMotor" Background="DarkBlue" Width="97" Height="100" Canvas.Left="349" Canvas.Top="420" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="1.003" ScaleX="0.996"/>
+                                    <SkewTransform AngleY="-2.748" AngleX="1.418"/>
+                                    <RotateTransform Angle="-89.068"/>
+                                    <TranslateTransform X="-11.088" Y="-13.14" />
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Border CornerRadius="100"/>
+                        </Button>
+                        <Button Tag="FrontUnit.BypassCoveyorMotor" Background="DarkBlue" Width="69" Height="56" Canvas.Left="483" Canvas.Top="328" d:DataContext="True" RenderTransformOrigin="0.5,0.5" >
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="1.003" ScaleX="0.997"/>
+                                    <SkewTransform AngleY="-0.393" AngleX="1.418"/>
+                                    <RotateTransform Angle="-89.068"/>
+                                    <TranslateTransform X="-9.797" Y="-13.151" />
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Border CornerRadius="100"/>
+                        </Button>
+                    </Canvas>
+                    <Canvas>
+                        <Button Height="253" Background="DarkBlue" Width="169" Canvas.Left="333" Canvas.Top="106" ToolTip="톰슨 프레스" Command="{Binding ShowControlCommand}" RenderTransformOrigin="0.5,0.5" Margin="0">
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.952"/>
+                                    <SkewTransform AngleX="-12.942" AngleY="12.492"/>
+                                    <RotateTransform Angle="-12.494"/>
+                                    <TranslateTransform X="-45.247" Y="28.245"/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource ResourceKey=multiValueConverter}">
+                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Mode="OneWay" ElementName="ThirdPressControl" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </Canvas>
+                    <Canvas Style="{StaticResource sensorsCanvas}">
+                        <StackPanel>
+                            <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionUpSensor}" />
+                            <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionDownSensor}" />
+                            <ContentPresenter Content="{Binding FrontUnit.PackingMotorRunCheck}" />
+                            <ContentPresenter Content="{Binding RearUnit.BlackMarkCheckSensor}" />
+                            <ContentPresenter Content="{Binding FrontUnit.ReelPowerBrakeOnCheck}"/>
+                            <ContentPresenter Content="{Binding FrontUnit.ReelPowerServoOnCheck}"/>
+                            <ContentPresenter Content="{Binding FrontUnit.BypassCoveyorExistCheck}"/>
+                        </StackPanel>
+                    </Canvas>
+                    <Grid HorizontalAlignment="Right" Height="560" Canvas.Right="170" Canvas.Top="150" Canvas.Left="744">
+                        <ContentControl Content="{Binding Path=Children, ElementName=buttonsCanvas}"
+                                ContentTemplate="{StaticResource actuatorOperateButtons}"
+                                Tag="{Binding ElementName=buttonsCanvas, Path=Tag}" />
+                    </Grid>
+                </Canvas>
+            </Grid>
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+                <Canvas Margin="0,0,600,0" FlowDirection="LeftToRight">
+                    <Button Name="Closebutton" Content="이 전" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="90" Height="50" ToolTip="Close" Click="Closebutton_Click" Background="DarkBlue" Foreground="White"
+                             Visibility="{Binding GobackButtonHide2, Converter={StaticResource ResourceKey=BoolToVisibilityConverter}}" Canvas.Left="-93" Margin="-10,0,0,0" Canvas.Top="29"/>
+                </Canvas>
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>
