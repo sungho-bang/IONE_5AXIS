@@ -1936,19 +1936,17 @@ namespace FAFramework.VT3500.Modules
                  if (FeedingBeforeLock)
                  {
                      FeedingBeforeLock = false;
+                     // 정지 전에 피딩을 완료하지 못한 경우에만 앞쪽 피딩을 다시 실행한다.
                      actor.NextStep();
                  }
                  else
                  {
-                     //if (ThirdPressModule.UsePress)
-                     //{
-                     //    actor.NextStep("PressProcess");
-                     //}
-                     //else
-                     //{
-                     //    actor.NextStep("UnUseTomson");
-                     //}
-                     actor.NextStep();
+                     // 정상 반복에서는 직전 반복 마지막에 원단 피딩이 이미 완료되어 있다.
+                     // 앞쪽 TapeMovePickCylinder를 건너뛰어 184 위치로 중복 이동하지 않는다.
+                     // 프레스 미사용도 PressProcess를 거쳐 Home 동작을 완료한 뒤
+                     // 아래 분기에서 UnUseTomson 피딩을 한 번만 실행해야 한다.
+                     WriteTraceLog("MoveTapeLoadingPos Skip (Normal Loop)");
+                     actor.NextStep("PressProcess");
                  }
              });
             seq.AddItem(TapeMovePickCylinder); 
