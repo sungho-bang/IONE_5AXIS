@@ -424,7 +424,7 @@
     <Property>
       <Item>
         <Name>SelectJob</Name>
-        <Value>12mm12알</Value>
+        <Value>10x15</Value>
       </Item>
       <Item>
         <Name>AlarmFirstPressOilTempCheck</Name>
@@ -571,6 +571,12 @@
         <TypeValue>1</TypeValue>
         <Description></Description>
       </Item>
+      <Item>
+        <Name>TimeFrontIMarkTimeout</Name>
+        <Type>second</Type>
+        <TypeValue>1</TypeValue>
+        <Description>FRONT X1135 I-Mark search timeout</Description>
+      </Item>
     </Time>
     <Property>
       <Item>
@@ -628,6 +634,10 @@
       <Item>
         <Name>TapeLoadingServoUsedLength</Name>
         <Value>59.399999999999615</Value>
+      </Item>
+      <Item>
+        <Name>AlarmFrontIMarkCheckTimeOut</Name>
+        <Value>2004030</Value>
       </Item>
       <Item>
         <Name>Name</Name>
@@ -825,6 +835,28 @@
                 <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                   <Min>-2147483648</Min>
                   <Max>2147483647</Max>
+                </FARange>
+              </value>
+            </item>
+            <item>
+              <key>
+                <string>AlarmFrontIMarkCheckTimeOut</string>
+              </key>
+              <value>
+                <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                  <Min>-2147483648</Min>
+                  <Max>2147483647</Max>
+                </FARange>
+              </value>
+            </item>
+            <item>
+              <key>
+                <string>FrontIMarkSensorOffset</string>
+              </key>
+              <value>
+                <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                  <Min>-1.7976931348623157E+308</Min>
+                  <Max>1.7976931348623157E+308</Max>
                 </FARange>
               </value>
             </item>
@@ -1087,6 +1119,17 @@
                 <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                   <Min>-2147483648</Min>
                   <Max>2147483647</Max>
+                </FARange>
+              </value>
+            </item>
+            <item>
+              <key>
+                <string>IMarkSensorOffset</string>
+              </key>
+              <value>
+                <FARange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                  <Min>-1.7976931348623157E+308</Min>
+                  <Max>1.7976931348623157E+308</Max>
                 </FARange>
               </value>
             </item>

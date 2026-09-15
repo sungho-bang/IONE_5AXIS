@@ -18,6 +18,8 @@ namespace FAFramework.VT3500.ExtendedParts
         public FAPartAction MoveHomePos { get; private set; }
         [FAAttribute("Action")]
         public FAPartAction MoveTapeLoadingPos { get; private set; }
+        [FAAttribute("Action")]
+        public FAPartAction MoveTapeLoadingSlowPos { get; private set; }
         #endregion
 
         #region Positions
@@ -25,6 +27,8 @@ namespace FAFramework.VT3500.ExtendedParts
         public FAMMCPosition HomePos { get; set; }
         [FAAttribute("Position")]
         public FAMMCPosition TapeLoadingPos { get; set; }
+        [FAAttribute("Position")]
+        public FAMMCPosition TapeLoadingSlowPos { get; set; }
         #endregion
 
         #region Alarms
@@ -34,6 +38,9 @@ namespace FAFramework.VT3500.ExtendedParts
         [FAAttribute("Alarm")]
         [FAPropertyAttribute]
         public int AlarmFailedMoveTapeLoadingPos { get; set; }
+        [FAAttribute("Alarm")]
+        [FAPropertyAttribute]
+        public int AlarmFailedMoveTapeLoadingSlowPos { get; set; }
         #endregion
 
         public FATapeLoadingServo(FASequenceManager aSequenceManager)
@@ -41,6 +48,7 @@ namespace FAFramework.VT3500.ExtendedParts
         {
             MoveHomePos = CreateAction(aSequenceManager);
             MoveTapeLoadingPos = CreateAction(aSequenceManager);
+            MoveTapeLoadingSlowPos = CreateAction(aSequenceManager);
         }
 
         private FAPartAction CreateAction(FASequenceManager aSequenceManager)
@@ -65,13 +73,26 @@ namespace FAFramework.VT3500.ExtendedParts
         {
             base.LoadParameters(xml);
 
+            // Old motor configurations do not contain the FRONT slow-search position.
+            bool hasSlowPosition = xml?.Descendants("Item").Any(item => (string)item.Element("Name") == "TapeLoadingSlowPos") == true;
+            if (!hasSlowPosition && TapeLoadingPos != null)
+            {
+                if (TapeLoadingSlowPos == null) TapeLoadingSlowPos = new FAMMCPosition();
+                TapeLoadingPos.CopyTo(TapeLoadingSlowPos);
+                TapeLoadingSlowPos.Name = "TapeLoadingSlowPos";
+                TapeLoadingSlowPos.DriveSpeed = 50;
+            }
+
             MakeAllSequences();
         }
 
         private void MakeAllSequences()
         {
+            if (AlarmFailedMoveTapeLoadingSlowPos == 0)
+                AlarmFailedMoveTapeLoadingSlowPos = AlarmFailedMoveTapeLoadingPos;
             MakeSequence(HomePos, MoveHomePos, MoveToPosTimeout, nameof(AlarmFailedMoveHomePos));
             MakeSequence(TapeLoadingPos, MoveTapeLoadingPos, MoveToPosTimeout, nameof(AlarmFailedMoveTapeLoadingPos));
+            MakeSequence(TapeLoadingSlowPos, MoveTapeLoadingSlowPos, MoveToPosTimeout, nameof(AlarmFailedMoveTapeLoadingSlowPos));
         }
     }
 }

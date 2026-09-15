@@ -79,21 +79,33 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid Grid.Column="0" Grid.Row="0">
-                        <Canvas Background="White" Margin="5">
-                            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <Grid x:Name="RecipeSelectionPanel" Background="White" Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
                                 <TextBlock Text="RECIPE" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="45" Margin="20"/>
-                                <ComboBox Name="receipe" ItemsSource="{Binding Path=EquipmentInstance.JobManagerInstance.LotJobInstance.LotJobInfoList}"
-                                  VerticalAlignment="Center" HorizontalAlignment="Center" Height="50"
-                                  SelectedItem="{Binding EquipmentInstance.DeviceTransferManager.SelectedJobInfo}" HorizontalContentAlignment="Center"
-                                  SelectionChanged="receipe_SelectionChanged_1" Width="435" Margin="0,0,10,0">
+                                <ComboBox Grid.Column="1" Name="receipe" ItemsSource="{Binding Path=EquipmentInstance.JobManagerInstance.LotJobInstance.LotJobInfoList}"
+                                  VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="60" MinWidth="0"
+                                  BorderBrush="#666666" BorderThickness="1" Padding="8,0"
+                                  HorizontalContentAlignment="Center"
+                                  SelectionChanged="receipe_SelectionChanged_1" Margin="0,0,5,0">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Name}" FontSize="32" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto"/>
+                                            <TextBlock Text="{Binding Path=Name}" FontSize="32" TextTrimming="CharacterEllipsis" TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                            </DockPanel>
-                        </Canvas>
+                                <Button Grid.Column="2" x:Name="RecipeApplyButton" Style="{x:Null}"
+                                        Width="60" Height="60" Padding="8" Background="#F1F1F1" Foreground="#333333"
+                                        BorderBrush="#666666" BorderThickness="1" VerticalAlignment="Center"
+                                        IsEnabled="{Binding CanApplySelectedRecipe}" Click="RecipeApply_Click"
+                                        ToolTip="{Binding RecipeApplyToolTip}" ToolTipService.ShowOnDisabled="True"
+                                        AutomationProperties.Name="선택 레시피 FRONT I-Mark 적용">
+                                    <materialDesign:PackIcon Kind="Refresh" Width="32" Height="32" />
+                                </Button>
+                        </Grid>
                     </Grid>
                     <Grid Grid.Column="0" Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -314,7 +326,28 @@
                                     <!--<TextBlock Text="On" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>-->
                                     <Button Content="OFF" Grid.Column="2" Grid.Row="2" Click="FourthPress_MotorRun_Button_UnCheck"/>
                                     <!--<TextBlock Text="Off" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>-->
-                                    <Label Content="아이 마크" FontSize="30" Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" IsEnabled="{Binding EquipmentInstance.MainLoopModule.MoveJobInfo.UseIMark}" Width="Auto" Height="51" Margin="59.667,3.333,0.333,3"/>
+                                    <Grid x:Name="IMarkUsagePanel" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="2"
+                                          Background="White" Margin="2" ToolTip="{Binding IMarkUsageToolTip}"
+                                          ToolTipService.ShowOnDisabled="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="16" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="FRONT I-Mark" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" />
+                                        <UniformGrid Grid.Row="1" Columns="2" IsEnabled="{Binding CanChangeIMarkUsage}">
+                                            <RadioButton x:Name="IMarkUseRadio" Content="사용" GroupName="MainIMarkUsage"
+                                                         IsChecked="{Binding MainIMarkInUse, Mode=OneWay}"
+                                                         Click="IMarkUsage_Click" Tag="True" FontSize="16"
+                                                         VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            <RadioButton x:Name="IMarkNotUseRadio" Content="미사용" GroupName="MainIMarkUsage"
+                                                         IsChecked="{Binding MainIMarkNotInUse, Mode=OneWay}"
+                                                         Click="IMarkUsage_Click" Tag="False" FontSize="16"
+                                                         VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </UniformGrid>
+                                        <TextBlock Grid.Row="2" x:Name="IMarkUsageStatusText" Text="{Binding IMarkUsageStatus}"
+                                                   FontSize="12" Foreground="#6D4100" TextAlignment="Center" VerticalAlignment="Center" />
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </UniformGrid>
@@ -529,20 +562,19 @@
                                                 <RowDefinition Height="60" />
                                             </Grid.RowDefinitions>
 
-                                            <ToggleButton Style="{StaticResource baseStyle}" VerticalContentAlignment="Top" Background="White" Checked="Check" Unchecked="UnCheck" FontSize="15" Content="전체 1회운전" HorizontalContentAlignment="Center"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="8,3,5.621,2.333" Width="94">
-                                                <ToggleButton.LayoutTransform>
-                                                    <ScaleTransform ScaleX="1" ScaleY="1.2" />
-                                                </ToggleButton.LayoutTransform>
-                                            </ToggleButton>
+                                            <TextBlock Text="전체 1회운전" FontSize="15" TextAlignment="Center"
+                                                       Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                                       VerticalAlignment="Center" Height="26" Margin="8,3,5.621,2.333" />
                                             <!--<TextBlock FontSize="15" Text="전체 1운전" TextAlignment="Center"  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26"  Margin="10,2,9,2" Grid.ColumnSpan="2"/>-->
+                                            <Label IsEnabled="{Binding EquipmentInstance.FrontModule.FrontIMarkCheckSensor.IsOn}"
+                                                   ToolTip="FRONT I-Mark X1135 입력" Style="{StaticResource OnOffSensorLabel2}"
+                                                   Grid.Row="0" Grid.Column="2" Height="26" Margin="4,3,7,2" />
                                             <TextBlock FontSize="15" Text="원단 1피치" TextAlignment="Center"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26"  Margin="10,2,9,2" />
                                             <TextBlock FontSize="15" Text="이재기 1운전" TextAlignment="Center"  Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="2,3,5,2.333" Width="93"/>
-                                            <Label  IsEnabled="{Binding EquipmentInstance.RearModule.IMarkCheckSensor.IsOn}" ToolTip="X1135 I-Mark 입력" Grid.Row="0" Style="{StaticResource OnOffSensorLabel2}" Grid.Column="4" Height="26" Margin="4,3,7,2.333" Width="89" />
-                                            <ToggleButton Style="{StaticResource baseStyle}" VerticalContentAlignment="Top" Background="White" Checked="Check" Unchecked="UnCheck" FontSize="15" Content="포장 1회운전" HorizontalContentAlignment="Center"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="4,3,7,2.333" Width="89">
-                                                <ToggleButton.LayoutTransform>
-                                                    <ScaleTransform ScaleX="1" ScaleY="1.2" />
-                                                </ToggleButton.LayoutTransform>
-                                            </ToggleButton>
+                                            <Label  IsEnabled="{Binding EquipmentInstance.RearModule.BlackMarkCheckSensor.IsOn}" ToolTip="REAR BlackMark X1140 입력" Grid.Row="0" Style="{StaticResource OnOffSensorLabel2}" Grid.Column="4" Height="26" Margin="4,3,7,2.333" Width="89" />
+                                            <TextBlock Text="포장 1회운전" FontSize="15" TextAlignment="Center"
+                                                       Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
+                                                       Height="26" Margin="4,3,7,2.333" Width="89" />
                                             <!--<Label Background="White" IsEnabled="{Binding EquipmentInstance.RearModule.Jobs.UseIMark}" Opacity="0.4" Grid.Row="0" Grid.Column="4" Height="26" Margin="4,3,7,2.333" Width="89" />-->
                                             <!--<Label Background="Transparent" IsEnabled="{Binding EquipmentInstance.RearModule.Jobs.UseIMark}"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="4,3,7,2.333" Width="89"/>-->
                                             <!--<ToggleButton Style="{StaticResource baseStyle}" VerticalContentAlignment="Top" Background="White" Checked="Check" Unchecked="UnCheck" FontSize="15" Content="포장 1회운전" HorizontalContentAlignment="Center"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="4,3,7,2.333" Width="89">
@@ -550,7 +582,7 @@
                                                 <ScaleTransform ScaleX="1" ScaleY="1.2" />
                                             </ToggleButton.LayoutTransform>
                                         </ToggleButton>-->
-                                            <TextBlock FontSize="15" Text="I-Mark X1135" TextAlignment="Center"  Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0.333,3,-0.333,2.333" Width="110"/>
+                                            <TextBlock FontSize="15" Text="REAR 마크찾기" TextAlignment="Center"  Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Margin="0.333,3,-0.333,2.333" Width="110"/>
                                             <Button Content="시 작" Click="OneAllCycle" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="2,2,2,0" />
                                             <Button Content="시 작" Click="OnePitchMove" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="2,2,2,0" />
                                             <Button Content="시 작" Click="BandPitchChange" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Margin="2,2,2,0"/>

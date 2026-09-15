@@ -64,28 +64,22 @@ namespace FAFramework.VT3500.GUI
              {
                  try
                  {
+                     if (!JobSettings.ApplyIMarkEdits())
+                     {
+                         MessageBox.Show("FRONT I-Mark 탐색 거리와 설치 보정값을 확인하세요. 0 이상의 숫자(mm)만 저장할 수 있습니다.", "JOB 설정");
+                         return;
+                     }
                      if (MessageBox.Show("저장하시겠습니까?", "저장",
                                          MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                      {
                           // ★ 1) 먼저 MotorConfigControl 쪽에 입력된 값을
                           //     전부 바인딩 소스(FAMMCPosition/Part)로 반영
-                          bool ok = true;
-
-                         foreach (var mc in _motorControls.ToList())
+                         string motorError;
+                         if (!TryApplyMotorEdits(out motorError))
                          {
-                             if (mc == null)
-                                 continue;
-
-                             if (!mc.ApplyEdits())
-                             {
-                                 ok = false;
-                                 break;
-                             }
-                         }
-
-                          // ApplyEdits 중 오류가 나면 저장 중단
-                          if (!ok)
+                             MessageBox.Show(motorError, "모터 설정", MessageBoxButton.OK, MessageBoxImage.Warning);
                              return;
+                         }
 
                           // ★ 2) 모든 값이 정상 반영되었으면 기존처럼 실제 저장 실행
                           EquipmentInstance.Save();
@@ -112,6 +106,17 @@ namespace FAFramework.VT3500.GUI
             {
                 _motorControls.Add(mc);
             }
+        }
+
+        public bool TryApplyMotorEdits(out string error)
+        {
+            error = null;
+            var controls = _motorControls.Where(mc => mc != null).ToList();
+            foreach (var mc in controls)
+                if (!mc.ValidateEdits(out error)) return false;
+            foreach (var mc in controls)
+                if (!mc.TryApplyEdits(out error)) return false;
+            return true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -126,6 +126,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>164</FeedingPitch>
@@ -178,6 +211,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>true</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>118</TapeLoadingPos>
         <TapeLoadingSlowPos>128</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>116</TapeUnUseImarkPos>
@@ -287,6 +323,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>240</FeedingPitch>
@@ -339,6 +408,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>true</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>74.4</TapeLoadingPos>
         <TapeLoadingSlowPos>74.4</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>74.4</TapeUnUseImarkPos>
@@ -448,6 +520,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>700</FeedingSpeed>
         <FeedingPitch>168</FeedingPitch>
@@ -500,6 +605,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>true</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>50</TapeLoadingPos>
         <TapeLoadingSlowPos>60</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>
@@ -609,6 +717,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>192</FeedingPitch>
@@ -661,6 +802,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>false</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>117</TapeLoadingPos>
         <TapeLoadingSlowPos>121</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>
@@ -770,6 +914,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>226</FeedingPitch>
@@ -822,6 +999,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>true</UseIMark>
+        <UseFrontIMark>false</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>137.5</TapeLoadingPos>
         <TapeLoadingSlowPos>137.5</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>
@@ -931,6 +1111,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>184</FeedingPitch>
@@ -983,6 +1196,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>false</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>118</TapeLoadingPos>
         <TapeLoadingSlowPos>125</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>
@@ -1092,6 +1308,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>500</FeedingSpeed>
         <FeedingPitch>150</FeedingPitch>
@@ -1144,6 +1393,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>false</UseIMark>
+        <UseFrontIMark>false</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>115.5</TapeLoadingPos>
         <TapeLoadingSlowPos>115.5</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>
@@ -1253,6 +1505,39 @@
               </FARange>
             </value>
           </item>
+          <item>
+            <key>
+              <string>IMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSlowDistance</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
+          <item>
+            <key>
+              <string>FrontIMarkSensorOffset</string>
+            </key>
+            <value>
+              <FARange>
+                <Min>-1.7976931348623157E+308</Min>
+                <Max>1.7976931348623157E+308</Max>
+              </FARange>
+            </value>
+          </item>
         </RangeList>
         <FeedingSpeed>550</FeedingSpeed>
         <FeedingPitch>184</FeedingPitch>
@@ -1305,6 +1590,9 @@
         <UseBottomPeeling>true</UseBottomPeeling>
         <UsePackingScrap>true</UsePackingScrap>
         <UseIMark>true</UseIMark>
+        <UseFrontIMark>true</UseFrontIMark>
+        <FrontIMarkSlowDistance>10</FrontIMarkSlowDistance>
+        <FrontIMarkSensorOffset>0</FrontIMarkSensorOffset>
         <TapeLoadingPos>118</TapeLoadingPos>
         <TapeLoadingSlowPos>125.5</TapeLoadingSlowPos>
         <TapeUnUseImarkPos>55.7</TapeUnUseImarkPos>

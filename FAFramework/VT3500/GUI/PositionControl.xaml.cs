@@ -117,6 +117,21 @@ namespace FAFramework.VT3500.GUI
             InitializeComponent();
         }
 
+        public bool ApplyIMarkEdits()
+        {
+            if (JobInstance == null) return true;
+            IMarkOffsetTextBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            IMarkSlowDistanceTextBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            if (Validation.GetHasError(IMarkSlowDistanceTextBox))
+            {
+                IMarkSlowDistanceTextBox.Focus();
+                return false;
+            }
+            if (!Validation.GetHasError(IMarkOffsetTextBox)) return true;
+            IMarkOffsetTextBox.Focus();
+            return false;
+        }
+
         private void buttonAddIndex_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;

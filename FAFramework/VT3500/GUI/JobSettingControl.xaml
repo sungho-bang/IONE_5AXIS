@@ -126,7 +126,7 @@
                     <TabItem.Header>
                         <TextBlock Text="{DynamicResource ResourceKey=Config.Job}" />
                     </TabItem.Header>
-                    <VT3500.GUI:PositionControl
+                    <VT3500.GUI:PositionControl x:Name="PositionSettings"
                         EquipmentInstance="{Binding Path=EquipmentInstance}"
                         JobInstance="{Binding ElementName=listViewJobList, Path=SelectedItem.MoveJobInfo}"
                          />

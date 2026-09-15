@@ -165,6 +165,7 @@
                             </Canvas>
                             <Canvas Style="{StaticResource sensorsCanvas}">
                                 <StackPanel>
+                                    <ContentPresenter Content="{Binding FrontUnit.FrontIMarkCheckSensor}" Tag="FRONT I-Mark X1135" />
                                     <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionUpSensor}" />
                                     <ContentPresenter Content="{Binding FrontUnit.PackingTapeTensionDownSensor}" />
                                     <ContentPresenter Content="{Binding FrontUnit.PackingMotorRunCheck}" />

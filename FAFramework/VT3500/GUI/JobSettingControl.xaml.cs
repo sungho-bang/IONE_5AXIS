@@ -147,6 +147,11 @@ namespace FAFramework.VT3500.GUI
             InitializeComponent();
         }
 
+        public bool ApplyIMarkEdits()
+        {
+            return PositionSettings.ApplyIMarkEdits();
+        }
+
         private void ListViewJobList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             textBoxJobName.Text = SelectedJob.Name;

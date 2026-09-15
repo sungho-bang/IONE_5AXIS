@@ -10,7 +10,7 @@ using FAFramework.VT3500.JobInfo;
 using FALibrary.Part.Inverter;
 namespace FAFramework.VT3500.Modules
 {
-    public class FAFrontLoadingModule : Module.FAPassModule
+    public partial class FAFrontLoadingModule : Module.FAPassModule
     {
 
         #region Sequences
@@ -407,6 +407,7 @@ namespace FAFramework.VT3500.Modules
 
         public override void InitializeSequence()
         {
+            MakeTapeLoadingMoveWithIMark();
             MakeMainLoop();
             MakeOnceCycleEnd();
             MakeInitialize();
@@ -943,6 +944,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeInitialize()
         {
             var seq = Initialize;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             seq.OnStart += delegate
             {
@@ -969,6 +971,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(TapeHoldGrip.Release.Sequence);
             seq.AddItem((o) => { BandVaccum.Off.Execute(o); BandVaccumEject.On.Execute(o); });
             seq.AddItem((o) => { BandVaccumEject.Off.Execute(o); });
+            seq.AddItem((object o) => ResetFrontIMarkAfterInitialize());
         }
 
         public override void ClearProductInfo()
@@ -1780,6 +1783,8 @@ namespace FAFramework.VT3500.Modules
         private void MakeWorkFirstBandMoveLoading()
         {
             var seq = WorkFirstBandMoveLoading;
+            AttachFrontIMarkCycleDiagnostics(seq);
+            seq.OnStart += delegate { LastFrontIMarkFeedDistance = 0; };
 
             #region Event
             seq.OnStart += delegate
@@ -1795,7 +1800,7 @@ namespace FAFramework.VT3500.Modules
             
             seq.AddItem(WorkTapeMovePickCylinder);
              //Transfer Home && LoadingServo Pull
-            seq.AddStep("InitEnd").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += TapeLoadingServo.TapeLoadingPos.Position / 1000; });
+            seq.AddStep("InitEnd").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += (UseFrontIMark ? LastFrontIMarkFeedDistance : TapeLoadingServo.TapeLoadingPos.Position) / 1000; });
             seq.AddItem(
                 (actor, time) =>
                 {
@@ -1841,7 +1846,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddStep("BandMoveLoadingStart1").StepIndex = seq.AddItem(TapeLoadGrip.Grip.Sequence, WorkBandPickMove); //TransferServo Pick Material
             seq.AddItem(TapeHoldGrip.Release.Sequence);
             seq.AddItem(WorkTapeMovePickCylinder); //Transfer Home && LoadingServo Pull
-            seq.AddStep("InitEnd1").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += TapeLoadingServo.TapeLoadingPos.Position / 1000; });
+            seq.AddStep("InitEnd1").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += (UseFrontIMark ? LastFrontIMarkFeedDistance : TapeLoadingServo.TapeLoadingPos.Position) / 1000; });
             seq.AddItem(
                 (actor, time) =>
                 {
@@ -1885,38 +1890,31 @@ namespace FAFramework.VT3500.Modules
                         actor.NextStep();
                     }
                 });
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence, BandTransferServo.MoveStandbyPos.Sequence, BandPitchChangeCylinder.Home.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark, BandTransferServo.MoveStandbyPos.Sequence, BandPitchChangeCylinder.Home.Sequence);
             seq.AddStep("OptionEnd").StepIndex = seq.AddItem(TapeHoldGrip.Grip.Sequence);
             seq.AddItem(TapeLoadGrip.Release.Sequence);
             seq.AddItem("InitEnd1");
             //210726
-            seq.AddStep("Option").StepIndex = seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence, BandTransferServo.MoveStandbyPos.Sequence);
+            seq.AddStep("Option").StepIndex = seq.AddItem(TapeLoadingMoveWithIMark, BandTransferServo.MoveStandbyPos.Sequence);
             seq.AddItem("OptionEnd");
 
             seq.AddStep("UnUseTomson1").StepIndex = seq.AddItem(
                 (actor, time) =>
                 {
-                    //if (ThirdPressModule.ExistMaterial)
-                    //{
-                    //    ThirdPressModule.ExistMaterial = false;
-                    //    PlaceOn = true;
-                    //    actor.NextStep("Init1");
-                    //}
-                    //else
-                    //{
-                        actor.NextStep();
-                    //}
+                    // The first feed already handed off the grippers and counted its distance at InitEnd.
+                    WriteIMarkLog("Event=FIRST_FEED_ALREADY_COMPLETED;Seq=WorkFirstBandMoveLoading;" +
+                        "Branch=UnUseTomson1;AdditionalFeed=false;AdditionalHandoff=false;AdditionalLengthCount=false;" +
+                        GetIMarkSnapshot());
+                    actor.NextTerminate();
                 });
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
-            seq.AddItem(TapeHoldGrip.Grip.Sequence);
-            seq.AddItem(TapeLoadGrip.Release.Sequence);
-            seq.AddItem("InitEnd1");
 
         }
 
         private void MakeWorkLoopBandMoveLoading()
         {
             var seq = WorkLoopBandMoveLoading;
+            AttachFrontIMarkCycleDiagnostics(seq);
+            seq.OnStart += delegate { LastFrontIMarkFeedDistance = 0; };
 
             #region Event
             seq.OnStart += delegate
@@ -1965,7 +1963,7 @@ namespace FAFramework.VT3500.Modules
                });
             seq.AddItem(TapeHoldGrip.Release.Sequence);
             seq.AddItem(WorkTapeMovePickCylinder); //Transfer Home && LoadingServo Pull
-            seq.AddStep("InitEnd").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += TapeLoadingServo.TapeLoadingPos.Position / 1000; });
+            seq.AddStep("InitEnd").StepIndex = seq.AddItem((o) => { TapeLoadingServoUsedLength += (UseFrontIMark ? LastFrontIMarkFeedDistance : TapeLoadingServo.TapeLoadingPos.Position) / 1000; });
             seq.AddItem(
                 (actor, time) =>
                 {
@@ -2024,12 +2022,12 @@ namespace FAFramework.VT3500.Modules
                         actor.NextStep();
                     }
                 });
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence, BandTransferServo.MoveStandbyPos.Sequence, BandPitchChangeCylinder.Home.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark, BandTransferServo.MoveStandbyPos.Sequence, BandPitchChangeCylinder.Home.Sequence);
             seq.AddStep("EndOptionPress").StepIndex = seq.AddItem(TapeHoldGrip.Grip.Sequence);
             seq.AddItem(TapeLoadGrip.Release.Sequence);
             seq.AddItem("InitEnd");
 
-            seq.AddStep("UseOptionPress").StepIndex = seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence, BandTransferServo.MoveStandbyPos.Sequence);
+            seq.AddStep("UseOptionPress").StepIndex = seq.AddItem(TapeLoadingMoveWithIMark, BandTransferServo.MoveStandbyPos.Sequence);
             seq.AddItem("EndOptionPress");
 
             seq.AddStep("UnUseTomson").StepIndex = seq.AddItem(
@@ -2046,7 +2044,7 @@ namespace FAFramework.VT3500.Modules
                         actor.NextStep();
                     }
                 });
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark);
             seq.AddItem(TapeHoldGrip.Grip.Sequence);
             seq.AddItem(TapeLoadGrip.Release.Sequence);
             seq.AddItem("InitEnd");
@@ -2191,6 +2189,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeTapeMovePickCylinder()
         {
             var seq = TapeMovePickCylinder;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             #region Event
             seq.OnStart += delegate
@@ -2216,7 +2215,7 @@ namespace FAFramework.VT3500.Modules
                         actor.NextStep();
                     }
                 });
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark);
             seq.AddItem(TapeHoldGrip.Grip.Sequence);
             seq.AddItem(TapeLoadGrip.Release.Sequence);
             seq.AddStep("Terminate").StepIndex = seq.AddTerminate();
@@ -2244,6 +2243,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeTapeMovePlaceCylinder()
         {
             var seq = TapeMovePlaceCylinder;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             #region Event
             seq.OnStart += delegate
@@ -2611,6 +2611,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeWorkManualLoading()
         {
             var seq = WorkManualLoading;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             #region Event
             seq.OnStart += delegate
@@ -2682,7 +2683,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(TapeLoadGrip.Grip.Sequence);
             seq.AddItem(TapeLoadingGripSensorDelay);
             seq.AddItem(TapeHoldGrip.Release.Sequence);
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark);
             seq.AddItem(TapeHoldGrip.Grip.Sequence, WorkManualPress);
             seq.AddItem(TapeLoadGrip.Release.Sequence, WorkManualPicking);
             seq.AddItem(TapeLoadingServo.MoveHomePos.Sequence);
@@ -2695,6 +2696,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeWorkMoveWithOutTomson()
         {
             var seq = WorkMoveWithOutTomson;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             #region Event
             seq.OnStart += delegate
@@ -2769,7 +2771,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(TapeLoadGrip.Grip.Sequence);
             seq.AddItem(TapeLoadingGripSensorDelay);
             seq.AddItem(TapeHoldGrip.Release.Sequence);
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark);
             seq.AddItem(TapeHoldGrip.Grip.Sequence, WorkManualWithOutTomsonPress);
             seq.AddItem(TapeLoadGrip.Release.Sequence);
             seq.AddItem(TapeLoadingServo.MoveHomePos.Sequence);
@@ -2782,6 +2784,7 @@ namespace FAFramework.VT3500.Modules
         private void MakeWorkManualOnceOneCycle()
         {
             var seq = WorkManualOnceOneCycle;
+            AttachFrontIMarkCycleDiagnostics(seq);
 
             #region Event
             seq.OnStart += delegate
@@ -2860,7 +2863,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(TapeLoadGrip.Grip.Sequence);
             seq.AddItem(TapeLoadingGripSensorDelay);
             seq.AddItem(TapeHoldGrip.Release.Sequence);
-            seq.AddItem(TapeLoadingServo.MoveTapeLoadingPos.Sequence);
+            seq.AddItem(TapeLoadingMoveWithIMark);
             seq.AddItem(TapeHoldGrip.Grip.Sequence, WorkManualPress);
             seq.AddItem(TapeLoadGrip.Release.Sequence, WorkManualPicking);
             seq.AddItem(TapeLoadingServo.MoveHomePos.Sequence);

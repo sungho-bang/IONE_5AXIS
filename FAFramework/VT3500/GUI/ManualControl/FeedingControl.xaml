@@ -71,6 +71,7 @@
             </Canvas>
             <Canvas Style="{StaticResource sensorsCanvas}">
                 <!--<StackPanel>
+                    <ContentPresenter Content="{Binding SubUnit.FrontIMarkCheckSensor}" Tag="FRONT I-Mark X1135" />
                     <ContentPresenter Content="{Binding SubUnit.InSensor}" />
                     <ContentPresenter Content="{Binding SubUnit.OutSensor}" />
                 </StackPanel>-->

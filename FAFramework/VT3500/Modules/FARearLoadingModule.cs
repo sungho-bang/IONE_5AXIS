@@ -6,6 +6,7 @@ using FALibrary.Part.MemoryBasePart;
 using FALibrary.Sequence;
 using FALibrary.Utility;
 using System;
+using FAFramework.VT3500.ExtendedParts;
 using FAFramework.VT3500.JobInfo;
 
 namespace FAFramework.VT3500.Modules
@@ -68,7 +69,6 @@ namespace FAFramework.VT3500.Modules
         public FAPartOnOffSensor SealingTapeTensionDownSensor { get; set; } // 마지막 용지 텐션 유지용 아래쪽 센서
 
         public FAPartOnOffSensor BlackMarkCheckSensor { get; set; } // 바닥용지 감지 센서
-        public FAPartOnOffSensor IMarkCheckSensor { get; set; } // I-Mark 입력 센서(X1135)
         public FAPartUpDown SealingTopRoller { get; set; } // 롤러 동작 실린더
         public FAPartUpDown SealingBandCutting { get; set; } // 밴드 컷팅 실린더   
         public FABandRollerServo BandRollerServo { get; set; } // 밴드 이동 서보모터
@@ -258,7 +258,7 @@ namespace FAFramework.VT3500.Modules
 
         [FAProperty]
         [FAAttribute("Alarm")]
-        [AlarmInfo(ConfigClasses.GlobalConst.ALARM_TYPE_METHOD, ConfigClasses.GlobalConst.WARNING, "I-Mark Sensor Check Time Out")]
+        [AlarmInfo(ConfigClasses.GlobalConst.ALARM_TYPE_METHOD, ConfigClasses.GlobalConst.WARNING, "BlackMark Sensor Check Time Out")]
         public int AlarmBlackMarkCheckTimeOut { get; set; }
 
         //[DefaultAlarmInfo(1, Utility.Alarm.EAlarmType.MACHINE, Utility.Alarm.EAlarmStatus.ALARM)]
@@ -286,32 +286,6 @@ namespace FAFramework.VT3500.Modules
 
 
         #endregion
-
-        private bool IsIMarkInputOn()
-        {
-            return IMarkCheckSensor != null && IMarkCheckSensor.IsOn;
-        }
-
-        private bool IsIMarkInputOff()
-        {
-            return IMarkCheckSensor != null && IMarkCheckSensor.IsOff;
-        }
-
-        private string GetIMarkInputStatus()
-        {
-            return IMarkCheckSensor == null ? "NULL" : IMarkCheckSensor.Status.ToString();
-        }
-
-        private void WriteIMarkLog(string msg)
-        {
-            WriteTraceLog(msg);
-
-            string log = string.IsNullOrEmpty(ProductInfo.UniqueID)
-                ? string.Format("[{0}]\t{1}", Name, msg)
-                : string.Format("[{0}]\t{1}\t{2}", Name, ProductInfo.UniqueID, msg);
-
-            Manager.LogManager.Instance.WriteIMarkLog(Equipment, log);
-        }
 
 
 
@@ -608,14 +582,14 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(
             (actor, time) =>
             {
-                if (UseIMark)
-                {
-                    actor.NextStep();
-                }
-                else
-                {
+                //if (UseIMark)
+                //{
+                //    actor.NextStep();
+                //}
+                //else
+                //{
                     actor.NextStep("UnUseIMark");
-                }
+                //}
             });
             seq.AddItem(
                (actor, time) =>
@@ -636,7 +610,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(
                 (actor, time) =>
                 {
-                    if (IsIMarkInputOn())
+                    if (BlackMarkCheckSensor.IsOn)
                     {
                         BandRollerServo.Stop.Execute(this);
                         actor.NextStep();
@@ -960,9 +934,9 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(
                 (actor, time) =>
                 {
-                    if (IsIMarkInputOn())
+                    if (BlackMarkCheckSensor.IsOn)
                     {
-                        WriteIMarkLog($"BandRollerServo 실제값={BandRollerServo.ActualPos}");
+                        WriteTraceLog($"BandRollerServo 실제값={BandRollerServo.ActualPos}");
                         BandRollerServo.Stop.Execute(this);
                         actor.NextStep("UseIMark");
                     }
@@ -971,7 +945,7 @@ namespace FAFramework.VT3500.Modules
                         if (RetryInfoBlackMarkRetry.IncreaseCount())
                         {
                             RModuleServoOff = true;
-                            WriteIMarkLog($"BandRollerServo 실제값={BandRollerServo.ActualPos},IMarkSensor={GetIMarkInputStatus()}");
+                            WriteTraceLog($"BandRollerServo 실제값={BandRollerServo.ActualPos},BlackMarkSensor={BlackMarkCheckSensor.Status}");
                             BandRollerServo.SettingHomeMarking(actor);
                             actor.NextStep("Retry");
                         }
@@ -990,7 +964,7 @@ namespace FAFramework.VT3500.Modules
                 RModuleServoOff = false;
                 CurrentCount++;
                 UICuttingCount += 2;
-                WriteIMarkLog($"BandRollerServo 실제값={BandRollerServo.ActualPos}");
+                WriteTraceLog($"BandRollerServo 실제값={BandRollerServo.ActualPos}");
                 BandRollerServo.Stop.Execute(this);
             });
             seq.AddStep("Terminate").StepIndex = seq.AddItem(BandRollerServo.SetHomeMarking); // 값 0으로
@@ -1298,12 +1272,12 @@ namespace FAFramework.VT3500.Modules
               {
                   if (UseIMark)
                   {
-                      WriteIMarkLog("Use I-Mark");
-                      actor.NextStep("IMarkCheck");
+                      WriteTraceLog("Use I-Mark");
+                      actor.NextStep("BlackMarkCheck");
                   }
                   else
                   {
-                      WriteIMarkLog("UnUse I-Mark");
+                      WriteTraceLog("UnUse I-Mark");
                       actor.NextStep();
                   }
               });
@@ -1312,23 +1286,23 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(BandRollerServo.MoveTapeLoadingSlowPos.Sequence);
             seq.AddItem("SetHomeMarking");
 
-            seq.AddStep("IMarkCheck").StepIndex = seq.AddItem(BandRollerServo.MoveTapeLoadingPos.Sequence);
-            seq.AddStep("IMarkCheckRetry").StepIndex = seq.AddItem(BandRollerServo.MoveTapeLoadingSlowPos.Execute);
+            seq.AddStep("BlackMarkCheck").StepIndex = seq.AddItem(BandRollerServo.MoveTapeLoadingPos.Sequence);
+            seq.AddStep("BlackMarkCheckRetry").StepIndex = seq.AddItem(BandRollerServo.MoveTapeLoadingSlowPos.Execute);
             seq.AddItem(
                 (actor, time) =>
                 {
-                    if (IsIMarkInputOn())
+                    if (BlackMarkCheckSensor.IsOn)
                     {
                         BandRollerServo.Stop.Execute(actor);
-                        WriteIMarkLog($"IMarkSensor={GetIMarkInputStatus()}");
+                        WriteTraceLog($"BlackCheckSensor={BlackMarkCheckSensor.Status}");
                         actor.NextStep();
                     }
                     else
                     {
-                        WriteIMarkLog("Retry Sensing I-Mark");
+                        WriteTraceLog("Retry Sensing Black Mark");
                         BandRollerServo.SettingHomeMarking(actor);
                         BandRollerServo.MoveTapeLoadingSlowPos.Execute(actor);
-                        actor.NextStep("IMarkCheckRetry");
+                        actor.NextStep("BlackMarkCheckRetry");
                     }
                 });
             seq.AddStep("SetHomeMarking").StepIndex = seq.AddItem((o) => { BandRollerServo.SetHomeMarking(this); ManualCurrentCount++; }); // 값 0으로
@@ -1462,7 +1436,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(
                 (actor, time) =>
                 {
-                    if (IsIMarkInputOn())
+                    if (BlackMarkCheckSensor.IsOn)
                     {
                         BandRollerServo.Stop.Execute(actor);
                         //SealingTapeLoadingMotor.Stop.Execute(actor);
@@ -1470,7 +1444,7 @@ namespace FAFramework.VT3500.Modules
                         BandRollerServo.SetHomeMarking(this); // 값 0으로
                         actor.NextStep();
                     }
-                    else if (IsIMarkInputOff())
+                    else if (BlackMarkCheckSensor.IsOff)
                     {
                         BandRollerServo.Stop.Execute(actor);
                         //SealingTapeLoadingMotor.Stop.Execute(actor);
@@ -1608,7 +1582,7 @@ namespace FAFramework.VT3500.Modules
             seq.AddItem(
               (actor, time) =>
               {
-                  if (IsIMarkInputOn())
+                  if (BlackMarkCheckSensor.IsOn)
                   {
                       BandRollerServo.Stop.Execute(actor);
                       actor.NextStep();

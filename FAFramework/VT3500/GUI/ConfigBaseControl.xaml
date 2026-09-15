@@ -45,7 +45,7 @@
         </Grid>
         <TabControl Grid.Row="1">
             <TabItem Header="{DynamicResource ResourceKey=Config.Job}">
-                <gui:JobSettingControl
+                <gui:JobSettingControl x:Name="JobSettings"
                                     EquipmentInstance="{Binding Path=EquipmentManagerInstance.VT3500, Source={x:Static equipment:MainEquipment.Instance}}"
                                     JobManagerInstance="{Binding Path=EquipmentManagerInstance.VT3500.JobManagerInstance, Source={x:Static equipment:MainEquipment.Instance}}" />
             </TabItem>
@@ -142,34 +142,34 @@
                         <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.FirstPressServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="피넛클 프레스 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.SecondPressServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.SecondPressServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="옵션 프레스 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.OptionPressServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.OptionPressServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="톰슨 프레스 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.ThirdPressServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.ThirdPressServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="실링 프레스 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.RearModule.FourthPressServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.RearModule.FourthPressServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="옵션 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.OptionServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.OptionServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="원단 잔재 회수 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.TapeCoverServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.TapeCoverServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="그리퍼 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.TapeLoadingServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.TapeLoadingServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="이젝터 상하 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.BandPickServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.BandPickServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="이젝터 좌우 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.BandTransferServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.FrontModule.BandTransferServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                     <TabItem Header="포장지 피딩 모터">
-                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.RearModule.BandRollerServo, Source={x:Static equipment:MainEquipment.Instance}}" />
+                        <gui.standard:MotorConfigControl Part="{Binding Path=EquipmentManagerInstance.VT3500.RearModule.BandRollerServo, Source={x:Static equipment:MainEquipment.Instance}}" Loaded="MotorConfigControl_Loaded" />
                     </TabItem>
                 </TabControl>
             </TabItem>

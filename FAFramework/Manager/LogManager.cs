@@ -146,19 +146,20 @@ namespace FAFramework.Manager
                     {
                         while (Run)
                         {
-                            Action log;
-
-                            if (_logQueue.Count > 0)
+                            Action log = null;
+                            lock (threadRoot)
                             {
-                                lock (threadRoot)
-                                {
+                                if (_logQueue.Count > 0)
                                     log = _logQueue.Dequeue();
-                                }
-
-                                log();
                             }
 
-                            Thread.Sleep(10);
+                            if (log == null)
+                                Thread.Sleep(10);
+                            else
+                            {
+                                try { log(); }
+                                catch (Exception e) { Trace.WriteLine("Log worker failed: " + e); }
+                            }
                         }
                     });
 
@@ -548,14 +549,13 @@ namespace FAFramework.Manager
                 _logQueue.Enqueue(
                     delegate ()
                     {
-                        AutoClearLogFilesIfNeeded();
-
-                        if (Directory.Exists(path) == false)
-                            Directory.CreateDirectory(path);
-
                         StreamWriter sw = null;
                         try
                         {
+                            AutoClearLogFilesIfNeeded();
+                            if (Directory.Exists(path) == false)
+                                Directory.CreateDirectory(path);
+
                             if (!File.Exists(pathAndFileName))
                             {
                                 var method = log.GetType().GetMethod("GetHeaders");
@@ -563,18 +563,22 @@ namespace FAFramework.Manager
                                 {
                                     var headers = new List<string>(method.Invoke(log, null) as string[]);
                                     headers.Insert(0, "DateTime");
-                                    using (var s = new StreamWriter(pathAndFileName, true))
+                                    using (var s = OpenAppendLogWriter(pathAndFileName))
                                         s.WriteLine(string.Join(seperator, headers));
                                 }
                             }
 
-                            using (sw = new StreamWriter(pathAndFileName, true))
+                            using (sw = OpenAppendLogWriter(pathAndFileName))
                             {
                                 sw.WriteLine(date.ToString("yyyy-MM-dd HH:mm:ss.fff") + seperator + log);
                             }
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            string message = "Log write failed. Path=" + pathAndFileName + ";Error=" + e;
+                            Trace.WriteLine(message);
+                            if (string.Equals(new DirectoryInfo(logRootPath).Name, "IMarkLog", StringComparison.OrdinalIgnoreCase))
+                                WriteSystemLog(message);
                         }
                         finally
                         {
@@ -588,6 +592,20 @@ namespace FAFramework.Manager
             }
 
             return date;
+        }
+
+        private static StreamWriter OpenAppendLogWriter(string path)
+        {
+            for (int attempt = 0; ; attempt++)
+            {
+                try { return new StreamWriter(path, true); }
+                catch (IOException e)
+                {
+                    int error = e.HResult & 0xffff;
+                    if ((error != 32 && error != 33) || attempt >= 5) throw;
+                    Thread.Sleep(25);
+                }
+            }
         }
 
         private void AutoClearLogFilesIfNeeded()

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -368,10 +370,69 @@ namespace FAFramework.GUI.Standard
 
         private void buttonMove_Click(object sender, RoutedEventArgs e)
         {
-            if (Part == null || SelectedPosition == null) return;
+            string error;
+            if (!TryPrepareManualMove(out error))
+            {
+                WriteManualMoveLog("REJECTED", error);
+                MessageBox.Show(error, "모터 이동", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            SelectedPosition.CopyTo(Part.TargetPosition);
-            Part.MoveToPos.Execute(sender);
+            try
+            {
+                WriteManualMoveLog("REQUEST", "설정값 반영 완료. 이동 완료를 의미하지 않습니다.");
+                if (Part.MoveToPos.IsInterlock())
+                {
+                    WriteManualMoveLog("INTERLOCK", "기존 인터록에 의해 차단됨");
+                    MessageBox.Show("모터 이동이 인터록에 의해 차단되었습니다.", "모터 이동",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                Part.MoveToPos.Execute(sender);
+                WriteManualMoveLog("RETURNED", "이동 함수 반환. 실제 도착 여부는 별도 확인이 필요합니다.");
+            }
+            catch (Exception ex)
+            {
+                WriteManualMoveLog("EXCEPTION", ex.ToString());
+                MessageBox.Show("모터 이동 명령 오류: " + ex.Message, "모터 이동",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public bool TryPrepareManualMove(out string error)
+        {
+            error = null;
+            if (ReadOnly || Part == null || Part.TargetPosition == null ||
+                SelectedPosition == null || !Positions.Contains(SelectedPosition))
+            {
+                error = "이동 가능한 모터 위치가 선택되지 않았습니다.";
+                return false;
+            }
+
+            List<PositionEdit> edits;
+            if (!CollectPositionEdits(SelectedPosition, out edits, out error)) return false;
+            var target = PreviewPosition(SelectedPosition, edits);
+            if (!ValidPosition(target, out error)) return false;
+            if (target.DriveSpeed <= 0 || target.AccelTime == 0 || target.DecelTime == 0 ||
+                !Finite(Part.SpeedRate) || Part.SpeedRate <= 0 || !Finite(Part.Scale) || Part.Scale <= 0)
+            {
+                error = "운행 속도, 속도 비율, 가감속 시간 및 축 배율은 0보다 커야 합니다.";
+                return false;
+            }
+
+            ApplyPositionEdits(edits);
+            target.CopyTo(Part.TargetPosition);
+            return true;
+        }
+
+        private void WriteManualMoveLog(string result, string detail)
+        {
+            Manager.LogManager.Instance.WriteSystemLog(string.Format(CultureInfo.InvariantCulture,
+                "[MotorManual] Result={0};Part={1};Axis={2};Selected={3};Target={4};StartSpeed={5};DriveSpeed={6};SpeedRate={7};Scale={8};Actual={9};Command={10};ServoOn={11};Alarm={12};LMTMinus={13};LMTPlus={14};Detail={15}",
+                result, Part?.Name, Part?.AxisNo, SelectedPosition?.Name, Part?.TargetPosition?.Position,
+                Part?.TargetPosition?.StartSpeed, Part?.TargetPosition?.DriveSpeed, Part?.SpeedRate,
+                Part?.Scale, Part?.ActualPos, Part?.CommandPos, Part?.ServoOn, Part?.ServoAlarm,
+                Part?.NegativeLimit, Part?.PositiveLimit, detail));
         }
 
         private void buttonOn_Click(object sender, RoutedEventArgs e)
@@ -711,37 +772,7 @@ namespace FAFramework.GUI.Standard
             if (result != MessageBoxResult.Yes)
                 return false;
 
-            // 1. 숫자 유효성 검사
-            foreach (var tb in FindVisualChildren<TextBox>(this))
-            {
-                var be = tb.GetBindingExpression(TextBox.TextProperty);
-                if (be == null) continue; // 바인딩 없는 TextBox 는 패스
-
-                var txt = tb.Text;
-                if (string.IsNullOrWhiteSpace(txt))
-                    continue; // 빈 값은 허용 (필요시 정책 변경)
-
-                double dummy;
-                if (!double.TryParse(txt, out dummy))
-                {
-                    MessageBox.Show(
-                        "숫자만 입력 가능한 항목이 있습니다.\r\n해당 값을 다시 확인해 주세요.",
-                        "저장 오류",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-
-                    tb.Focus();
-                    return false;
-                }
-            }
-
-            // 2. 실제 바인딩 소스(FAMMCPosition, Part 등)에 값 밀어넣기
-            foreach (var tb in FindVisualChildren<TextBox>(this))
-            {
-                var be = tb.GetBindingExpression(TextBox.TextProperty);
-                if (be != null)
-                    be.UpdateSource();
-            }
+            if (!ApplyEdits()) return false;
 
             // 여기까지 오면 Part / FAMMCPosition 안에는 최신 값이 설정됨.
             // 실제 파일(XML/INI) 저장은 상위 폼에서
@@ -816,32 +847,104 @@ namespace FAFramework.GUI.Standard
         /// </returns>
         public bool ApplyEdits()
         {
-            try
-            {
-                // 이 컨트롤 내부의 모든 TextBox에 대해
-                foreach (var tb in FindVisualChildren<TextBox>(this))
-                {
-                    // Text 바인딩이 걸려 있는 것만 대상
-                    var be = tb.GetBindingExpression(TextBox.TextProperty);
-                    if (be != null)
-                    {
-                        // 현재 TextBox에 보이는 값을 바인딩 소스(FAMMCPosition/Part)로 반영
-                        be.UpdateSource();
-                    }
-                }
+            string error;
+            if (TryApplyEdits(out error)) return true;
+            MessageBox.Show(error, "모터 설정", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "모터 설정 값을 적용하는 중 오류가 발생했습니다.\r\n" + ex.Message,
-                    "MotorConfigControl",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+        private sealed class PositionEdit
+        {
+            public object Source;
+            public PropertyDescriptor Property;
+            public object Value;
+        }
 
+        private static bool Finite(double value) { return !double.IsNaN(value) && !double.IsInfinity(value); }
+
+        private static FAMMCPosition PreviewPosition(FAMMCPosition source, List<PositionEdit> edits)
+        {
+            var result = new FAMMCPosition { Name = source.Name };
+            source.CopyTo(result);
+            foreach (var edit in edits.Where(e => ReferenceEquals(e.Source, source)))
+                edit.Property.SetValue(result, edit.Value);
+            return result;
+        }
+
+        private static bool ValidPosition(FAMMCPosition position, out string error)
+        {
+            error = null;
+            if (!Finite(position.Position) || !Finite(position.DriveSpeed) || position.DriveSpeed < 0 ||
+                !Finite(position.LwLimit) || !Finite(position.UpLimit) || position.LwLimit > position.UpLimit ||
+                position.Position < position.LwLimit || position.Position > position.UpLimit)
+            {
+                error = position.Name + ": 위치 한계 또는 숫자/속도 설정이 올바르지 않습니다.";
                 return false;
             }
+            return true;
+        }
+
+        private bool CollectPositionEdits(FAMMCPosition selectedOnly, out List<PositionEdit> edits, out string error)
+        {
+            edits = new List<PositionEdit>();
+            error = null;
+            if (ReadOnly) return true;
+
+            // Snapshot every editor before notifying any source: the left and right panels share properties.
+            foreach (var box in FindVisualChildren<TextBox>(this))
+            {
+                if (box.IsReadOnly || !box.IsEnabled) continue;
+                var binding = box.GetBindingExpression(TextBox.TextProperty);
+                if (binding == null) continue;
+                var source = binding.ResolvedSource;
+                if (!(source is FAMMCPosition) && !ReferenceEquals(source, Part)) continue;
+                if (selectedOnly != null && !ReferenceEquals(source, selectedOnly)) continue;
+                var property = TypeDescriptor.GetProperties(source)[binding.ResolvedSourcePropertyName];
+                if (property == null || property.IsReadOnly || property.PropertyType == typeof(string)) continue;
+
+                object value;
+                try
+                {
+                    value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFromString(null,
+                        binding.ParentBinding.ConverterCulture ?? CultureInfo.CurrentCulture, box.Text);
+                    if (!Finite(System.Convert.ToDouble(value, CultureInfo.InvariantCulture))) throw new FormatException();
+                }
+                catch
+                {
+                    error = (source as FAMMCPosition)?.Name + "." + property.Name + ": 유효한 숫자를 입력하세요.";
+                    return false;
+                }
+                if (Equals(value, property.GetValue(source))) continue;
+                var previous = edits.FirstOrDefault(e => ReferenceEquals(e.Source, source) && e.Property.Name == property.Name);
+                if (previous != null && !Equals(previous.Value, value))
+                {
+                    error = (source as FAMMCPosition)?.Name + "." + property.Name + ": 좌우 입력값이 서로 다릅니다.";
+                    return false;
+                }
+                if (previous == null) edits.Add(new PositionEdit { Source = source, Property = property, Value = value });
+            }
+            foreach (var position in edits.Select(e => e.Source).OfType<FAMMCPosition>().Distinct())
+                if (!ValidPosition(PreviewPosition(position, edits), out error)) return false;
+            return true;
+        }
+
+        private static void ApplyPositionEdits(List<PositionEdit> edits)
+        {
+            foreach (var edit in edits) edit.Property.SetValue(edit.Source, edit.Value);
+        }
+
+        public bool ValidateEdits(out string error)
+        {
+            List<PositionEdit> edits;
+            return CollectPositionEdits(null, out edits, out error);
+        }
+
+        public bool TryApplyEdits(out string error)
+        {
+            List<PositionEdit> edits;
+            if (!CollectPositionEdits(null, out edits, out error)) return false;
+            ApplyPositionEdits(edits);
+            return true;
         }
 
 

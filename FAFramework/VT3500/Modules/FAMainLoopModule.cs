@@ -40,6 +40,7 @@ namespace FAFramework.VT3500.Modules
         //Recipe
         [FAAttribute("Status")]
         public string OldJobName { get; set; }
+        public string LoadedJobName { get; private set; }
         #endregion
 
         #region Parameters
@@ -355,6 +356,7 @@ namespace FAFramework.VT3500.Modules
 
         private void LoadJob(FASequence actor, TimeSpan time)
         {
+            LoadedJobName = null;
             var equip = Equipment as VT3500.SubEquipment;
             string jobname = SelectJob;
             string msg = "";
@@ -389,7 +391,7 @@ namespace FAFramework.VT3500.Modules
                             //var FinalSpeed = Convert.ToUInt32(VT3500Equipment.FrontModule.SpeedScale);
                             
                             VT3500Equipment.FrontLoadingUnit.TapeLoadingServo.TapeLoadingPos.DriveSpeed = Feedspeed ; 
-                            VT3500Equipment.FrontLoadingUnit.TapeLoadingServo.TapeLoadingPos.Position = MoveJobInfo.FeedingPitch;
+                            VT3500Equipment.FrontModule.ApplyFrontIMarkJob(MoveJobInfo, jobname);
                             VT3500Equipment.FirstPressModule.PressDelay = MoveJobInfo.MoldingTime;
                             VT3500Equipment.FrontLoadingUnit.BandTransferServo.TapeLoadingPos.DriveSpeed = PackingSpeed ;
                             VT3500Equipment.FrontLoadingUnit.BandTransferServo.TapeLoadingPos.Position = MoveJobInfo.PackingFeedPitch;
@@ -423,6 +425,7 @@ namespace FAFramework.VT3500.Modules
                             VT3500Equipment.FrontModule.UseBottomPeeling = MoveJobInfo.UseBottomPeeling;
                             VT3500Equipment.RearModule.UsePackingScrap = MoveJobInfo.UsePackingScrap;
                             VT3500Equipment.RearModule.UseIMark = MoveJobInfo.UseIMark;
+                            LoadedJobName = jobname;
                             actor.NextStep();
 
                         }

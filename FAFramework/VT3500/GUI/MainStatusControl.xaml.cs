@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using FAFramework.GUI;
 using FAFramework.Utility;
+using System.Windows.Threading;
+using FAFramework.VT3500.Modules;
 
 namespace FAFramework.VT3500.GUI
 {
@@ -78,6 +80,59 @@ namespace FAFramework.VT3500.GUI
             }
         }
         public CommandHandler MaintenanceModeClick { get; set; }
+        private readonly DispatcherTimer _iMarkRefreshTimer;
+        private bool _restoringRecipeSelection;
+        private bool? SelectedIMarkUsage
+        {
+            get
+            {
+                var front = (EquipmentInstance as SubEquipment)?.FrontModule;
+                return front?.PendingFrontIMarkUse ?? front?.UseFrontIMark;
+            }
+        }
+        public bool MainIMarkInUse { get { return SelectedIMarkUsage == true; } }
+        public bool MainIMarkNotInUse { get { return SelectedIMarkUsage == false; } }
+        public string IMarkUsageStatus
+        {
+            get
+            {
+                var front = (EquipmentInstance as SubEquipment)?.FrontModule;
+                if (front == null) return "";
+                if (front.PendingFrontIMarkError != null) return "적용 오류";
+                var pending = front.PendingFrontIMarkUse;
+                if (pending.HasValue)
+                    return pending.Value ? "사용 적용 대기" : "미사용 적용 대기";
+                return front.UseFrontIMark ? "현재: 사용" : "현재: 미사용";
+            }
+        }
+        public bool CanChangeIMarkUsage
+        {
+            get { return IMarkUsageSelection.GetBlockReason(EquipmentInstance as SubEquipment, receipe?.SelectedItem as JobInfo.FALotJobInfo) == null; }
+        }
+        public bool CanApplySelectedRecipe
+        {
+            get { return IMarkUsageSelection.GetRecipeBlockReason(EquipmentInstance as SubEquipment, receipe?.SelectedItem as JobInfo.FALotJobInfo) == null; }
+        }
+        public string RecipeApplyToolTip
+        {
+            get
+            {
+                return IMarkUsageSelection.GetRecipeBlockReason(EquipmentInstance as SubEquipment, receipe?.SelectedItem as JobInfo.FALotJobInfo)
+                    ?? "선택 레시피의 FRONT I-Mark 설정 적용";
+            }
+        }
+        public string IMarkUsageToolTip
+        {
+            get
+            {
+                var front = (EquipmentInstance as SubEquipment)?.FrontModule;
+                return IMarkUsageSelection.GetBlockReason(EquipmentInstance as SubEquipment, receipe?.SelectedItem as JobInfo.FALotJobInfo)
+                    ?? front?.PendingFrontIMarkError
+                    ?? (front?.PendingFrontIMarkUse.HasValue == true
+                        ? "현재 적용: " + (front.UseFrontIMark ? "사용" : "미사용") + ". 선택값은 다음 FRONT 이송 시작 전 또는 정지 후 적용됩니다. 재실행 후 유지하려면 설정에서 저장하세요."
+                        : "초기화/운전 중에도 선택할 수 있습니다. 진행 중인 이송은 기존 설정으로 마치며, 재실행 후 유지하려면 설정에서 저장하세요.");
+            }
+        }
 
         public MainStatusControl()
         {
@@ -103,19 +158,67 @@ namespace FAFramework.VT3500.GUI
                 }, true);
 
             InitializeComponent();
+            _iMarkRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            _iMarkRefreshTimer.Tick += delegate { RefreshIMarkUsage(); };
+            Loaded += delegate { RefreshIMarkUsage(); _iMarkRefreshTimer.Start(); };
+            Unloaded += delegate { _iMarkRefreshTimer.Stop(); };
         }
-        private void receipe_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void RefreshIMarkUsage()
         {
-            receipe.ItemsSource = JobManagerInstance.LotJobInstance.LotJobInfoList;
-
-            receipe.SelectedItem = JobManagerInstance.LotJobInstance.LotJobInfoList.Select(x => x.Name);
+            string error;
+            (EquipmentInstance as SubEquipment)?.FrontModule?.TryApplyPendingFrontIMarkUsage(false, out error);
+            NotifyPropertyChanged("MainIMarkInUse");
+            NotifyPropertyChanged("MainIMarkNotInUse");
+            NotifyPropertyChanged("CanChangeIMarkUsage");
+            NotifyPropertyChanged("IMarkUsageToolTip");
+            NotifyPropertyChanged("CanApplySelectedRecipe");
+            NotifyPropertyChanged("RecipeApplyToolTip");
+            NotifyPropertyChanged("IMarkUsageStatus");
         }
 
+        private void IMarkUsage_Click(object sender, RoutedEventArgs e)
+        {
+            var radio = sender as RadioButton;
+            bool useIMark;
+            if (radio == null || !bool.TryParse(radio.Tag as string, out useIMark)) return;
+            string error;
+            if (!IMarkUsageSelection.TryApply(EquipmentInstance as SubEquipment,
+                receipe.SelectedItem as JobInfo.FALotJobInfo, useIMark, out error))
+                MessageBox.Show(error, "I-Mark 사용 설정", MessageBoxButton.OK, MessageBoxImage.Information);
+            RefreshIMarkUsage();
+        }
         private void receipe_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            var param = e.AddedItems[0];
-            var getparam = param as JobInfo.FALotJobInfo;
-            Equipment.MainEquipment.Instance.EquipmentManagerInstance.VT3500.MainLoopModule.SelectJob = getparam.Name;
+            if (_restoringRecipeSelection) return;
+            var equipment = EquipmentInstance as SubEquipment;
+            var job = receipe.SelectedItem as JobInfo.FALotJobInfo;
+            if (equipment?.MainLoopModule == null) return;
+            if (job == null)
+                equipment.MainLoopModule.SelectJob = null;
+            else
+            {
+                string error;
+                if (!IMarkUsageSelection.TryLoadRecipe(equipment, job, out error))
+                {
+                    var previous = equipment.JobManagerInstance?.LotJobInstance?.LotJobInfoList
+                        .FirstOrDefault(item => item.Name == equipment.MainLoopModule.SelectJob);
+                    _restoringRecipeSelection = true;
+                    try { receipe.SetCurrentValue(System.Windows.Controls.Primitives.Selector.SelectedItemProperty, previous); }
+                    finally { _restoringRecipeSelection = false; }
+                    MessageBox.Show(error, "FRONT I-Mark 레시피 적용", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            RefreshIMarkUsage();
+        }
+
+        private void RecipeApply_Click(object sender, RoutedEventArgs e)
+        {
+            string error;
+            if (!IMarkUsageSelection.TryLoadRecipe(EquipmentInstance as SubEquipment,
+                receipe.SelectedItem as JobInfo.FALotJobInfo, out error))
+                MessageBox.Show(error, "FRONT I-Mark 레시피 적용", MessageBoxButton.OK, MessageBoxImage.Warning);
+            RefreshIMarkUsage();
         }
         
         private void ZeroAmount(object sender, MouseButtonEventArgs e)
@@ -466,15 +569,6 @@ namespace FAFramework.VT3500.GUI
                     Equipment.MainEquipment.Instance.EquipmentManagerInstance.VT3500.FrontModule.WorkManualOnceOneCycle.Stop();
                 }
             }
-        }
-
-        private void Check(object sender, RoutedEventArgs e)
-        {
-            Equipment.MainEquipment.Instance.EquipmentManagerInstance.VT3500.RearModule.UseIMark = true;
-        }
-        private void UnCheck(object sender, RoutedEventArgs e)
-        {
-            Equipment.MainEquipment.Instance.EquipmentManagerInstance.VT3500.RearModule.UseIMark = false;
         }
 
         private void FirstPress_MotorRun_Button_Check(object sender, RoutedEventArgs e)

@@ -9,6 +9,9 @@ namespace FAFramework.VT3500.SubUnits
     public class FAFrontLoadingUnit : Equipment.SubUnitBase
     {
         [FAAttribute("")]
+        public FAPartOnOffSensor FrontIMarkCheckSensor { get; set; }
+
+        [FAAttribute("")]
         public FAPartOnOffSensor ShapeTapeTensionUpSensor { get; set; } // 첫번째 용지 텐션 유지용 위쪽 센서
         [FAAttribute("")]
         public FAPartOnOffSensor ShapeTapeTensionDownSensor { get; set; } // 첫번째 용지 텐션 유지용 아래쪽 센서

@@ -250,6 +250,46 @@ namespace FAFramework.VT3500.JobInfo
                 NotifyPropertyChanged("UseIMark");
             }
         }
+        private bool _useFrontIMark;
+        [FA("Job")]
+        public bool UseFrontIMark
+        {
+            get { return _useFrontIMark; }
+            set
+            {
+                if (_useFrontIMark == value) return;
+                _useFrontIMark = value;
+                NotifyPropertyChanged("UseFrontIMark");
+            }
+        }
+        private double _frontIMarkSlowDistance = 10;
+        [FA("Job")]
+        public double FrontIMarkSlowDistance
+        {
+            get { return _frontIMarkSlowDistance; }
+            set
+            {
+                if (double.IsNaN(value) || double.IsInfinity(value) || value < 0)
+                    throw new ArgumentOutOfRangeException("value", "FRONT I-Mark 탐색 거리는 0 이상의 유한한 숫자여야 합니다.");
+                if (_frontIMarkSlowDistance == value) return;
+                _frontIMarkSlowDistance = value;
+                NotifyPropertyChanged("FrontIMarkSlowDistance");
+            }
+        }
+        private double _frontIMarkSensorOffset;
+        [FA("Job")]
+        public double FrontIMarkSensorOffset
+        {
+            get { return _frontIMarkSensorOffset; }
+            set
+            {
+                if (double.IsNaN(value) || double.IsInfinity(value) || value < 0)
+                    throw new ArgumentOutOfRangeException("value", "I-Mark 설치 보정은 0 이상의 유한한 숫자여야 합니다.");
+                if (_frontIMarkSensorOffset == value) return;
+                _frontIMarkSensorOffset = value;
+                NotifyPropertyChanged("FrontIMarkSensorOffset");
+            }
+        }
         //210705
         private double _tapeLoadingPos;
         [FA("Job")]
@@ -313,6 +353,9 @@ namespace FAFramework.VT3500.JobInfo
             //name = "UseBottomPacking"; SetValue(dest, name, GetValue(name));
             name = "UsePackingScrap"; SetValue(dest, name, GetValue(name));
             name = "UseIMark"; SetValue(dest, name, GetValue(name));
+            name = "FrontIMarkSensorOffset"; SetValue(dest, name, GetValue(name));
+            name = "UseFrontIMark"; SetValue(dest, name, GetValue(name));
+            name = "FrontIMarkSlowDistance"; SetValue(dest, name, GetValue(name));
             //210705
             name = "TapeLoadingPos"; SetValue(dest, name, GetValue(name));
             name = "TapeLoadingSlowPos"; SetValue(dest, name, GetValue(name));
@@ -350,6 +393,9 @@ namespace FAFramework.VT3500.JobInfo
             //name = "UseBottomPacking"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
             name = "UsePackingScrap"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
             name = "UseIMark"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
+            name = "FrontIMarkSensorOffset"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
+            name = "UseFrontIMark"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
+            name = "FrontIMarkSlowDistance"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
             //210705
             name = "TapeLoadingPos"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
             name = "TapeLoadingSlowPos"; list.Add(string.Format("{0}{1}={2}", prefix, name, GetValue(name)));
@@ -359,6 +405,9 @@ namespace FAFramework.VT3500.JobInfo
 
         public void Parsing(System.Xml.Linq.XElement xml)
         {
+            FrontIMarkSensorOffset = (double?)xml.Element("FrontIMarkSensorOffset") ?? 0;
+            UseFrontIMark = (bool?)xml.Element("UseFrontIMark") ?? false;
+            FrontIMarkSlowDistance = (double?)xml.Element("FrontIMarkSlowDistance") ?? 10;
             string name;
             name = "FeedingSpeed"; if (xml.Element(name) != null) SetValue(name, xml.Element(name).Value);
             name = "FeedingPitch"; if (xml.Element(name) != null) SetValue(name, xml.Element(name).Value);

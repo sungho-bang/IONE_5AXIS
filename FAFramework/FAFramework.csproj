@@ -365,8 +365,11 @@
     <Compile Include="VT3500\Modules\ExtensionStateSignalModule.cs" />
     <Compile Include="VT3500\Modules\FAPressModule.cs" />
     <Compile Include="VT3500\Modules\FARearLoadingModule.cs" />
+    <Compile Include="VT3500\Modules\IMarkSequenceDiagnostics.cs" />
+    <Compile Include="VT3500\Modules\IMarkUsageSelection.cs" />
     <Compile Include="VT3500\Modules\FAMainLoopModule.cs" />
     <Compile Include="VT3500\Modules\FAFrontLoadingModule.cs" />
+    <Compile Include="VT3500\Modules\FAFrontLoadingModule.IMark.cs" />
     <Compile Include="VT3500\Modules\FASafetyModule.cs" />
     <Compile Include="VT3500\SubEquipment.cs" />
     <Compile Include="LogSearcher\AlarmLogSearcher.cs" />
